@@ -1,0 +1,96 @@
+$scheme-icons: (
+  ("arrow-down", "arrow-down", "svg"),
+  ("arrow-right", "arrow-right", "svg"),
+  ("coins", "coins", "svg"),
+  ("graphic", "graphic", "svg"),
+  ("grow", "grow", "svg"),
+  ("logo", "logo", "svg"),
+  ("metamask", "metamask", "svg"),
+  ("user", "user", "svg"),
+  ("dollar", "dollar", "svg")
+);
+
+// @include themePath("dark", $scheme-icons);
+@include theme("white", $scheme-icons);
+
+.icon {
+  &:before {
+    content: "";
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+  }
+
+  &-flex {
+    display: flex;
+    align-items: center;
+    width: max-content;
+  }
+
+  &-metamask {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    padding: 8px;
+    border-radius: 16px;
+    background-color: var(--icon-metamask-background-color);
+
+    @include before-img(block, 34px, 34px, r) {
+      background-size: cover;
+    }
+  }
+
+  &-arrow-down {
+    @include before-img(block, 10px, 5px, r) {
+      background-size: cover;
+    }
+  }
+
+  &-arrow-right {
+    @include before-img(block, 16px, 10px, r) {
+      background-size: cover;
+    }
+  }
+
+  &-coins {
+    @include before-img(block, 26px, 19px, r) {
+      background-size: cover;
+    }
+  }
+
+  &-graphic {
+    @include before-img(block, 29px, 16px, r) {
+      background-size: cover;
+    }
+  }
+
+  &-grow {
+    @include before-img(block, 20px, 24px, r) {
+      background-size: cover;
+    }
+  }
+
+  &-user {
+    @include before-img(block, 24px, 24px, r) {
+      background-size: cover;
+    }
+  }
+
+  &-logo {
+    @include before-img(block, 50px, 30px, r) {
+      background-size: cover;
+    }
+  }
+
+  &-dollar {
+    @include before-img(block, 24px, 24px, r) {
+      background-size: cover;
+    }
+  }
+}

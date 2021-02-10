@@ -1,1 +1,191 @@
-/* You can add global styles to this file, and also import other style files */
+@import "/src/scss/mixins.scss";
+@import "/src/scss/theme.scss";
+@import "/src/scss/icons.scss";
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  word-break: break-word;
+  line-height: 1.3;
+  margin: 0;
+  cursor: default;
+  background-color: var(--body-background-color);
+}
+
+img {
+  max-width: 100%;
+}
+
+a {
+  text-decoration: none;
+}
+
+a,
+p,
+.button,
+span {
+  transition: 0.4s ease;
+  outline: none;
+}
+
+h2 {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 33px;
+  line-height: 40px;
+  color: #000;
+  margin-top: 0;
+}
+
+h3 {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 34px;
+  color: #000;
+  margin-top: 0;
+}
+
+header {
+  border-radius: 10px;
+  box-shadow: var(--header-box-shadow);
+  background-color: var(--header-background-color);
+
+  .container {
+    max-width: 1200px;
+    padding: 10px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  max-width: 700px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.section {
+  &-app {
+    margin-top: 30px;
+    padding: 0 10px;
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: var(--cards-background-color);
+
+  &-title {
+    font-size: 14px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    color: var(--cards-title-color);
+
+    &:before {
+      margin-right: 10px;
+    }
+  }
+
+  b {
+    font-size: 30px;
+    color: var(--cards-title-bold-color);
+
+    @include b(700) {
+      font-size: 20px;
+    }
+  }
+
+  &-text {
+    &-address {
+      font-size: 17px;
+      letter-spacing: 1px;
+      line-height: 1.5;
+      color: var(--cards-text-color);
+
+      @include b(700) {
+        font-size: 15px;
+      }
+    }
+
+    &-accent {
+      font-weight: bold;
+      text-transform: uppercase;
+      color: var(--cards-text-accent-color);
+    }
+  }
+}
+
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  transition: 0.4s ease;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &-green {
+    border-radius: 40px;
+    min-height: 55px;
+    font-weight: bold;
+    font-size: 19px;
+    color: var(--btn-green-color);
+    background: var(--btn-green-background);
+  }
+
+  &-connect {
+    margin: 0 auto;
+    margin-top: 20px;
+    max-width: 300px;
+  }
+}
+
+.grid {
+  display: grid;
+  justify-content: space-between;
+  grid-gap: 10px;
+  margin-bottom: 10px;
+
+  &-two {
+    grid-template-columns: 1fr 1fr;
+
+    @include b(600) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &-three {
+    grid-template-columns: 1fr 1fr 1fr;
+
+    @include b(700) {
+      grid-template-columns: 1fr;
+    }
+  }
+}
