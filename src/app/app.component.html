@@ -1,11 +1,10 @@
 <header>
   <div class="container">
     <span class="icon icon-logo"></span>
-    <!-- <div class="metamask-block">
-      <span class="metamask-address icon icon-flex icon-metamask">0x9C3f</span>
-    </div> -->
-
-    <span class="btn btn-green btn-metamask">Connect MetaMask</span>
+    <div *ngIf="account" class="metamask-block">
+      <span class="metamask-address icon icon-flex icon-metamask">{{ userAddress }}</span>
+    </div>
+    <span *ngIf="!account" (click)="subscribeAccount()" class="btn btn-green btn-metamask">Connect MetaMask</span>
   </div>
 </header>
 
@@ -37,7 +36,7 @@
         <span class="card-text-address">0x9a54FE35D41bc7c8F7071aBf0cCD952505e29ceb</span>
       </div>
     </div>
-    <div class="grid grid-two">
+    <div *ngIf="!account" class="grid grid-two">
       <div class="card">
         <span class="card-title icon icon-flex icon-dollar">Your Staked AVS</span>
         <b>--</b>
@@ -48,7 +47,7 @@
       </div>
     </div>
 
-    <div class="card">
+    <div *ngIf="account" class="card">
       <div class="card-head">
         <span class="card-head-title icon icon-flex icon-reverce icon-info-orange">Stake AVS</span>
         <div class="card-balance-block">
@@ -77,11 +76,11 @@
       <span class="btn btn-green btn-stake">Stake</span>
     </div>
 
-    <span class="btn btn-green btn-connect">Connect MetaMask</span>
+    <span *ngIf="!account" (click)="subscribeAccount()" class="btn btn-green btn-connect">Connect MetaMask</span>
   </div>
 </section>
 
-<section class="section-app">
+<section *ngIf="account" class="section-app">
   <div class="container">
     <div class="section-title-block">
       <h2 class="section-title">Stakings</h2>
@@ -142,3 +141,18 @@
     </div>
   </div>
 </section>
+
+<div *ngIf="modalOpen" class="modal">
+  <div class="modal-content">
+    <div class="modal-head">
+      <span class="modal-head-title icon icon-flex icon-attention">{{ modal.title }}</span>
+    </div>
+    <div class="modal-body">
+      <b>{{ modal.body }}</b>
+    </div>
+    <div class="modal-footer">
+      <span class="btn btn-green btn-footer" (click)="modalEvent('one', modal.type)">{{ modal.button.one }}</span>
+      <span class="btn btn-green-border btn-footer" (click)="modalEvent('two', modal.type)">{{ modal.button.two }}</span>
+    </div>
+  </div>
+</div>

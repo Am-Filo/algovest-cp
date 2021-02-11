@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-
 import Web3 from 'web3';
+import { Observable } from 'rxjs';
 import { AppConfig } from '../appconfig';
 
 @Injectable({
@@ -13,16 +12,12 @@ export class MetamaskService {
   private netVersion: number;
   private net: string;
 
-  private providers;
+  constructor(private config: AppConfig) {
+    const appConfig = this.config.getConfig();
 
-  constructor(protected config: AppConfig, protected web3: Web3) {
-    const appConfig = config.getConfig();
+    this.netVersion = appConfig.production ? 1 : appConfig.net;
 
-    this.netVersion = appConfig.settings.production
-      ? 1
-      : appConfig.settings.net;
-
-    this.net = this.netVersion === 1 ? 'mainnet' : appConfig.settings.network;
+    this.net = this.netVersion === 1 ? 'mainnet' : appConfig.network;
 
     this.providers = {};
     this.providers.metamask = Web3.givenProvider;
@@ -31,78 +26,15 @@ export class MetamaskService {
     this.metaMaskWeb3 = window['ethereum'];
   }
 
-  public getContract(abi: Array<any>, address: string): any {
-    return new this.web3.eth.Contract(abi, address);
-  }
-
-  public getBalance(address: string): Promise<string> {
-    return this.web3.eth.getBalance(address);
-  }
-
-  public getBlock(): Promise<any> {
-    return this.web3.eth.getBlock('latest');
-  }
-
-  public gasPrice(): Promise<string> {
-    return this.web3.eth.getGasPrice().then((res) => {
-      return res;
-    });
-  }
-
-  public encodeFunctionCall(
-    name: string,
-    type: any,
-    inputs: Array<any>,
-    params: Array<any>
-  ): string {
-    return this.web3.eth.abi.encodeFunctionCall(
-      {
-        name,
-        type,
-        inputs,
-      },
-      params
-    );
-  }
-
-  public estimateGas(
-    from: string,
-    to: string,
-    value: number,
-    data: string,
-    gasPrice: number
-  ): Promise<any> {
-    return this.web3.eth
-      .estimateGas({ from, to, value, data, gasPrice })
-      .then((res) => {
-        return res;
-      });
-  }
-
-  public async addToken(tokenOptions: any): Promise<any> {
-    try {
-      const wasAdded = await this.metaMaskWeb3.request({
-        method: 'wallet_watchAsset',
-        params: {
-          type: 'ERC20',
-          options: tokenOptions,
-        },
-      });
-
-      if (wasAdded) {
-        console.log('token added');
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  private providers;
+  public Web3;
 
   public getAccounts(noEnable?: boolean): Observable<any> {
     const onAuth = (observer: any, address: string) => {
-      if (this.web3) {
-        this.web3.setProvider(this.providers.metamask);
+      if (this.Web3) {
+        this.Web3.setProvider(this.providers.metamask);
       } else {
-        this.web3 = new Web3(this.providers.metamask);
+        this.Web3 = new Web3(this.providers.metamask);
       }
       observer.next({
         address,
@@ -139,6 +71,7 @@ export class MetamaskService {
                 code: 2,
                 msg: 'Please choose ' + this.net + ' network in Metamask.',
               });
+
               reject();
             }
             resolve(true);
@@ -154,6 +87,7 @@ export class MetamaskService {
               window.location.reload();
             })
             .catch(() => {
+              console.log('not valid chain');
               onError(observer, {
                 code: 3,
                 msg: 'Not authorized',
@@ -194,8 +128,7 @@ export class MetamaskService {
       } else {
         onError(observer, {
           code: 1,
-          msg:
-            'Metamask extension is not found. You can install it from <a href="https://metamask.io" target="_blank">metamask.io</a>',
+          msg: 'Metamask extension is not found. You can install it from <a href="https://metamask.io" target="_blank">metamask.io</a>',
         });
       }
       return {

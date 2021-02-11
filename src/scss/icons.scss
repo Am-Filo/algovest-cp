@@ -1,4 +1,4 @@
-$scheme-icons: (('arrow-down', 'arrow-down', 'svg'), ('arrow-right', 'arrow-right', 'svg'), ('graphic', 'graphic', 'svg'), ('grow', 'grow', 'svg'), ('logo', 'logo', 'svg'), ('metamask', 'metamask', 'svg'), ('user', 'user', 'svg'), ('dollar', 'dollar', 'svg'));
+$scheme-icons: (('arrow-down', 'arrow-down', 'svg'), ('arrow-right', 'arrow-right', 'svg'), ('graphic', 'graphic', 'svg'), ('grow', 'grow', 'svg'), ('logo', 'logo', 'svg'), ('metamask', 'metamask', 'svg'), ('user', 'user', 'svg'), ('dollar', 'dollar', 'svg'), ('attention', 'attention', 'svg'));
 $scheme-icons-mask: (('coins-green', 'coins', 'svg'), ('coins-gray', 'coins', 'svg'), ('info-orange', 'info', 'svg'), ('info-gray', 'info', 'svg'));
 
 // @include theme('dark', $scheme-icons);
@@ -70,6 +70,12 @@ $scheme-icons-mask: (('coins-green', 'coins', 'svg'), ('coins-gray', 'coins', 's
 
   &-graphic {
     @include before-img(block, 29px, 16px, r) {
+      background-size: cover;
+    }
+  }
+
+  &-attention {
+    @include before-img(block, 19px, 17px, r) {
       background-size: cover;
     }
   }

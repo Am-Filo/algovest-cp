@@ -433,6 +433,19 @@ header {
     font-size: 19px;
     color: var(--btn-green-color);
     background: var(--btn-green-background);
+
+    &-border {
+      font-weight: bold;
+      border-radius: 40px;
+      color: #59bfa3;
+      border: 1px solid #59bfa3;
+    }
+  }
+
+  &-footer {
+    font-size: 14px;
+    max-width: 100px;
+    min-height: 35px;
   }
 
   &-connect {
@@ -484,5 +497,54 @@ header {
     @include b(700) {
       grid-template-columns: 1fr;
     }
+  }
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #00000070;
+
+  &-head {
+    display: flex;
+    justify-content: space-between;
+
+    &-title {
+      font-weight: bold;
+      font-size: 20px;
+      color: #59bfa4;
+
+      &.icon {
+        &:before {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+
+  &-body {
+    padding: 20px 0;
+    font-size: 16px;
+    color: #000000;
+  }
+
+  &-content {
+    max-width: 285px;
+    box-sizing: border-box;
+    padding: 20px;
+    width: 100%;
+    border-radius: 10px;
+    background-color: #ffffff;
+  }
+
+  &-footer {
+    display: flex;
+    justify-content: space-between;
   }
 }

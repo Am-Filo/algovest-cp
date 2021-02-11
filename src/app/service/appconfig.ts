@@ -10,7 +10,7 @@ export class AppConfig {
     return this.config;
   }
 
-  public setConfig(data: Array<any>): any {
+  public setConfig(data: any): any {
     this.config = data;
   }
 }
