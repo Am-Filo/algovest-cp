@@ -1,25 +1,15 @@
-@mixin font-face(
-  $font-family,
-  $file-path,
-  $weight: normal,
-  $style: normal,
-  $asset-pipeline: false
-) {
+@mixin font-face($font-family, $file-path, $weight: normal, $style: normal, $asset-pipeline: false) {
   @font-face {
     font-family: $font-family;
     font-weight: $weight;
     font-style: $style;
 
     @if $asset-pipeline==true {
-      src: font-url("#{$file-path}.eot");
-      src: font-url("#{$file-path}.eot?#iefix") format("embedded-opentype"),
-        font-url("#{$file-path}.woff") format("woff"),
-        font-url("#{$file-path}.ttf") format("truetype");
+      src: font-url('#{$file-path}.eot');
+      src: font-url('#{$file-path}.eot?#iefix') format('embedded-opentype'), font-url('#{$file-path}.woff') format('woff'), font-url('#{$file-path}.ttf') format('truetype');
     } @else {
-      src: url("#{$file-path}.eot");
-      src: url("#{$file-path}.eot?#iefix") format("embedded-opentype"),
-        url("#{$file-path}.woff") format("woff"),
-        url("#{$file-path}.ttf") format("truetype");
+      src: url('#{$file-path}.eot');
+      src: url('#{$file-path}.eot?#iefix') format('embedded-opentype'), url('#{$file-path}.woff') format('woff'), url('#{$file-path}.ttf') format('truetype');
     }
   }
 }
@@ -30,7 +20,7 @@
 }
 
 .clearfix:after {
-  content: "";
+  content: '';
   display: table;
   clear: both;
 }
@@ -84,7 +74,7 @@
 
 @mixin clearfix {
   &:after {
-    content: " ";
+    content: ' ';
     display: block;
     clear: both;
   }
@@ -115,33 +105,25 @@
       @content;
     }
   } @else if $point==mobile3x {
-    @media only screen and (-webkit-min-device-pixel-ratio: 3),
-      only screen and (min-resolution: 3dppx),
-      only screen and (min-resolution: 350dpi) {
+    @media only screen and (-webkit-min-device-pixel-ratio: 3), only screen and (min-resolution: 3dppx), only screen and (min-resolution: 350dpi) {
       @content;
     }
   } @else {
-    @media (max-width: $point + "px") {
+    @media (max-width: $point + 'px') {
       @content;
     }
   }
 }
 
 @mixin bb($pointMax, $pointMin) {
-  @media (max-width: $pointMax + "px") and (min-width: $pointMin + "px") {
+  @media (max-width: $pointMax + 'px') and (min-width: $pointMin + 'px') {
     @content;
   }
 }
 
-// @mixin ie() {
-//   @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-//     @content;
-//   }
-// }
-
 @mixin before-img($display, $width, $height, $position) {
   @at-root #{&}:before {
-    content: "";
+    content: '';
     display: $display;
     background-size: $width $height;
 
@@ -177,25 +159,23 @@
   max-height: $height;
 }
 
-@mixin themePath($name, $icons) {
+@mixin theme($name, $icons) {
   ##{$name} {
     @each $className, $iconPath, $iconType in $icons {
       .icon-#{$className} {
         &:before {
-          background-image: url("../assets/img/icons/#{$name}/icon-#{$iconPath}-#{$name}.#{$iconType}");
+          background-image: url('../assets/img/icons/#{$name}/icon-#{$iconPath}.#{$iconType}');
         }
       }
     }
   }
 }
 
-@mixin theme($name, $icons) {
-  ##{$name} {
-    @each $className, $iconPath, $iconType in $icons {
-      .icon-#{$className} {
-        &:before {
-          background-image: url("../assets/img/icons/#{$name}/icon-#{$iconPath}.#{$iconType}");
-        }
+@mixin theme-mask($icons) {
+  @each $className, $iconPath, $iconType in $icons {
+    .icon-#{$className} {
+      &:before {
+        mask: url('../assets/img/icons/mask/icon-#{$iconPath}-mask.#{$iconType}') no-repeat 100% 100%;
       }
     }
   }

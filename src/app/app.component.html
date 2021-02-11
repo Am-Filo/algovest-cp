@@ -1,7 +1,11 @@
 <header>
   <div class="container">
     <span class="icon icon-logo"></span>
-    <span class="icon icon-metamask"></span>
+    <!-- <div class="metamask-block">
+      <span class="metamask-address icon icon-flex icon-metamask">0x9C3f</span>
+    </div> -->
+
+    <span class="btn btn-green btn-metamask">Connect MetaMask</span>
   </div>
 </header>
 
@@ -9,16 +13,12 @@
   <div class="container">
     <div class="grid grid-three">
       <div class="card">
-        <span class="card-title icon icon-flex icon-user"
-          >Total AVS Stakers</span
-        >
+        <span class="card-title icon icon-flex icon-user">Total AVS Stakers</span>
         <b>1021</b>
       </div>
       <div class="card">
-        <span class="card-title icon icon-flex icon-coins"
-          >Total Staked AVS</span
-        >
-        <b>13.13.7 M</b>
+        <span class="card-title icon icon-flex icon-coins-gray">Total Staked AVS</span>
+        <b>13.7 M</b>
       </div>
       <div class="card">
         <span class="card-title icon icon-flex icon-grow">Total AVS</span>
@@ -27,34 +27,118 @@
     </div>
     <div class="grid grid-two">
       <div class="card">
-        <span class="card-title icon icon-flex icon-graphic"
-          >7 Days Average Staking APY</span
-        >
-        <b>35.20%</b><br />
+        <span class="card-title icon icon-flex icon-graphic">7 Days Average Staking APY</span>
+        <b>35.20%</b>
+        <br />
         <span class="card-text-accent">Staking Analytics</span>
       </div>
       <div class="card">
         <span class="card-title">Verified AVS Staking Contract</span>
-        <span class="card-text-address"
-          >0x9a54FE35D41bc7c8F7071aBf0cCD952505e29ceb</span
-        >
+        <span class="card-text-address">0x9a54FE35D41bc7c8F7071aBf0cCD952505e29ceb</span>
       </div>
     </div>
     <div class="grid grid-two">
       <div class="card">
-        <span class="card-title icon icon-flex icon-dollar"
-          >Your Staked AVS</span
-        >
+        <span class="card-title icon icon-flex icon-dollar">Your Staked AVS</span>
         <b>--</b>
       </div>
       <div class="card">
-        <span class="card-title icon icon-flex icon-coins"
-          >Your AVS Wallet</span
-        >
+        <span class="card-title icon icon-flex icon-coins-green">Your AVS Wallet</span>
         <b>--</b>
       </div>
     </div>
 
+    <div class="card">
+      <div class="card-head">
+        <span class="card-head-title icon icon-flex icon-reverce icon-info-orange">Stake AVS</span>
+        <div class="card-balance-block">
+          <span class="card-title">Your AVS Balance</span>
+          <span class="card-balance icon icon-flex icon-coins-green">34 M</span>
+        </div>
+      </div>
+      <div class="card-form">
+        <div class="card-form-field">
+          <label for="amount">Amount of AVS to Stake</label>
+          <input type="number" name="amount" id="amount" placeholder="0.0" />
+        </div>
+        <div class="card-form-field">
+          <label>DAYS APY</label>
+          <div class="select" [ngClass]="{ 'select-open': daySelect }">
+            <div class="select-selected icon icon-arrow-down" (click)="daySelect = !daySelect">
+              <span class="select-selected-day">{{ daySelected }}</span>
+              <span class="select-selected-text">APY 10</span>
+            </div>
+            <div class="select-list">
+              <span *ngFor="let day of days" class="select-list-item" [ngClass]="{ active: day === daySelected }" (click)="selectDay(day)">{{ day }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <span class="btn btn-green btn-stake">Stake</span>
+    </div>
+
     <span class="btn btn-green btn-connect">Connect MetaMask</span>
+  </div>
+</section>
+
+<section class="section-app">
+  <div class="container">
+    <div class="section-title-block">
+      <h2 class="section-title">Stakings</h2>
+      <span class="fee icon icon-flex icon-info-gray">2% Unstake Fee</span>
+    </div>
+    <div class="table-scroll">
+      <table class="table" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+          <tr>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Staked AVS</th>
+            <th>
+              Rewards
+              <br />
+              Earned
+            </th>
+            <th>Total rewards</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="2">
+              <span class="table-date icon icon-flex icon-arrow-right" data-date-start="20.10.2021">04.06.2022</span>
+            </td>
+            <td><b>100,000</b></td>
+            <td><b>25</b></td>
+            <td><b>100,000</b></td>
+            <td class="table-btn">
+              <span class="btn btn-unstake">Unstake</span>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <span class="table-date icon icon-flex icon-arrow-right" data-date-start="20.10.2021">04.06.2022</span>
+            </td>
+            <td><b>100,000</b></td>
+            <td><b>25</b></td>
+            <td><b>100,000</b></td>
+            <td class="table-btn">
+              <span class="btn btn-unstake">Unstake</span>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <span class="table-date icon icon-flex icon-arrow-right" data-date-start="20.10.2021">04.06.2022</span>
+            </td>
+            <td><b>100,000</b></td>
+            <td><b>25</b></td>
+            <td><b>100,000</b></td>
+            <td class="table-btn">
+              <span class="btn btn-unstake">Unstake</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </section>

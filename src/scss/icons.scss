@@ -1,21 +1,13 @@
-$scheme-icons: (
-  ("arrow-down", "arrow-down", "svg"),
-  ("arrow-right", "arrow-right", "svg"),
-  ("coins", "coins", "svg"),
-  ("graphic", "graphic", "svg"),
-  ("grow", "grow", "svg"),
-  ("logo", "logo", "svg"),
-  ("metamask", "metamask", "svg"),
-  ("user", "user", "svg"),
-  ("dollar", "dollar", "svg")
-);
+$scheme-icons: (('arrow-down', 'arrow-down', 'svg'), ('arrow-right', 'arrow-right', 'svg'), ('graphic', 'graphic', 'svg'), ('grow', 'grow', 'svg'), ('logo', 'logo', 'svg'), ('metamask', 'metamask', 'svg'), ('user', 'user', 'svg'), ('dollar', 'dollar', 'svg'));
+$scheme-icons-mask: (('coins-green', 'coins', 'svg'), ('coins-gray', 'coins', 'svg'), ('info-orange', 'info', 'svg'), ('info-gray', 'info', 'svg'));
 
-// @include themePath("dark", $scheme-icons);
-@include theme("white", $scheme-icons);
+// @include theme('dark', $scheme-icons);
+@include theme('white', $scheme-icons);
+@include theme-mask($scheme-icons-mask);
 
 .icon {
   &:before {
-    content: "";
+    content: '';
     display: flex;
     justify-content: center;
     align-items: center;
@@ -31,23 +23,17 @@ $scheme-icons: (
   }
 
   &-metamask {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 50px;
-    height: 50px;
-    padding: 8px;
-    border-radius: 16px;
-    background-color: var(--icon-metamask-background-color);
-
-    @include before-img(block, 34px, 34px, r) {
-      background-size: cover;
+    @include before-img(block, 50px, 50px, r) {
+      padding: 8px;
+      border-radius: 16px;
+      background-size: 34px 34px;
+      margin-left: 15px;
+      background-color: var(--icon-metamask-background-color);
     }
   }
 
   &-arrow-down {
-    @include before-img(block, 10px, 5px, r) {
+    @include before-img(block, 15px, 10px, r) {
       background-size: cover;
     }
   }
@@ -58,9 +44,27 @@ $scheme-icons: (
     }
   }
 
-  &-coins {
+  &-coins-gray {
     @include before-img(block, 26px, 19px, r) {
-      background-size: cover;
+      background-color: var(--icon-coins-gray-background-color);
+    }
+  }
+
+  &-coins-green {
+    @include before-img(block, 26px, 19px, r) {
+      background-color: var(--icon-coins-green-background-color);
+    }
+  }
+
+  &-info-gray {
+    @include before-img(block, 18px, 19px, r) {
+      background-color: var(--icon-info-gray-background-color);
+    }
+  }
+
+  &-info-orange {
+    @include before-img(block, 18px, 19px, r) {
+      background-color: var(--icon-info-orange-background-color);
     }
   }
 

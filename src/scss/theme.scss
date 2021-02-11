@@ -2,48 +2,89 @@
 :root {
   --body-background-color: #f3f3f3;
   --icon-metamask-background-color: #f2f3f3;
+  --metamask-address-color: #11263c;
 
   --header-background-color: #ffffff;
   --header-box-shadow: 0px 4px 25px rgba(211, 224, 219, 0.25);
 
+  --section-title-color: #59bfa4;
+  --fee-color: #979797;
+
   --cards-background-color: #ffffff;
   --cards-title-color: #797979;
   --cards-title-bold-color: #606060;
-
   --cards-text-accent-color: #59bfa4;
   --cards-text-color: #59bfa4;
+  --card-head-title-color: #59bfa4;
+  --card-balance-color: #000000;
+  --card-form-label-color: #59bfa4;
+  --card-input-color: #000000;
+  --card-input-background-color: #f3f5f9;
 
+  --select-background-color: #f3f5f9;
+  --select-day-color: #000000;
+  --select-text-color: #000000;
+  --select-list-background-color: #ffffff;
+  --select-list-color: #000000;
+
+  --table-thead-th-color: #59bfa4;
+  --table-thead-th-background-color: #ffffff;
+  --table-tbody-td-background-color: #ffffff;
+
+  --btn-unstake-border-color: #59bfa3;
+  --btn-unstake-color: #59bfa3;
   --btn-green-color: #ffffff;
-  --btn-green-background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.2) 0%,
-      rgba(255, 255, 255, 0) 100%
-    ),
-    #4fbb9e;
+  --btn-green-background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%), #4fbb9e;
+
+  --icon-coins-gray-background-color: #979797;
+  --icon-coins-green-background-color: #59bfa4;
+  --icon-info-gray-background-color: #b0b0b0;
+  --icon-info-orange-background-color: #ec8c50;
 }
 
 //dark theme
 #dark {
   body {
     --body-background-color: #f3f3f3;
+
     --icon-metamask-background-color: #f2f3f3;
+    --metamask-address-color: #11263c;
 
     --header-background-color: #ffffff;
     --header-box-shadow: 0px 4px 25px rgba(211, 224, 219, 0.25);
 
+    --section-title-color: #59bfa4;
+    --fee-color: #979797;
+
     --cards-background-color: #ffffff;
     --cards-title-color: #797979;
     --cards-title-bold-color: #606060;
-
     --cards-text-accent-color: #59bfa4;
     --cards-text-color: #59bfa4;
+    --card-head-title-color: #59bfa4;
+    --card-balance-color: #000000;
+    --card-form-label-color: #59bfa4;
+    --card-input-color: #000000;
+    --card-input-background-color: #f3f5f9;
 
+    --select-background-color: #f3f5f9;
+    --select-day-color: #000000;
+    --select-text-color: #000000;
+    --select-list-background-color: #ffffff;
+    --select-list-color: #000000;
+
+    --table-thead-th-color: #59bfa4;
+    --table-thead-th-background-color: #ffffff;
+    --table-tbody-td-background-color: #ffffff;
+
+    --btn-unstake-border-color: #59bfa3;
+    --btn-unstake-color: #59bfa3;
     --btn-green-color: #ffffff;
-    --btn-green-background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.2) 0%,
-        rgba(255, 255, 255, 0) 100%
-      ),
-      #4fbb9e;
+    --btn-green-background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%), #4fbb9e;
+
+    --icon-coins-gray-background-color: #979797;
+    --icon-coins-green-background-color: #59bfa4;
+    --icon-info-gray-background-color: #b0b0b0;
+    --icon-info-orange-background-color: #ec8c50;
   }
 }
