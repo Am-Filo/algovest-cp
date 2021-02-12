@@ -36,8 +36,6 @@ export class AppComponent {
     production: false,
     network: 'ropsten',
     net: 3,
-    addToMetamaskChains: [3],
-    tonkenUrl: 'https://ropsten.etherscan.io/token/',
   };
 
   public modalOpen = false;

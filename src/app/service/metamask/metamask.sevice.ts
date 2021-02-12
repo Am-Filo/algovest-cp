@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import Web3 from 'web3';
 import { Observable } from 'rxjs';
 import { AppConfig } from '../appconfig';
 
@@ -16,26 +15,14 @@ export class MetamaskService {
     const appConfig = this.config.getConfig();
 
     this.netVersion = appConfig.production ? 1 : appConfig.net;
-
     this.net = this.netVersion === 1 ? 'mainnet' : appConfig.network;
-
-    this.providers = {};
-    this.providers.metamask = Web3.givenProvider;
 
     // tslint:disable-next-line: no-string-literal
     this.metaMaskWeb3 = window['ethereum'];
   }
 
-  private providers;
-  public Web3;
-
   public getAccounts(noEnable?: boolean): Observable<any> {
     const onAuth = (observer: any, address: string) => {
-      if (this.Web3) {
-        this.Web3.setProvider(this.providers.metamask);
-      } else {
-        this.Web3 = new Web3(this.providers.metamask);
-      }
       observer.next({
         address,
         network: this.net,
