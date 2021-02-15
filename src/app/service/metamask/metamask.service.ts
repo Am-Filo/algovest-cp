@@ -1,12 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppConfig } from '../appconfig';
+import Web3 from 'web3';
+
+declare global {
+  interface Window {
+    ethereum: any;
+  }
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class MetamaskService {
   private metaMaskWeb3: any;
+  public Web3: any;
 
   private netVersion: number;
   private net: string;
@@ -17,8 +25,15 @@ export class MetamaskService {
     this.netVersion = appConfig.production ? 1 : appConfig.net;
     this.net = this.netVersion === 1 ? 'mainnet' : appConfig.network;
 
-    // tslint:disable-next-line: no-string-literal
-    this.metaMaskWeb3 = window['ethereum'];
+    if (typeof window.ethereum !== 'undefined') {
+      this.metaMaskWeb3 = window.ethereum;
+      this.Web3 = new Web3(Web3.givenProvider);
+    }
+  }
+
+  public getContract(abi: Array<any>, address: string): void {
+    console.log(abi, address, this.Web3);
+    return new this.Web3.eth.Contract(abi, address);
   }
 
   public getAccounts(noEnable?: boolean): Observable<any> {
@@ -74,7 +89,6 @@ export class MetamaskService {
               window.location.reload();
             })
             .catch(() => {
-              console.log('not valid chain');
               onError(observer, {
                 code: 3,
                 msg: 'Not authorized',
@@ -83,7 +97,7 @@ export class MetamaskService {
         });
 
         isValidMetaMaskNetwork(observer).then(() => {
-          this.metaMaskWeb3.on('accountsChanged', (accounts) => {
+          this.metaMaskWeb3.on('accountsChanged', (accounts: Array<any>) => {
             if (accounts.length) {
               onAuth(observer, accounts[0]);
             } else {

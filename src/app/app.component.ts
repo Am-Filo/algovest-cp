@@ -1,10 +1,7 @@
-import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
-import { AppConfig } from './service/appconfig';
+import { MetamaskService } from './service/metamask/metamask.service';
+import { Component, EventEmitter, NgZone } from '@angular/core';
 import { ThemeService } from './service/theme/theme.service';
-import { MetamaskService } from './service/metamask/metamask.sevice';
-import { NgZone } from '@angular/core';
+import { ContractService } from './service/contract/contract.service';
 
 interface ModalInterface {
   title: string;
@@ -12,6 +9,11 @@ interface ModalInterface {
   type: string;
   button: { one: string; two: string };
 }
+
+// interface Account {
+//   address: string;
+//   network: string;
+// }
 
 @Component({
   selector: 'app-root',
@@ -24,36 +26,41 @@ export class AppComponent {
 
   public account: any;
   public userAddress = '';
-  protected accountSubscriber: any;
-  protected allAccountSubscribers: any;
+  protected accountSubscribe: any;
+
+  public contractAddress: string;
 
   public daySelect = false;
   public daySelected = 15;
   public days = [10, 15, 20, 30, 40, 50];
 
-  private metaMaskWeb3: any;
-  public configApp = {
-    production: false,
-    network: 'ropsten',
-    net: 3,
-  };
-
   public modalOpen = false;
   public modal: ModalInterface;
 
-  constructor(private themeProvider: ThemeService, private httpService: HttpClient, private config: AppConfig, private ngZone: NgZone) {
+  // tslint:disable-next-line: max-line-length
+  constructor(private themeProvider: ThemeService, private contractService: ContractService, private ngZone: NgZone, protected metamaskService: MetamaskService) {
     this.detectColorScheme();
+    this.contractService.getAccount().then((account: Account) => {
+      console.log('account 1', account);
+      this.subscribeAccount();
+      this.contractAddress = this.contractService.getContractAddress();
+    });
+  }
 
-    this.initApp().then(() => {
-      this.metaMaskWeb3 = new MetamaskService(this.config);
-      this.getAccount()
-        .then((res) => console.log('res', res))
-        .catch((err) => {
-          console.log('err', err);
-          this.account = false;
-          this.modal = { title: 'Metamask Error', body: err.msg, type: 'metamask', button: { one: 'Canel', two: 'Ok' } };
-          this.modalOpen = true;
-        });
+  public subscribeAccount(): void {
+    this.accountSubscribe = this.metamaskService.getAccounts().subscribe((account) => {
+      this.ngZone.run(() => {
+        if (account && (!this.account || this.account.address !== account.address)) {
+          this.contractService.loadAccountInfo();
+          this.updateUserAccount(account);
+        }
+      });
+    });
+
+    this.contractService.getAccount().catch((err) => {
+      this.account = false;
+      this.modal = { title: 'Metamask Error', body: err.msg, type: 'metamask', button: { one: 'Cancel', two: 'Ok' } };
+      this.modalOpen = true;
     });
   }
 
@@ -63,8 +70,6 @@ export class AppComponent {
   }
 
   public modalEvent(event: string, type: string): void {
-    console.log(event, type);
-
     switch (type) {
       case 'metamask':
         this.modalOpen = false;
@@ -85,87 +90,11 @@ export class AppComponent {
     this.themeProvider.setTheme(this.theme === 'dark' ? 'white' : 'dark');
   }
 
-  public subscribeAccount(): void {
-    if (this.account) {
-      return;
-    }
-    this.accountSubscriber = this.accountSubscribe().subscribe((account: any) => {
-      this.ngZone.run(() => {
-        // if (account && (!this.account || this.account.address !== account.address)) {
-
-        // }
-        this.account = account;
-        this.updateUserAccount();
-      });
-    });
-    this.getAccount().catch((err) => {
-      this.account = false;
-      this.modal = { title: 'Metamask Error', body: err.msg, type: 'metamask', button: { one: 'Canel', two: 'Ok' } };
-      this.modalOpen = true;
-    });
-  }
-
-  public accountSubscribe(): Observable<any> {
-    const newObserver = new Observable((observer) => {
-      observer.next(this.account);
-      this.allAccountSubscribers.push(observer);
-      return {
-        unsubscribe: () => {
-          this.allAccountSubscribers = this.allAccountSubscribers.filter((a) => a !== newObserver);
-        },
-      };
-    });
-    return newObserver;
-  }
-
-  private updateUserAccount(): void {
+  private updateUserAccount(account: any): void {
+    this.account = account;
     // tslint:disable-next-line: max-line-length
     this.userAddress = this.account.address.substr(0, 5) + '...' + this.account.address.substr(this.account.address.length - 3, this.account.address.length);
-  }
-
-  public getAccount(noEnable?: boolean): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.metaMaskWeb3.getAccounts(noEnable).subscribe(
-        (account) => {
-          if (!this.account || account.address !== this.account.address) {
-            this.account = account;
-            this.updateUserAccount();
-          }
-          resolve(this.account);
-        },
-        (err) => {
-          reject(err);
-        }
-      );
-    });
-  }
-
-  private async initApp(): Promise<any> {
-    const promises = [
-      this.httpService
-        .get(`/assets/js/settings.json?v=${new Date().getTime()}`)
-        .toPromise()
-        .then((config: any) => {
-          this.configApp = config ? config : this.configApp;
-          this.config.setConfig(this.configApp);
-          return this.config.getConfig();
-        })
-        .catch(() => {
-          this.config.setConfig(this.configApp);
-        }),
-      this.httpService
-        .get(`/assets/js/constants.json?v=${new Date().getTime()}`)
-        .toPromise()
-        .then((result) => {
-          return result;
-        })
-        .catch((err) => {
-          console.log('err constants', err);
-        }),
-    ];
-
-    return Promise.all(promises).then((result) => {
-      console.log(result);
-    });
+    console.log('updateUserAccount', this.account, this.userAddress);
+    // this.account = new Date();
   }
 }
