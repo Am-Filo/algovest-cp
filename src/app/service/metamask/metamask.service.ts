@@ -15,6 +15,7 @@ declare global {
 export class MetamaskService {
   private metaMaskWeb3: any;
   public Web3: any;
+  private providers;
 
   private netVersion: number;
   private net: string;
@@ -25,9 +26,11 @@ export class MetamaskService {
     this.netVersion = appConfig.production ? 1 : appConfig.net;
     this.net = this.netVersion === 1 ? 'mainnet' : appConfig.network;
 
+    this.providers = {};
+    this.providers.metamask = Web3.givenProvider;
+
     if (typeof window.ethereum !== 'undefined') {
       this.metaMaskWeb3 = window.ethereum;
-      this.Web3 = new Web3(Web3.givenProvider);
     }
   }
 
@@ -38,6 +41,11 @@ export class MetamaskService {
 
   public getAccounts(noEnable?: boolean): Observable<any> {
     const onAuth = (observer: any, address: string) => {
+      if (this.Web3) {
+        this.Web3.setProvider(this.providers.metamask);
+      } else {
+        this.Web3 = new Web3(this.providers.metamask);
+      }
       observer.next({
         address,
         network: this.net,

@@ -1,5 +1,5 @@
 {
   "production": false,
-  "network": "ropsten",
-  "net": 3
+  "network": "rinkeby",
+  "net": 4
 }

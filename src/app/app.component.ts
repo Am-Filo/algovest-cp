@@ -1,5 +1,5 @@
 import { MetamaskService } from './service/metamask/metamask.service';
-import { Component, EventEmitter, NgZone } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { ThemeService } from './service/theme/theme.service';
 import { ContractService } from './service/contract/contract.service';
 
@@ -9,11 +9,6 @@ interface ModalInterface {
   type: string;
   button: { one: string; two: string };
 }
-
-// interface Account {
-//   address: string;
-//   network: string;
-// }
 
 @Component({
   selector: 'app-root',
@@ -44,18 +39,37 @@ export class AppComponent {
       console.log('account 1', account);
       this.subscribeAccount();
       this.contractAddress = this.contractService.getContractAddress();
+
+      // this.contractService.getZeroDayStartTime().then((res: any) => {
+      //   console.log('contractService getZeroDayStartTime', res);
+      // });
+    });
+  }
+
+  public trigger(): any {
+    this.contractService.getStakingContractInfo().then((res: any) => {
+      console.log('contractService getStakingContractInfo', res);
+      return res;
     });
   }
 
   public subscribeAccount(): void {
-    this.accountSubscribe = this.metamaskService.getAccounts().subscribe((account) => {
-      this.ngZone.run(() => {
-        if (account && (!this.account || this.account.address !== account.address)) {
-          this.contractService.loadAccountInfo();
-          this.updateUserAccount(account);
-        }
-      });
-    });
+    this.accountSubscribe = this.metamaskService.getAccounts().subscribe(
+      (account) => {
+        this.ngZone.run(() => {
+          if (account && (!this.account || this.account.address !== account.address)) {
+            this.contractService.loadAccountInfo();
+            this.updateUserAccount(account);
+          }
+        });
+      },
+      (err) => {
+        console.log('subscribeAccount', err);
+        this.account = false;
+        this.modal = { title: 'Metamask Error', body: err.msg, type: 'metamask', button: { one: 'Cancel', two: 'Ok' } };
+        this.modalOpen = true;
+      }
+    );
 
     this.contractService.getAccount().catch((err) => {
       this.account = false;
@@ -94,7 +108,5 @@ export class AppComponent {
     this.account = account;
     // tslint:disable-next-line: max-line-length
     this.userAddress = this.account.address.substr(0, 5) + '...' + this.account.address.substr(this.account.address.length - 3, this.account.address.length);
-    console.log('updateUserAccount', this.account, this.userAddress);
-    // this.account = new Date();
   }
 }

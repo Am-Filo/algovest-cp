@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
-import BigNumber from 'bignumber.js';
+// import BigNumber from 'bignumber.js';
 import { Contract } from 'web3-eth-contract';
 
 import { MetamaskService } from '../metamask/metamask.service';
@@ -22,7 +22,7 @@ export class ContractService {
   public account: any;
   private allAccountSubscribers = [];
 
-  private H2TContract: Contract;
+  private StakingContract: Contract;
   private tokensDecimals: any = {
     ETH: 18,
   };
@@ -37,13 +37,102 @@ export class ContractService {
 
   constructor(private httpService: HttpClient, private config: AppConfig) {}
 
+  public getZeroDayStartTime(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.StakingContract.methods
+        .zeroDayStartTime()
+        .call()
+        .then((res: any) => {
+          console.log('zeroDayStartTime', res);
+          resolve(res);
+        });
+    });
+  }
+
+  public getDayDurationSec(): Promise<any> {
+    // console.log(this.StakingContract);
+    // return new Promise((resolve, reject) => {
+    return this.StakingContract.methods
+      .dayDurationSec()
+      .call()
+      .then(
+        (res: any) => {
+          console.log('dayDurationSec', res);
+          return res;
+        },
+        (err: any) => {
+          console.log('err', err);
+        }
+      );
+    // });
+  }
+
+  public currentDay(): Promise<any> {
+    // console.log(this.StakingContract);
+    // return new Promise((resolve, reject) => {
+
+    return new Promise((resolve, reject) => {
+      return this.StakingContract.methods
+        .currentDay()
+        .call()
+        .then((day) => {
+          console.log('day', day);
+          resolve(0);
+          // this.callAllAccountsSubscribers();
+        });
+    });
+    // return this.StakingContract.methods
+    //   .currentDay()
+    //   .call()
+    //   .then(
+    //     (res: any) => {
+    //       console.log('currentDay', res);
+    //       return res;
+    //     },
+    //     (err: any) => {
+    //       console.log('err', err);
+    //     }
+    //   );
+    // });
+  }
+
+  public async getStakingContractInfo(): Promise<any> {
+    const promises = [
+      this.StakingContract.methods
+        .zeroDayStartTime()
+        .call()
+        .then((zeroDayStartTime) => {
+          return {
+            key: 'zeroDayStartTime',
+            value: zeroDayStartTime,
+          };
+        }),
+      this.StakingContract.methods
+        .unfreezedAVSTokens()
+        .call()
+        .then((result) => {
+          return {
+            key: 'unfreezedAVSTokens',
+            value: result,
+          };
+        }),
+    ];
+    return Promise.all(promises).then((results) => {
+      const values = {};
+      results.forEach((v) => {
+        values[v.key] = v.value;
+      });
+      return values;
+    });
+  }
+
   public async getStaticInfo(): Promise<any> {
     return this.initAll().then(() => {
       this.metaMaskWeb3 = new MetamaskService(this.config);
       this.metaMaskWeb3.getAccounts().subscribe((account: any) => {
         if (account) {
           this.initializeContracts();
-          const promises = [this.getTokensInfo(false)];
+          const promises = [this.getTokensInfo(true)];
           return Promise.all(promises);
         }
       });
@@ -55,14 +144,15 @@ export class ContractService {
       this.initializeContracts();
     }
 
-    const promises = [
-      this.H2TContract.methods
-        .decimals()
-        .call()
-        .then((decimals: any) => {
-          this.tokensDecimals.H2T = decimals;
-        }),
-    ];
+    const promises = [true];
+    // const promises = [
+    //   this.StakingContract.methods
+    //     .decimals()
+    //     .call()
+    //     .then((decimals: any) => {
+    //       this.tokensDecimals.H2T = decimals;
+    //     }),
+    // ];
 
     return Promise.all(promises);
   }
@@ -95,37 +185,38 @@ export class ContractService {
     });
   }
 
-  public updateH2TBalance(callEmitter?): Promise<any> {
-    return new Promise((resolve, reject) => {
-      if (!(this.account && this.account.address)) {
-        return reject();
-      }
-      return this.H2TContract.methods
-        .balanceOf(this.account.address)
-        .call()
-        .then((balance) => {
-          const bigBalance = new BigNumber(balance);
-          this.account.balances = this.account.balances || {};
-          this.account.balances.H2T = {
-            wei: balance,
-            weiBigNumber: bigBalance,
-            shortBigNumber: bigBalance.div(new BigNumber(10).pow(this.tokensDecimals.H2T)),
-            display: bigBalance.div(new BigNumber(10).pow(this.tokensDecimals.H2T)).toFormat(4),
-          };
-          resolve(0);
-          if (callEmitter) {
-            this.callAllAccountsSubscribers();
-          }
-        });
-    });
-  }
+  // public updateH2TBalance(callEmitter?): Promise<any> {
+  //   return new Promise((resolve, reject) => {
+  //     if (!(this.account && this.account.address)) {
+  //       return reject();
+  //     }
+  //     return this.StakingContract.methods
+  //       .balanceOf(this.account.address)
+  //       .call()
+  //       .then((balance) => {
+  //         const bigBalance = new BigNumber(balance);
+  //         this.account.balances = this.account.balances || {};
+  //         this.account.balances.H2T = {
+  //           wei: balance,
+  //           weiBigNumber: bigBalance,
+  //           shortBigNumber: bigBalance.div(new BigNumber(10).pow(this.tokensDecimals.H2T)),
+  //           display: bigBalance.div(new BigNumber(10).pow(this.tokensDecimals.H2T)).toFormat(4),
+  //         };
+  //         resolve(0);
+  //         if (callEmitter) {
+  //           this.callAllAccountsSubscribers();
+  //         }
+  //       });
+  //   });
+  // }
 
   public loadAccountInfo(): any {
-    const promises = [this.updateH2TBalance()];
-    Promise.all(promises).then((res) => {
-      console.log(res);
-      this.callAllAccountsSubscribers();
-    });
+    // const promises = [this.updateH2TBalance()];
+    // Promise.all(promises).then((res) => {
+    //   console.log(res);
+    //   this.callAllAccountsSubscribers();
+    // });
+    this.callAllAccountsSubscribers();
   }
 
   private callAllAccountsSubscribers(): void {
@@ -173,7 +264,7 @@ export class ContractService {
   }
 
   private initializeContracts(): void {
-    this.H2TContract = this.metaMaskWeb3.getContract(this.CONTRACTS_PARAMS.H2T.ABI, this.CONTRACTS_PARAMS.H2T.ADDRESS);
-    this.tokenAddress = this.CONTRACTS_PARAMS.H2T.ADDRESS;
+    this.StakingContract = this.metaMaskWeb3.getContract(this.CONTRACTS_PARAMS.Staking.ABI, this.CONTRACTS_PARAMS.Staking.ADDRESS);
+    this.tokenAddress = this.CONTRACTS_PARAMS.Staking.ADDRESS;
   }
 }
