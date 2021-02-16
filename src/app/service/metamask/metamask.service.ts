@@ -34,8 +34,11 @@ export class MetamaskService {
     }
   }
 
+  public getBalance(address): Promise<any> {
+    return this.Web3.eth.getBalance(address);
+  }
+
   public getContract(abi: Array<any>, address: string): void {
-    console.log(abi, address, this.Web3);
     return new this.Web3.eth.Contract(abi, address);
   }
 

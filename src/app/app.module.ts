@@ -5,8 +5,12 @@ import { AppComponent } from './app.component';
 import { AppConfig } from './service/appconfig';
 import { HttpClientModule } from '@angular/common/http';
 import { ContractService } from './service/contract/contract.service';
+import { CalculatePipe } from './service/calculate/calculate.pipe';
 
-// import { BigNumberDirective, BigNumberFormat, BigNumberMax, BigNumberMin } from './directives/bignumber/bignumber';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+
+import { BigNumberDirective, BigNumberFormat, BigNumberMax, BigNumberMin } from './directives/bignumber/bignumber';
 
 export function initializeApp(injector: Injector): any {
   return () =>
@@ -18,8 +22,8 @@ export function initializeApp(injector: Injector): any {
     });
 }
 @NgModule({
-  declarations: [AppComponent],
-  imports: [BrowserModule, HttpClientModule],
+  declarations: [AppComponent, CalculatePipe, BigNumberFormat],
+  imports: [BrowserModule, HttpClientModule, FormsModule, ReactiveFormsModule],
   providers: [
     AppConfig,
     {
