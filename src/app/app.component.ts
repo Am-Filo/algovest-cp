@@ -1,6 +1,5 @@
 import { Component, NgZone } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import BigNumber from 'bignumber.js';
 
 import { TransactionSuccessModalComponent } from './components/transaction/transaction-success-modal.component';
 import { MetamaskErrorComponent } from './components/metamask/metamask-error.component';

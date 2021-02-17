@@ -156,10 +156,10 @@
               <button class="btn btn-form btn-unstake" (click)="unstake(stake)" [ngClass]="{ progress: stake.withdrawProgress }" [disabled]="stake.withdrawProgress">
                 <span class="lds-ellipsis" *ngIf="stake.withdrawProgress">
                   <span class="lds-ellipsis-container">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                    <span class="lds-ellipsis-green"></span>
+                    <span class="lds-ellipsis-green"></span>
+                    <span class="lds-ellipsis-green"></span>
+                    <span class="lds-ellipsis-green"></span>
                   </span>
                 </span>
                 <span>Unstake</span>
