@@ -229,7 +229,7 @@ export class ContractService {
           });
           return Promise.all(sessionsPromises).then((allDeposits) => {
             console.log(allDeposits);
-            return allDeposits;
+            return allDeposits.reverse();
           });
         } else {
           const promises = [true];
@@ -461,6 +461,19 @@ export class ContractService {
     });
   }
 
+  public accountSubscribe(): Observable<any> {
+    const newObserver = new Observable((observer) => {
+      observer.next(this.account);
+      this.allAccountSubscribers.push(observer);
+      return {
+        unsubscribe: () => {
+          this.allAccountSubscribers = this.allAccountSubscribers.filter((a) => a !== newObserver);
+        },
+      };
+    });
+    return newObserver;
+  }
+
   /**
    * Load account information
    * @description Triggered function callAllAccountsSubscribers.
@@ -469,6 +482,19 @@ export class ContractService {
    */
   public loadAccountInfo(): any {
     this.callAllAccountsSubscribers();
+  }
+
+  /**
+   * Update account balance
+   * @description Update information about account token balance.
+   * @example
+   * contractService.updateBalance();
+   */
+  public updateBalance(): void {
+    this.getTokenBalance().then((balance) => {
+      this.account.balance = balance;
+      this.callAllAccountsSubscribers();
+    });
   }
 
   /**
@@ -497,8 +523,8 @@ export class ContractService {
           if (!this.account || account.address !== this.account.address) {
             this.account = account;
             this.getTokenBalance(account.address)
-              .then((value) => {
-                this.account.balance = value;
+              .then((balance) => {
+                this.account.balance = balance;
                 resolve(this.account);
               })
               .catch((err) => {

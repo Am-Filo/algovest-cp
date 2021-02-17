@@ -21,7 +21,6 @@ export class AppComponent {
 
   public account: any;
   public userAddress = '';
-  private accountSubscribe: any;
   public onChangeAccount: EventEmitter<any> = new EventEmitter();
 
   public amountValue: any;
@@ -51,7 +50,6 @@ export class AppComponent {
 
   constructor(private themeProvider: ThemeService, private contractService: ContractService, private ngZone: NgZone, private metamaskService: MetamaskService, public dialog: MatDialog) {
     this.detectColorScheme();
-
     this.contractService
       .getAccount()
       .then(() => {
@@ -74,6 +72,12 @@ export class AppComponent {
       });
   }
 
+  /**
+   * Get Main Data
+   * @description Get from contract a list of data.
+   * @example
+   * this.initData();
+   */
   public initData(): void {
     this.contractService.getMainInfo().then((data) => {
       console.log('init', data);
@@ -83,12 +87,24 @@ export class AppComponent {
     });
   }
 
+  /**
+   * Get List of Stakes
+   * @description Retrive from contract a list of accout stakes.
+   * @example
+   * this.stakeList();
+   */
   public stakeList(): void {
     this.contractService.getAccountStakes().then((res) => {
       this.stakeslist = res;
     });
   }
 
+  /**
+   * Start Stake Coins
+   * @description Send coins to contract stake.
+   * @example
+   * this.stake();
+   */
   public stake(): void {
     this.stakingProgress = true;
     this.contractService
@@ -100,12 +116,20 @@ export class AppComponent {
       .catch(() => {
         this.stakingProgress = false;
       })
-      .finally(() => this.stakeList());
+      .finally(() => {
+        this.contractService.updateBalance();
+        this.stakeList();
+      });
   }
 
-  public unstake(stake: any): any {
+  /**
+   * Unstake Coins
+   * @description Toggle ustake coins from contract.
+   * @example
+   * this.unstake(stake);
+   */
+  public unstake(stake: any): void {
     stake.withdrawProgress = true;
-
     this.contractService
       .unstake(stake.index, stake.id)
       .then(() => {
@@ -114,6 +138,10 @@ export class AppComponent {
       })
       .catch(() => {
         stake.withdrawProgress = false;
+      })
+      .finally(() => {
+        this.contractService.updateBalance();
+        stake.withdrawProgress = false;
       });
   }
 
@@ -121,14 +149,27 @@ export class AppComponent {
   //   console.log(this.amountValue);
   // }
 
-  public selectDay(day: number, apy: number): any {
+  /**
+   * Select Day
+   * @description Clicked on dropdown list item and set day and apy.
+   * @example
+   * this.selectDay(day, apy);
+   */
+  public selectDay(day: number, apy: number): void {
     this.daySelect = false;
     this.daySelected = day;
     this.apySelected = apy;
   }
 
+  /**
+   * Subscribe Account
+   * @description Create subscribes on change account in metamask and contract service. Also catch error from metamak on start application.
+   * @example
+   * this.subscribeAccount();
+   */
   public subscribeAccount(): void {
-    this.accountSubscribe = this.metamaskService.getAccounts().subscribe((account) => {
+    // subscribe on matamask account observer
+    this.metamaskService.getAccounts().subscribe((account) => {
       this.ngZone.run(() => {
         this.onChangeAccount.emit();
         if (account && (!this.account || this.account.address !== account.address)) {
@@ -138,6 +179,12 @@ export class AppComponent {
       });
     });
 
+    // subscribe on contract account observer
+    this.contractService.accountSubscribe().subscribe((account) => {
+      this.updateUserAccount(account);
+    });
+
+    // catch on start metamask errors
     this.contractService.getAccount().catch((err) => {
       this.dialog.open(MetamaskErrorComponent, {
         data: err,
@@ -146,22 +193,40 @@ export class AppComponent {
     });
   }
 
+  /**
+   * Update User Account
+   * @description Update user account data and set substr account address.
+   * @example
+   * this.updateUserAccount(account);
+   */
   private updateUserAccount(account: any): void {
     this.initData();
     this.account = account;
     this.userAddress = this.account.address.substr(0, 5) + '...' + this.account.address.substr(this.account.address.length - 3, this.account.address.length);
   }
 
-  private detectColorScheme(): any {
+  /**
+   * Detect Color Schema
+   * @description On start application this function will get color theme value from ThemeService and set it to id in html tag.
+   * @example
+   * this.detectColorScheme();
+   */
+  private detectColorScheme(): void {
     this.theme = this.themeProvider.getTheme();
     this.theme = 'white';
     document.documentElement.setAttribute('id', this.theme === 'dark' ? 'dark' : 'white');
     this.themeDark = this.theme === 'dark';
-
     this.themeProvider.subscribeAddress().subscribe((theme) => (this.theme = theme));
   }
 
-  public toggleColorScheme(): any {
+  /**
+   * Toggle Color Schema
+   * @description Change color schema from html button and run detect theme function.
+   * @example
+   * this.toggleColorScheme();
+   */
+  public toggleColorScheme(): void {
     this.themeProvider.setTheme(this.theme === 'dark' ? 'white' : 'dark');
+    this.detectColorScheme();
   }
 }
