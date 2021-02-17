@@ -14,6 +14,14 @@ interface Config {
   net: number;
 }
 
+interface IStaking {
+  start: Date;
+  end: Date;
+  shares: BigNumber;
+  sessionId: string;
+  withdrawProgress?: boolean;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -21,6 +29,7 @@ export class ContractService {
   private metaMaskWeb3: any;
   public account: any;
   private allAccountSubscribers = [];
+  private allTransactionSubscribers = [];
 
   public avsAddress: string;
 
@@ -51,9 +60,15 @@ export class ContractService {
           value,
         };
       }),
-      this.getFreezedAVSTokens().then((value) => {
+      this.totalStakedAVS().then((value) => {
         return {
-          key: 'totalStakedAvs',
+          key: 'totalStakedAVS',
+          value,
+        };
+      }),
+      this.totalStakers().then((value) => {
+        return {
+          key: 'totalStakers',
           value,
         };
       }),
@@ -63,6 +78,12 @@ export class ContractService {
           value,
         };
       }),
+      // this.getSevenDays().then((value) => {
+      //   return {
+      //     key: 'sevenDays',
+      //     value,
+      //   };
+      // }),
     ];
 
     return Promise.all(promises).then((results) => {
@@ -121,6 +142,36 @@ export class ContractService {
       );
   }
 
+  public totalStakedAVS(): Promise<any> {
+    return this.StakingContract.methods
+      .totalStakedAVS()
+      .call()
+      .then(
+        (value: any) => {
+          // this.callAllAccountsSubscribers();
+          return value;
+        },
+        (err: any) => {
+          console.log('totalStakedAVS', err);
+        }
+      );
+  }
+
+  public totalStakers(): Promise<any> {
+    return this.StakingContract.methods
+      .totalStakers()
+      .call()
+      .then(
+        (value: any) => {
+          // this.callAllAccountsSubscribers();
+          return value;
+        },
+        (err: any) => {
+          console.log('totalStakers', err);
+        }
+      );
+  }
+
   public getZeroDayStartTime(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.StakingContract.methods
@@ -131,6 +182,87 @@ export class ContractService {
           resolve(res);
         });
     });
+  }
+
+  public async getAccountStakes(): Promise<any> {
+    return this.StakingContract.methods
+      .stakeListCount(this.account.address)
+      .call()
+      .then((sessions) => {
+        console.log(sessions);
+        if (sessions !== '0' && sessions !== 0) {
+          const sessionsIds = [];
+
+          for (let i = 0; i < sessions; i++) {
+            sessionsIds.push(i);
+          }
+
+          const sessionsPromises = sessionsIds.map((sessionId) => {
+            return this.StakingContract.methods
+              .stakeList(this.account.address, sessionId)
+              .call()
+              .then((oneSession) => {
+                console.log(sessionId, 'oneSession', oneSession);
+
+                const promises = [
+                  this.StakingContract.methods
+                    .getDayUnixTime(oneSession.startDay)
+                    .call()
+                    .then((startDay: number) => {
+                      console.log(startDay, startDay * 1000);
+                      return startDay * 1000;
+                    }),
+                  this.StakingContract.methods
+                    .getDayUnixTime(oneSession.startDay + oneSession.numDaysStake)
+                    .call()
+                    .then((endDay: number) => {
+                      console.log(endDay, endDay * 1000);
+                      return endDay * 1000;
+                    }),
+                ];
+
+                return Promise.all(promises).then((stake) => {
+                  console.log('stake', stake);
+                  return {
+                    index: sessionId,
+                    id: oneSession.stakeId,
+                    start: stake[0],
+                    end: stake[1],
+                    stakedAVS: oneSession.stakedAVS,
+                    totalReward: oneSession.freezedRewardAVSTokens,
+                    withdrawProgress: false,
+                  };
+                });
+              });
+          });
+          return Promise.all(sessionsPromises).then((allDeposits) => {
+            console.log(allDeposits);
+            return allDeposits;
+            // return {
+            //   closed: allDeposits.filter((deposit: any) => {
+            //     return new BigNumber(deposit.start).toNumber() <= 0;
+            //   }),
+            //   opened: allDeposits.filter((deposit: any) => {
+            //     return new BigNumber(deposit.start).toNumber() > 0;
+            //   }),
+            // };
+          });
+        } else {
+          const promises = [true];
+          return Promise.all(promises).then(() => {
+            return 0;
+          });
+        }
+      });
+  }
+
+  public async getSevenDays(): Promise<any> {
+    return this.StakingContract.methods
+      .seven_days()
+      .call()
+      .then((res: any) => {
+        return res;
+      });
   }
 
   public getDayDurationSec(): Promise<any> {
@@ -148,7 +280,7 @@ export class ContractService {
       );
   }
 
-  private getAllowance(amount): Promise<any> {
+  private getAllowance(amount: string | number): Promise<any> {
     return new Promise((resolve, reject) => {
       this.TokenContract.methods
         .allowance(this.account.address, this.stakingAddress)
@@ -156,11 +288,21 @@ export class ContractService {
         .then((allowance: string) => {
           const allow = new BigNumber(allowance);
           const allowed = allow.minus(amount);
-
-          console.log(allowed.isNegative());
           allowed.isNegative() ? reject() : resolve(1);
         });
     });
+  }
+
+  public async unstake(sessionId: number, id: number): Promise<any> {
+    return this.StakingContract.methods
+      .stakeEnd(sessionId, id)
+      .send({
+        from: this.account.address,
+      })
+      .then((res) => {
+        console.log('unstake contract', res);
+        return this.checkTransaction(res);
+      });
   }
 
   public startStake(amount: string | number, day: number): Promise<any> {
@@ -168,13 +310,12 @@ export class ContractService {
 
     const stake = (resolve, reject) => {
       return this.StakingContract.methods
-        .startStake(amount, day)
+        .stakeStart(amount, day)
         .send({
-          from: this.account.address,
+          from: fromAccount,
         })
         .then((res) => {
-          // return this.checkTransaction(res);
-          console.log(res);
+          return this.checkTransaction(res);
         })
         .then(resolve, reject);
     };
@@ -186,7 +327,7 @@ export class ContractService {
         },
         () => {
           this.TokenContract.methods
-            .approve(this.tokenAddress, amount)
+            .approve(this.stakingAddress, amount)
             .send({
               from: fromAccount,
             })
@@ -214,9 +355,9 @@ export class ContractService {
       );
   }
 
-  public getTokenBalance(): Promise<any> {
+  public async getTokenBalance(address?: string): Promise<any> {
     return this.TokenContract.methods
-      .balanceOf(this.account.address)
+      .balanceOf(address ? address : this.account.address)
       .call()
       .then((balance: any) => {
         console.log(this.tokenAddress, balance);
@@ -265,6 +406,38 @@ export class ContractService {
       });
       return values;
     });
+  }
+
+  private checkTx(tx: any, resolve: any, reject: any): void {
+    this.metaMaskWeb3.Web3.eth.getTransaction(tx.transactionHash).then((txInfo) => {
+      if (txInfo.blockNumber) {
+        this.callAllTransactionsSubscribers(txInfo);
+        resolve(tx);
+      } else {
+        setTimeout(() => {
+          this.checkTx(tx, resolve, reject);
+        }, 2000);
+      }
+    }, reject);
+  }
+
+  private callAllTransactionsSubscribers(transaction: any): void {
+    this.allTransactionSubscribers.forEach((observer) => {
+      observer.next(transaction);
+    });
+  }
+
+  private checkTransaction(tx: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.checkTx(tx, resolve, reject);
+    });
+  }
+
+  public transactionsSubscribe(): Observable<any> {
+    const newObserver = new Observable((observer) => {
+      this.allTransactionSubscribers.push(observer);
+    });
+    return newObserver;
   }
 
   public async getStaticInfo(): Promise<any> {
@@ -372,8 +545,15 @@ export class ContractService {
         (account: any) => {
           if (!this.account || account.address !== this.account.address) {
             this.account = account;
+            this.getTokenBalance(account.address)
+              .then((value) => {
+                this.account.balance = value;
+                resolve(this.account);
+              })
+              .catch((err) => {
+                console.log('getTokenBalance', err);
+              });
           }
-          resolve(this.account);
         },
         (err) => {
           this.account = false;

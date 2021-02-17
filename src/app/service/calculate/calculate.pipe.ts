@@ -6,6 +6,7 @@ import { CalculateService } from './calculate.service';
 })
 export class CalculatePipe implements PipeTransform {
   transform(value: number, args?: any): string {
-    return CalculateService.getFloatWithSuffix(value, 1);
+    // return CalculateService.getFloatWithSuffix(value, 1);
+    return CalculateService.getSmallFloatWithSuffix(value, 1);
   }
 }

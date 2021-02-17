@@ -15,7 +15,7 @@ declare global {
 export class MetamaskService {
   private metaMaskWeb3: any;
   public Web3: any;
-  private providers;
+  private providers: any;
 
   private netVersion: number;
   private net: string;
@@ -77,12 +77,14 @@ export class MetamaskService {
                 onError(observer, {
                   code: 3,
                   msg: 'Not authorized',
+                  title: 'Metamask Error',
                 });
               }
 
               observer.error({
                 code: 2,
                 msg: 'Please choose ' + this.net + ' network in Metamask.',
+                title: 'Metamask Error',
               });
 
               reject();
@@ -103,6 +105,7 @@ export class MetamaskService {
               onError(observer, {
                 code: 3,
                 msg: 'Not authorized',
+                title: 'Metamask Error',
               });
             });
         });
@@ -115,6 +118,7 @@ export class MetamaskService {
               onError(observer, {
                 code: 3,
                 msg: 'Not authorized',
+                title: 'Metamask Error',
               });
             }
           });
@@ -124,6 +128,7 @@ export class MetamaskService {
               onError(observer, {
                 code: 3,
                 msg: 'Not authorized',
+                title: 'Metamask Error',
               });
             });
           } else {
@@ -133,6 +138,7 @@ export class MetamaskService {
               onError(observer, {
                 code: 3,
                 msg: 'Not authorized',
+                title: 'Metamask Error',
               });
             }
           }
@@ -141,6 +147,7 @@ export class MetamaskService {
         onError(observer, {
           code: 1,
           msg: 'Metamask extension is not found. You can install it from <a href="https://metamask.io" target="_blank">metamask.io</a>',
+          title: 'Metamask Error',
         });
       }
       return {

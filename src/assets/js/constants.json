@@ -1,7 +1,7 @@
 {
   "rinkeby": {
     "Staking": {
-      "ADDRESS": "0xeb6270B07897bE0346c9fe443B96bc5F8Db48134",
+      "ADDRESS": "0x24E1FB7a781d255EdC40e80C89d9289dC61925F2",
       "ABI": [
         {
           "inputs": [
@@ -88,27 +88,20 @@
         },
         { "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "AVSOwnerWithdraw", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
         { "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "AVSTokenDonation", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
-        {
-          "inputs": [
-            { "internalType": "uint256", "name": "avsAmount", "type": "uint256" },
-            { "internalType": "uint256", "name": "numOfDays", "type": "uint256" }
-          ],
-          "name": "_getAVSEarnings",
-          "outputs": [{ "internalType": "uint256", "name": "reward", "type": "uint256" }],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            { "internalType": "uint256", "name": "avsAmount", "type": "uint256" },
-            { "internalType": "uint256", "name": "numOfDays", "type": "uint256" }
-          ],
-          "name": "_getAVSEarnings_pen",
-          "outputs": [{ "internalType": "uint256", "name": "reward", "type": "uint256" }],
-          "stateMutability": "view",
-          "type": "function"
-        },
         { "inputs": [], "name": "allAVSTokens", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
+        {
+          "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+          "name": "allStakes",
+          "outputs": [
+            { "internalType": "uint256", "name": "stakeId", "type": "uint256" },
+            { "internalType": "uint256", "name": "startDay", "type": "uint256" },
+            { "internalType": "uint256", "name": "numDaysStake", "type": "uint256" },
+            { "internalType": "uint256", "name": "stakedAVS", "type": "uint256" },
+            { "internalType": "uint256", "name": "freezedRewardAVSTokens", "type": "uint256" }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
         { "inputs": [], "name": "avsAddress", "outputs": [{ "internalType": "contract IERC20", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" },
         { "inputs": [], "name": "currentDay", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
         { "inputs": [], "name": "dayDurationSec", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
@@ -139,6 +132,7 @@
         { "inputs": [], "name": "maxNumDays", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
         { "inputs": [], "name": "owner", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" },
         { "inputs": [], "name": "renounceOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
+        { "inputs": [], "name": "seven_days", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
         {
           "inputs": [
             { "internalType": "uint256", "name": "stakeIndex", "type": "uint256" },
@@ -177,6 +171,8 @@
           "stateMutability": "nonpayable",
           "type": "function"
         },
+        { "inputs": [], "name": "totalStakedAVS", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
+        { "inputs": [], "name": "totalStakers", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
         { "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }], "name": "transferOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
         { "inputs": [], "name": "unfreezedAVSTokens", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
         { "inputs": [], "name": "zeroDayStartTime", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }

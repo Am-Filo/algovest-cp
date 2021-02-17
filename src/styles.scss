@@ -38,7 +38,7 @@ a,
 p,
 .button,
 span {
-  transition: 0.4s ease;
+  // transition: 0.4s ease;
   outline: none;
 }
 
@@ -369,7 +369,7 @@ header {
     }
 
     &-text {
-      font-size: 14px;
+      font-size: 12px;
       text-transform: uppercase;
       opacity: 0.5;
       color: var(--select-text-color);
@@ -397,6 +397,14 @@ header {
       transition: 0.4s ease;
       background-color: var(--select-list-background-color);
       color: var(--select-list-color);
+      display: flex;
+      align-items: center;
+
+      &-apy {
+        font-size: 10px;
+        margin-left: 5px;
+        color: var(--select-text-color);
+      }
 
       &.active {
         opacity: 1;
@@ -418,6 +426,20 @@ header {
   width: 100%;
   transition: 0.4s ease;
   cursor: pointer;
+  position: relative;
+
+  &.progress,
+  &:disabled {
+    opacity: 0.5;
+
+    &:hover {
+      opacity: 0.5;
+    }
+
+    &:active {
+      transform: scale(1);
+    }
+  }
 
   &:hover {
     opacity: 0.8;
@@ -425,6 +447,11 @@ header {
 
   &:active {
     transform: scale(0.95);
+  }
+
+  &-form {
+    border: none;
+    outline: none;
   }
 
   &-green {
@@ -475,6 +502,23 @@ header {
     border-radius: 40px;
     border: 1px solid var(--btn-unstake-border-color);
     color: var(--btn-unstake-color);
+    background-color: transparent;
+  }
+
+  &-link {
+    padding: 5px 10px;
+    margin-top: 10px;
+    border-radius: 3px;
+    font-size: 13px;
+    width: max-content;
+    color: var(--btn-link-color);
+    background-color: var(--btn-link-background-color);
+
+    &.icon {
+      &:before {
+        margin-right: 10px;
+      }
+    }
   }
 }
 
@@ -483,6 +527,7 @@ header {
   justify-content: space-between;
   grid-gap: 10px;
   margin-bottom: 10px;
+  grid-template-columns: 1fr;
 
   &-two {
     grid-template-columns: 1fr 1fr;
@@ -547,5 +592,84 @@ header {
   &-footer {
     display: flex;
     justify-content: space-between;
+  }
+}
+
+.lds-ellipsis {
+  display: block;
+  top: 50%;
+  position: absolute;
+  left: 0;
+  right: 0;
+
+  ~ * {
+    visibility: hidden;
+  }
+
+  &-container {
+    position: relative;
+    height: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 62px;
+
+    span {
+      position: absolute;
+      top: 50%;
+      background: white;
+      animation-timing-function: cubic-bezier(0, 1, 1, 0);
+      margin-top: -5px;
+      width: 8px;
+      height: 8px;
+      border-radius: 100%;
+
+      &:nth-child(1) {
+        left: 6px;
+        animation: lds-ellipsis1 0.6s infinite;
+      }
+
+      &:nth-child(2) {
+        left: 6px;
+        animation: lds-ellipsis2 0.6s infinite;
+      }
+
+      &:nth-child(3) {
+        left: 26px;
+        animation: lds-ellipsis2 0.6s infinite;
+      }
+
+      &:nth-child(4) {
+        left: 45px;
+        animation: lds-ellipsis3 0.6s infinite;
+      }
+    }
+  }
+}
+
+@keyframes lds-ellipsis1 {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes lds-ellipsis2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(19px, 0);
+  }
+}
+
+@keyframes lds-ellipsis3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
   }
 }

@@ -1,0 +1,12 @@
+<div class="modal-content" mat-dialog-content>
+  <div class="modal-head">
+    <span class="modal-head-title icon icon-flex icon-attention">{{ title }}</span>
+  </div>
+  <div class="modal-body">
+    <b [innerHTML]="err"></b>
+  </div>
+  <div class="modal-footer">
+    <span class="btn btn-green btn-footer" (click)="closeModal()">Close</span>
+    <!-- <span class="btn btn-green-border btn-footer" (click)="modalEvent('two', modal.type)">{{ modal.button.two }}</span> -->
+  </div>
+</div>

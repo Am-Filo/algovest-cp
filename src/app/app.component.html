@@ -13,27 +13,28 @@
     <div class="grid grid-three">
       <div class="card">
         <span class="card-title icon icon-flex icon-user">Total AVS Stakers</span>
-        <b>1021</b>
+        <b>{{ loading ? 'loading...' : totalData.totalStakers }}</b>
       </div>
       <div class="card">
         <span class="card-title icon icon-flex icon-coins-gray">Total Staked AVS</span>
-        <b>{{ loading ? 'loading...' : (totalData.totalStakedAvs | bigNumberFormat: 18:true:false:18) }}</b>
+        <b>{{ loading ? 'loading...' : (totalData.totalStakedAVS | bigNumberFormat: 18:true:false:6) }}</b>
       </div>
       <div class="card">
         <span class="card-title icon icon-flex icon-grow">Total AVS</span>
-        <b>{{ loading ? 'loading' : (totalData.totalAvs | bigNumberFormat: 18:true:false:0) }}</b>
+        <b>{{ loading ? 'loading' : (totalData.totalAvs | bigNumberFormat: 18:true:false:1) }}</b>
       </div>
     </div>
     <div class="grid grid-two">
       <div class="card">
         <span class="card-title icon icon-flex icon-graphic">7 Days Average Staking APY</span>
-        <b>35.20%</b>
+        <!-- <b>{{ loading ? 'loading...' : totalData.sevenDays }}%</b> -->
+        <b>37%</b>
         <br />
         <span class="card-text-accent">Staking Analytics</span>
       </div>
       <div class="card">
         <span class="card-title">Verified AVS Staking Contract</span>
-        <span class="card-text-address">{{ contractAddress || 'none' }}</span>
+        <span class="card-text-address">{{ contractAddress || 'loading...' }}</span>
       </div>
     </div>
     <div *ngIf="!account" class="grid grid-two">
@@ -52,46 +53,60 @@
         <span class="card-head-title icon icon-flex icon-reverce icon-info-orange">Stake AVS</span>
         <div class="card-balance-block">
           <span class="card-title">Your AVS Balance</span>
-          <span class="card-balance icon icon-flex icon-coins-green">{{ loading ? 'loading' : (totalData.balance | bigNumberFormat: 18:true:false:18) }}</span>
+          <span class="card-balance icon icon-flex icon-coins-green">{{ loading ? 'loading...' : (totalData.balance | bigNumberFormat: 18:true:false:18) }}</span>
         </div>
       </div>
-      <div class="card-form">
-        <div class="card-form-field">
-          <label for="amount">Amount of AVS to Stake</label>
-          <!-- <input type="number" name="amount" id="amount" placeholder="0.0" /> -->
-          <input [(ngModel)]="amountValue" autocomplete="off" required="required" type="number" step="0.000001" name="amount" id="amount" placeholder="0.0" min="0.0000001" [max]="totalData.balance | bigNumberFormat: 18:true:false:18" />
-          <!-- <input
-            *ngIf="account"
-            type="text"
-            required="required"
-            placeholder="0.0"
-            onfocus="this.placeholder = ''"
-            onblur="this.placeholder = '0.0'"
-            [appBigNumber]="{
-              decimals: 18,
-              min: 1,
-              max: totalData.balance
-            }"
-            [maxValueChange]="onChangeAccount"
-            (ngModelChange)="onChangeAmount()"
-            [(ngModel)]="formsData.auctionAmount"
-            autocomplete="off"
-          /> -->
-        </div>
-        <div class="card-form-field">
-          <label>DAYS APY</label>
-          <div class="select" [ngClass]="{ 'select-open': daySelect }">
-            <div class="select-selected icon icon-arrow-down" (click)="daySelect = !daySelect">
-              <span class="select-selected-day">{{ daySelected }}</span>
-              <span class="select-selected-text">{{ apySelected }}</span>
-            </div>
-            <div class="select-list">
-              <span *ngFor="let day of days" class="select-list-item" [ngClass]="{ active: day.value === daySelected }" (click)="selectDay(day.value, day.apy)">{{ day.value }}: apy {{ day.apy }}</span>
+      <form #stakingForm="ngForm">
+        <div class="card-form">
+          <div class="card-form-field">
+            <label for="amount">Amount of AVS to Stake</label>
+            <input
+              type="text"
+              autocomplete="off"
+              required="required"
+              [appBigNumber]="{
+                decimals: 18,
+                min: 1,
+                max: account.balance
+              }"
+              name="amount"
+              placeholder="0.0"
+              onfocus="this.placeholder = ''"
+              onblur="this.placeholder = '0.0'"
+              (ngModelChange)="onChangeAmount()"
+              [maxValueChange]="onChangeAccount"
+              [(ngModel)]="amountValue"
+              autocomplete="off"
+            />
+          </div>
+          <div class="card-form-field">
+            <label>DAYS APY</label>
+            <div class="select" [ngClass]="{ 'select-open': daySelect }">
+              <div class="select-selected icon icon-arrow-down" (click)="daySelect = !daySelect">
+                <span class="select-selected-day">{{ daySelected }}</span>
+                <span class="select-selected-text">APY {{ apySelected }}</span>
+              </div>
+              <div class="select-list">
+                <span *ngFor="let day of days" class="select-list-item" [ngClass]="{ active: day.value === daySelected }" (click)="selectDay(day.value, day.apy)">
+                  {{ day.value }}
+                  <span class="select-list-item-apy">APY {{ day.apy }}</span>
+                </span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <span class="btn btn-green btn-stake" (click)="startStake()">Stake</span>
+        <button class="btn btn-form btn-green btn-stake" (click)="stake()" [disabled]="!stakingForm.valid" [ngClass]="{ progress: stakingProgress }">
+          <span class="lds-ellipsis" *ngIf="stakingProgress">
+            <span class="lds-ellipsis-container">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+          </span>
+          <span>Stake</span>
+        </button>
+      </form>
     </div>
 
     <span *ngIf="!account" (click)="subscribeAccount()" class="btn btn-green btn-connect">Connect MetaMask</span>
@@ -102,9 +117,12 @@
   <div class="container">
     <div class="section-title-block">
       <h2 class="section-title">Stakings</h2>
-      <span class="fee icon icon-flex icon-info-gray">2% Unstake Fee</span>
+      <span *ngIf="stakeslist !== 0" class="fee icon icon-flex icon-info-gray">2% Unstake Fee</span>
     </div>
-    <div class="table-scroll">
+    <div *ngIf="stakeslist === 0" class="grid">
+      <div class="card">You don't have stakes</div>
+    </div>
+    <div *ngIf="stakeslist !== 0" class="table-scroll">
       <table class="table" cellpadding="0" cellspacing="0" border="0">
         <thead>
           <tr>
@@ -121,7 +139,34 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr *ngFor="let stake of stakeslist">
+            <td colspan="2">
+              <span class="table-date icon icon-flex icon-arrow-right" [attr.data-date-start]="stake.start | date">{{ stake.end | date }}</span>
+            </td>
+            <td>
+              <b>{{ stake.stakedAVS | bigNumberFormat: 18:true:false:18 }}</b>
+            </td>
+            <td>
+              <b>{{ stake.numDaysStake }}</b>
+            </td>
+            <td>
+              <b>{{ stake.totalReward | bigNumberFormat: 18:true:false:6 }}</b>
+            </td>
+            <td class="table-btn">
+              <button class="btn btn-form btn-unstake" (click)="unstake(stake)" [ngClass]="{ progress: stake.withdrawProgress }" [disabled]="stake.withdrawProgress">
+                <span class="lds-ellipsis" *ngIf="stake.withdrawProgress">
+                  <span class="lds-ellipsis-container">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </span>
+                </span>
+                <span>Unstake</span>
+              </button>
+            </td>
+          </tr>
+          <!-- <tr>
             <td colspan="2">
               <span class="table-date icon icon-flex icon-arrow-right" data-date-start="20.10.2021">04.06.2022</span>
             </td>
@@ -131,46 +176,9 @@
             <td class="table-btn">
               <span class="btn btn-unstake">Unstake</span>
             </td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <span class="table-date icon icon-flex icon-arrow-right" data-date-start="20.10.2021">04.06.2022</span>
-            </td>
-            <td><b>100,000</b></td>
-            <td><b>25</b></td>
-            <td><b>100,000</b></td>
-            <td class="table-btn">
-              <span class="btn btn-unstake">Unstake</span>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <span class="table-date icon icon-flex icon-arrow-right" data-date-start="20.10.2021">04.06.2022</span>
-            </td>
-            <td><b>100,000</b></td>
-            <td><b>25</b></td>
-            <td><b>100,000</b></td>
-            <td class="table-btn">
-              <span class="btn btn-unstake">Unstake</span>
-            </td>
-          </tr>
+          </tr> -->
         </tbody>
       </table>
     </div>
   </div>
 </section>
-
-<div *ngIf="modalOpen" class="modal">
-  <div class="modal-content">
-    <div class="modal-head">
-      <span class="modal-head-title icon icon-flex icon-attention">{{ modal.title }}</span>
-    </div>
-    <div class="modal-body">
-      <b>{{ modal.body }}</b>
-    </div>
-    <div class="modal-footer">
-      <span class="btn btn-green btn-footer" (click)="modalEvent('one', modal.type)">{{ modal.button.one }}</span>
-      <span class="btn btn-green-border btn-footer" (click)="modalEvent('two', modal.type)">{{ modal.button.two }}</span>
-    </div>
-  </div>
-</div>

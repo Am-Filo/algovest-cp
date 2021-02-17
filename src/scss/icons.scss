@@ -1,4 +1,4 @@
-$scheme-icons: (('arrow-down', 'arrow-down', 'svg'), ('arrow-right', 'arrow-right', 'svg'), ('graphic', 'graphic', 'svg'), ('grow', 'grow', 'svg'), ('logo', 'logo', 'svg'), ('metamask', 'metamask', 'svg'), ('user', 'user', 'svg'), ('dollar', 'dollar', 'svg'), ('attention', 'attention', 'svg'));
+$scheme-icons: (('link', 'link', 'svg'), ('arrow-down', 'arrow-down', 'svg'), ('arrow-right', 'arrow-right', 'svg'), ('graphic', 'graphic', 'svg'), ('grow', 'grow', 'svg'), ('logo', 'logo', 'svg'), ('metamask', 'metamask', 'svg'), ('user', 'user', 'svg'), ('dollar', 'dollar', 'svg'), ('attention', 'attention', 'svg'));
 $scheme-icons-mask: (('coins-green', 'coins', 'svg'), ('coins-gray', 'coins', 'svg'), ('info-orange', 'info', 'svg'), ('info-gray', 'info', 'svg'));
 
 // @include theme('dark', $scheme-icons);
@@ -29,6 +29,12 @@ $scheme-icons-mask: (('coins-green', 'coins', 'svg'), ('coins-gray', 'coins', 's
       background-size: 34px 34px;
       margin-left: 15px;
       background-color: var(--icon-metamask-background-color);
+    }
+  }
+
+  &-link {
+    @include before-img(block, 15px, 10px, r) {
+      background-size: cover;
     }
   }
 
