@@ -76,7 +76,7 @@ export class AppComponent {
 
   public initData(): void {
     this.contractService.getMainInfo().then((data) => {
-      console.log('data init', data);
+      console.log('init', data);
       this.totalData = data;
       this.stakeList();
       this.loading = false;
@@ -86,7 +86,6 @@ export class AppComponent {
   public stakeList(): void {
     this.contractService.getAccountStakes().then((res) => {
       this.stakeslist = res;
-      console.log('user stakeslist', this.stakeslist);
     });
   }
 
@@ -109,8 +108,7 @@ export class AppComponent {
 
     this.contractService
       .unstake(stake.index, stake.id)
-      .then((res) => {
-        console.log('unstake', res);
+      .then(() => {
         this.stakeList();
         stake.withdrawProgress = false;
       })
@@ -119,9 +117,9 @@ export class AppComponent {
       });
   }
 
-  public onChangeAmount(): any {
-    console.log(this.amountValue);
-  }
+  // public onChangeAmount(): any {
+  //   console.log(this.amountValue);
+  // }
 
   public selectDay(day: number, apy: number): any {
     this.daySelect = false;

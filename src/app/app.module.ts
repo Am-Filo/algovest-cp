@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MatDialogModule } from '@angular/material/dialog';
+import { AppRoutingModule } from './app-routing.module';
 
 import { AppConfig } from './service/appconfig';
 import { ContractService } from './service/contract/contract.service';
@@ -27,7 +28,7 @@ export function initializeApp(injector: Injector): any {
 @NgModule({
   entryComponents: [TransactionSuccessModalComponent, MetamaskErrorComponent],
   declarations: [AppComponent, TransactionSuccessModalComponent, MetamaskErrorComponent, CalculatePipe, BigNumberFormat, BigNumberMax, BigNumberMin, BigNumberDirective],
-  imports: [BrowserModule, HttpClientModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule, MatDialogModule],
+  imports: [AppRoutingModule, BrowserModule, HttpClientModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule, MatDialogModule],
   providers: [
     AppConfig,
     {

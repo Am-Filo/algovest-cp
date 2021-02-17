@@ -14,14 +14,6 @@ interface Config {
   net: number;
 }
 
-interface IStaking {
-  start: Date;
-  end: Date;
-  shares: BigNumber;
-  sessionId: string;
-  withdrawProgress?: boolean;
-}
-
 @Injectable({
   providedIn: 'root',
 })
@@ -101,9 +93,7 @@ export class ContractService {
       .call()
       .then(
         (value: any) => {
-          console.log('avsAddress', value);
           this.avsAddress = value;
-          // this.callAllAccountsSubscribers();
           return value;
         },
         (err: any) => {
@@ -118,7 +108,6 @@ export class ContractService {
       .call()
       .then(
         (value: any) => {
-          // this.callAllAccountsSubscribers();
           return value;
         },
         (err: any) => {
@@ -133,7 +122,6 @@ export class ContractService {
       .call()
       .then(
         (value: any) => {
-          // this.callAllAccountsSubscribers();
           return value;
         },
         (err: any) => {
@@ -148,7 +136,6 @@ export class ContractService {
       .call()
       .then(
         (value: any) => {
-          // this.callAllAccountsSubscribers();
           return value;
         },
         (err: any) => {
@@ -163,7 +150,6 @@ export class ContractService {
       .call()
       .then(
         (value: any) => {
-          // this.callAllAccountsSubscribers();
           return value;
         },
         (err: any) => {
@@ -188,41 +174,33 @@ export class ContractService {
     return this.StakingContract.methods
       .stakeListCount(this.account.address)
       .call()
-      .then((sessions) => {
-        console.log(sessions);
+      .then((sessions: any) => {
         if (sessions !== '0' && sessions !== 0) {
           const sessionsIds = [];
-
           for (let i = 0; i < sessions; i++) {
             sessionsIds.push(i);
           }
-
           const sessionsPromises = sessionsIds.map((sessionId) => {
             return this.StakingContract.methods
               .stakeList(this.account.address, sessionId)
               .call()
               .then((oneSession) => {
-                console.log(sessionId, 'oneSession', oneSession);
-
                 const promises = [
                   this.StakingContract.methods
                     .getDayUnixTime(oneSession.startDay)
                     .call()
                     .then((startDay: number) => {
-                      console.log(startDay, startDay * 1000);
                       return startDay * 1000;
                     }),
                   this.StakingContract.methods
                     .getDayUnixTime(oneSession.startDay + oneSession.numDaysStake)
                     .call()
                     .then((endDay: number) => {
-                      console.log(endDay, endDay * 1000);
                       return endDay * 1000;
                     }),
                 ];
 
                 return Promise.all(promises).then((stake) => {
-                  console.log('stake', stake);
                   return {
                     index: sessionId,
                     id: oneSession.stakeId,
@@ -238,14 +216,6 @@ export class ContractService {
           return Promise.all(sessionsPromises).then((allDeposits) => {
             console.log(allDeposits);
             return allDeposits;
-            // return {
-            //   closed: allDeposits.filter((deposit: any) => {
-            //     return new BigNumber(deposit.start).toNumber() <= 0;
-            //   }),
-            //   opened: allDeposits.filter((deposit: any) => {
-            //     return new BigNumber(deposit.start).toNumber() > 0;
-            //   }),
-            // };
           });
         } else {
           const promises = [true];
@@ -271,7 +241,6 @@ export class ContractService {
       .call()
       .then(
         (res: any) => {
-          console.log('dayDurationSec', res);
           return res;
         },
         (err: any) => {
@@ -300,7 +269,6 @@ export class ContractService {
         from: this.account.address,
       })
       .then((res) => {
-        console.log('unstake contract', res);
         return this.checkTransaction(res);
       });
   }
@@ -345,8 +313,6 @@ export class ContractService {
       .call()
       .then(
         (res: any) => {
-          console.log('dayDurationSec', res);
-          // this.callAllAccountsSubscribers();
           return res;
         },
         (err: any) => {
@@ -360,52 +326,8 @@ export class ContractService {
       .balanceOf(address ? address : this.account.address)
       .call()
       .then((balance: any) => {
-        console.log(this.tokenAddress, balance);
         return balance;
-        // const bigBalance = new BigNumber(balance);
-        // this.account.balances = this.account.balances || {};
-        // this.account.balances.H2T = {
-        //   wei: balance,
-        //   weiBigNumber: bigBalance,
-        //   shortBigNumber: bigBalance.div(new BigNumber(10).pow(this.tokensDecimals.H2T)),
-        //   display: bigBalance.div(new BigNumber(10).pow(this.tokensDecimals.H2T)).toFormat(4),
-        // };
-        // if (callEmitter) {
-        //   this.callAllAccountsSubscribers();
-        // }
       });
-  }
-
-  public async getStakingContractInfo(): Promise<any> {
-    const promises = [
-      this.StakingContract.methods
-        .decimals()
-        .call()
-        .then((decimals) => {
-          console.log(decimals);
-          return {
-            key: 'decimals',
-            value: decimals,
-          };
-        }),
-      this.StakingContract.methods
-        .symbol()
-        .call()
-        .then((symbol) => {
-          console.log(symbol);
-          return {
-            key: 'symbol',
-            value: symbol,
-          };
-        }),
-    ];
-    return Promise.all(promises).then((results) => {
-      const values = {};
-      results.forEach((v) => {
-        values[v.key] = v.value;
-      });
-      return values;
-    });
   }
 
   private checkTx(tx: any, resolve: any, reject: any): void {
@@ -445,7 +367,6 @@ export class ContractService {
       this.metaMaskWeb3 = new MetamaskService(this.config);
       this.metaMaskWeb3.getAccounts().subscribe((account: any) => {
         if (account) {
-          // this.initializeContracts();
           const promises = [this.getTokensInfo(false)];
           return Promise.all(promises);
         }
@@ -459,15 +380,6 @@ export class ContractService {
     }
 
     const promises = [true];
-    // const promises = [
-    //   this.getAvsAddress().then((res) => {
-    //     console.log(res);
-    //     this.metaMaskWeb3.getBalance(this.avsAddress).then((res2) => {
-    //       console.log(res2);
-    //     });
-    //   }),
-    // ];
-
     return Promise.all(promises);
   }
 
@@ -499,37 +411,7 @@ export class ContractService {
     });
   }
 
-  // public updateH2TBalance(callEmitter?): Promise<any> {
-  //   return new Promise((resolve, reject) => {
-  //     if (!(this.account && this.account.address)) {
-  //       return reject();
-  //     }
-  //     return this.StakingContract.methods
-  //       .balanceOf(this.account.address)
-  //       .call()
-  //       .then((balance) => {
-  //         const bigBalance = new BigNumber(balance);
-  //         this.account.balances = this.account.balances || {};
-  //         this.account.balances.H2T = {
-  //           wei: balance,
-  //           weiBigNumber: bigBalance,
-  //           shortBigNumber: bigBalance.div(new BigNumber(10).pow(this.tokensDecimals.H2T)),
-  //           display: bigBalance.div(new BigNumber(10).pow(this.tokensDecimals.H2T)).toFormat(4),
-  //         };
-  //         resolve(0);
-  //         if (callEmitter) {
-  //           this.callAllAccountsSubscribers();
-  //         }
-  //       });
-  //   });
-  // }
-
   public loadAccountInfo(): any {
-    // const promises = [this.updateH2TBalance()];
-    // Promise.all(promises).then((res) => {
-    //   console.log(res);
-    //   this.callAllAccountsSubscribers();
-    // });
     this.callAllAccountsSubscribers();
   }
 
