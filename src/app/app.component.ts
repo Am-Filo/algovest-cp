@@ -1,4 +1,4 @@
-import { Component, NgZone } from '@angular/core';
+import { Component, EventEmitter, NgZone } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { TransactionSuccessModalComponent } from './components/transaction/transaction-success-modal.component';
@@ -22,6 +22,7 @@ export class AppComponent {
   public account: any;
   public userAddress = '';
   private accountSubscribe: any;
+  public onChangeAccount: EventEmitter<any> = new EventEmitter();
 
   public amountValue: any;
 
@@ -131,6 +132,7 @@ export class AppComponent {
   public subscribeAccount(): void {
     this.accountSubscribe = this.metamaskService.getAccounts().subscribe((account) => {
       this.ngZone.run(() => {
+        this.onChangeAccount.emit();
         if (account && (!this.account || this.account.address !== account.address)) {
           this.contractService.loadAccountInfo();
           this.updateUserAccount(account);
