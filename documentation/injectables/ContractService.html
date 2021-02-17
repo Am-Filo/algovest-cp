@@ -1,0 +1,2968 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>algovest documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">algovest documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Injectables</li>
+  <li>ContractService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/service/contract/contract.service.ts</code>
+        </p>
+
+
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#account">account</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#allAccountSubscribers">allAccountSubscribers</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#allTransactionSubscribers">allTransactionSubscribers</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#avsAddress">avsAddress</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#CONTRACTS_PARAMS">CONTRACTS_PARAMS</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#metaMaskWeb3">metaMaskWeb3</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#settingsApp">settingsApp</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#stakingAddress">stakingAddress</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#StakingContract">StakingContract</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#tokenAddress">tokenAddress</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#TokenContract">TokenContract</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#accountSubscribe">accountSubscribe</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#callAllAccountsSubscribers">callAllAccountsSubscribers</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#callAllTransactionsSubscribers">callAllTransactionsSubscribers</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#checkTransaction">checkTransaction</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#checkTx">checkTx</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getAccount">getAccount</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getAccountStakes">getAccountStakes</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getAllowance">getAllowance</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getContractsInfo">getContractsInfo</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getContractTokenAddress">getContractTokenAddress</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getMainInfo">getMainInfo</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getSevenDays">getSevenDays</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getStakingAddress">getStakingAddress</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getStaticInfo">getStaticInfo</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getTimeStampFromContract">getTimeStampFromContract</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getTokenBalance">getTokenBalance</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getTotalAvs">getTotalAvs</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getTotalStakedAVS">getTotalStakedAVS</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getTotalStakers">getTotalStakers</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#initAll">initAll</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#initializeContracts">initializeContracts</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#loadAccountInfo">loadAccountInfo</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#startStake">startStake</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#transactionsSubscribe">transactionsSubscribe</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#unstake">unstake</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#updateBalance">updateBalance</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(httpService: <a href="https://angular.io/api/common/http/HttpClient" target="_blank">HttpClient</a>, config: <a href="../injectables/AppConfig.html">AppConfig</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/service/contract/contract.service.ts:39</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>httpService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/common/http/HttpClient" target="_blank" >HttpClient</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>config</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AppConfig.html" target="_self" >AppConfig</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="accountSubscribe"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            accountSubscribe
+                        </b>
+                        <a href="#accountSubscribe"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>accountSubscribe()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="464"
+                            class="link-to-prism">src/app/service/contract/contract.service.ts:464</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="callAllAccountsSubscribers"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            callAllAccountsSubscribers
+                        </b>
+                        <a href="#callAllAccountsSubscribers"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>callAllAccountsSubscribers()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="506"
+                            class="link-to-prism">src/app/service/contract/contract.service.ts:506</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>All Account Subscribers</p>
+</div>
+
+                    <div>
+                        <b>Example :</b>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">contractService.callAllAccountsSubscribers();</code></pre>
+                        </div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="callAllTransactionsSubscribers"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            callAllTransactionsSubscribers
+                        </b>
+                        <a href="#callAllTransactionsSubscribers"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>callAllTransactionsSubscribers(transaction: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="363"
+                            class="link-to-prism">src/app/service/contract/contract.service.ts:363</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Check All Transaction Subscribers</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>transaction</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <b>Example :</b>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">contractService.callAllTransactionsSubscribers(txInfo);</code></pre>
+                        </div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="checkTransaction"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            checkTransaction
+                        </b>
+                        <a href="#checkTransaction"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>checkTransaction(tx: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="376"
+                            class="link-to-prism">src/app/service/contract/contract.service.ts:376</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Check Transaction</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>tx</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <b>Example :</b>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">contractService.checkTransaction(tx);</code></pre>
+                        </div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>value from checkTx() function</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="checkTx"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            checkTx
+                        </b>
+                        <a href="#checkTx"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>checkTx(tx: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, resolve: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, reject: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="344"
+                            class="link-to-prism">src/app/service/contract/contract.service.ts:344</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Check Transaction</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>tx</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>resolve</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>reject</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <b>Example :</b>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">new Promise((resolve, reject) =&amp;gt; {contractService.checkTx(tx, resolve, reject);});</code></pre>
+                        </div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAccount"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            getAccount
+                        </b>
+                        <a href="#getAccount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getAccount(noEnable?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="519"
+                            class="link-to-prism">src/app/service/contract/contract.service.ts:519</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Get account information.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>noEnable</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <b>Example :</b>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">contractService.getAccount().then((account) =&amp;gt; { console.log(account); }).catch((err) =&amp;gt; { console.log(err); });</code></pre>
+                        </div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>account: {address: string, balance: string | number}</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAccountStakes"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                            getAccountStakes
+                        </b>
+                        <a href="#getAccountStakes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getAccountStakes()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="200"
+                            class="link-to-prism">src/app/service/contract/contract.service.ts:200</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Get Account Stakes</p>
+</div>
+
+                    <div>
+                        <b>Example :</b>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">contractService.getAccountStakes().then((stakes) =&amp;gt; {console.log(&amp;#39;stakes&amp;#39;,stakes);});</code></pre>
+                        </div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>stakes[]:{index: number,id: number,start: number,end: number,stakedAVS: number,totalReward: number,withdrawProgress: boolean,};</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAllowance"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            getAllowance
+                        </b>
+                        <a href="#getAllowance"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getAllowance(amount: string | number)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="250"
+                            class="link-to-prism">src/app/service/contract/contract.service.ts:250</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Check Allowance</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>amount</td>
+                                    <td>
+                                            <code>string | number</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <b>Example :</b>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">contractService.getAllowance(amount).then(() =&amp;gt; {},() =&amp;gt; {});</code></pre>
+                        </div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>true | false</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getContractsInfo"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            getContractsInfo
+                        </b>
+                        <a href="#getContractsInfo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getContractsInfo(noEnable?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="422"
+                            class="link-to-prism">src/app/service/contract/contract.service.ts:422</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Get contract information.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>noEnable</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <b>Example :</b>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">contractService.getContractsInfo(false).then(() =&amp;gt; {});</code></pre>
+                        </div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>true</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getContractTokenAddress"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            getContractTokenAddress
+                        </b>
+                        <a href="#getContractTokenAddress"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getContractTokenAddress()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="550"
+                            class="link-to-prism">src/app/service/contract/contract.service.ts:550</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Getting Token Address</p>
+</div>
+
+                    <div>
+                        <b>Example :</b>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">contractService.getContractTokenAddress();</code></pre>
+                        </div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>address</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getMainInfo"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                            getMainInfo
+                        </b>
+                        <a href="#getMainInfo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getMainInfo()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="50"
+                            class="link-to-prism">src/app/service/contract/contract.service.ts:50</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Main Site Information</p>
+</div>
+
+                    <div>
+                        <b>Example :</b>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">contractService.getMainInfo().then((info) =&amp;gt; {console.log(&amp;#39;info&amp;#39;,info);});</code></pre>
+                        </div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>info:{totalAvs,totalStakedAVS,totalStakers,balance}</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getSevenDays"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                            getSevenDays
+                        </b>
+                        <a href="#getSevenDays"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getSevenDays()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="163"
+                            class="link-to-prism">src/app/service/contract/contract.service.ts:163</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Get Seven Days Info</p>
+</div>
+
+                    <div>
+                        <b>Example :</b>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">contractService.getSevenDays().then((percent) =&amp;gt; {console.log(&amp;#39;percent&amp;#39;,percent);});</code></pre>
+                        </div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>percent: number</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getStakingAddress"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            getStakingAddress
+                        </b>
+                        <a href="#getStakingAddress"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getStakingAddress()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="561"
+                            class="link-to-prism">src/app/service/contract/contract.service.ts:561</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Getting Token Address</p>
+</div>
+
+                    <div>
+                        <b>Example :</b>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">contractService.getContractTokenAddress();</code></pre>
+                        </div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>address</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getStaticInfo"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                            getStaticInfo
+                        </b>
+                        <a href="#getStaticInfo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getStaticInfo()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="403"
+                            class="link-to-prism">src/app/service/contract/contract.service.ts:403</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Static information</p>
+</div>
+
+                    <div>
+                        <b>Example :</b>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">contractService.getStaticInfo().then(() =&amp;gt; {}).catch((err)=&amp;gt;{});</code></pre>
+                        </div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>true</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTimeStampFromContract"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                            getTimeStampFromContract
+                        </b>
+                        <a href="#getTimeStampFromContract"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getTimeStampFromContract(date: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="184"
+                            class="link-to-prism">src/app/service/contract/contract.service.ts:184</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Get Contract Timestamp</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>date</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <b>Example :</b>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">contractService.getTimeStampFromContract().then((time) =&amp;gt; {console.log(&amp;#39;time&amp;#39;,time);});</code></pre>
+                        </div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;number&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>time: number</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTokenBalance"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                            getTokenBalance
+                        </b>
+                        <a href="#getTokenBalance"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getTokenBalance(address?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="329"
+                            class="link-to-prism">src/app/service/contract/contract.service.ts:329</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Token Balance</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>address</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <b>Example :</b>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">contractService.getTokenBalance(address).then((balance)=&amp;gt;{console.log(&amp;#39;balance&amp;#39;,balance)});</code></pre>
+                        </div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;string | number&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>balance: string | number</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTotalAvs"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            getTotalAvs
+                        </b>
+                        <a href="#getTotalAvs"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getTotalAvs()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="100"
+                            class="link-to-prism">src/app/service/contract/contract.service.ts:100</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Get Total AVS (Coin)</p>
+</div>
+
+                    <div>
+                        <b>Example :</b>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">contractService.getTotalAvs().then((totalAvs) =&amp;gt; {console.log(&amp;#39;totalAvs&amp;#39;,totalAvs);});</code></pre>
+                        </div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>totalAvs: number</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTotalStakedAVS"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            getTotalStakedAVS
+                        </b>
+                        <a href="#getTotalStakedAVS"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getTotalStakedAVS()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="121"
+                            class="link-to-prism">src/app/service/contract/contract.service.ts:121</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Get Total Staked AVS (Coin)</p>
+</div>
+
+                    <div>
+                        <b>Example :</b>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">contractService.totalStakedAVS().then((totalStakedAVS) =&amp;gt; {console.log(&amp;#39;totalStakedAVS&amp;#39;,totalStakedAVS);});</code></pre>
+                        </div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>totalStakedAVS: number</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTotalStakers"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            getTotalStakers
+                        </b>
+                        <a href="#getTotalStakers"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getTotalStakers()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="142"
+                            class="link-to-prism">src/app/service/contract/contract.service.ts:142</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Get Total Stakers</p>
+</div>
+
+                    <div>
+                        <b>Example :</b>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">contractService.totalStakers().then((totalStakers) =&amp;gt; {console.log(&amp;#39;totalStakers&amp;#39;,totalStakers);});</code></pre>
+                        </div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>totalStakers: number</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="initAll"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                            initAll
+                        </b>
+                        <a href="#initAll"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>initAll()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="436"
+                            class="link-to-prism">src/app/service/contract/contract.service.ts:436</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Application initialized</p>
+</div>
+
+                    <div>
+                        <b>Example :</b>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">contractService.initAll().then(() =&amp;gt; {});</code></pre>
+                        </div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="initializeContracts"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            initializeContracts
+                        </b>
+                        <a href="#initializeContracts"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>initializeContracts()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="569"
+                            class="link-to-prism">src/app/service/contract/contract.service.ts:569</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Initialize contracts.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadAccountInfo"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            loadAccountInfo
+                        </b>
+                        <a href="#loadAccountInfo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>loadAccountInfo()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="483"
+                            class="link-to-prism">src/app/service/contract/contract.service.ts:483</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Load account information</p>
+</div>
+
+                    <div>
+                        <b>Example :</b>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">contractService.loadAccountInfo();</code></pre>
+                        </div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="startStake"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            startStake
+                        </b>
+                        <a href="#startStake"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>startStake(amount: string | number, day: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="270"
+                            class="link-to-prism">src/app/service/contract/contract.service.ts:270</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Start Stake</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>amount</td>
+                                    <td>
+                                            <code>string | number</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>day</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <b>Example :</b>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">contractService.startStake(amount, day).then(() =&amp;gt; {}).catch((err)=&amp;gt;{});</code></pre>
+                        </div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>true | false</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="transactionsSubscribe"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            transactionsSubscribe
+                        </b>
+                        <a href="#transactionsSubscribe"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>transactionsSubscribe()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="389"
+                            class="link-to-prism">src/app/service/contract/contract.service.ts:389</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Transaction Subscribe</p>
+</div>
+
+                    <div>
+                        <b>Example :</b>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">contractService.transactionsSubscribe().subscribe((transaction) =&amp;gt; {console.log(&amp;#39;success&amp;#39;, transaction)});</code></pre>
+                        </div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>transaction: {tx: string}</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unstake"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                            unstake
+                        </b>
+                        <a href="#unstake"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>unstake(sessionId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="311"
+                            class="link-to-prism">src/app/service/contract/contract.service.ts:311</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Unstake</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>sessionId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <b>Example :</b>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">contractService.unstake(sessionId,id).then(()=&amp;gt;{console.log(&amp;#39;complete&amp;#39;);}).catch(() =&amp;gt; {console.log(&amp;#39;error&amp;#39;);});</code></pre>
+                        </div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>true | false</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateBalance"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            updateBalance
+                        </b>
+                        <a href="#updateBalance"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateBalance()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="493"
+                            class="link-to-prism">src/app/service/contract/contract.service.ts:493</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Update account balance</p>
+</div>
+
+                    <div>
+                        <b>Example :</b>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">contractService.updateBalance();</code></pre>
+                        </div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+            <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="account"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            account</b>
+                            <a href="#account"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/service/contract/contract.service.ts:22</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="allAccountSubscribers"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Private</span>
+                            allAccountSubscribers</b>
+                            <a href="#allAccountSubscribers"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>[]</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/service/contract/contract.service.ts:23</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="allTransactionSubscribers"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Private</span>
+                            allTransactionSubscribers</b>
+                            <a href="#allTransactionSubscribers"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>[]</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/service/contract/contract.service.ts:24</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="avsAddress"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            avsAddress</b>
+                            <a href="#avsAddress"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/service/contract/contract.service.ts:26</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="CONTRACTS_PARAMS"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Private</span>
+                            CONTRACTS_PARAMS</b>
+                            <a href="#CONTRACTS_PARAMS"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/service/contract/contract.service.ts:33</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="metaMaskWeb3"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Private</span>
+                            metaMaskWeb3</b>
+                            <a href="#metaMaskWeb3"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/app/service/contract/contract.service.ts:21</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="settingsApp"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            settingsApp</b>
+                            <a href="#settingsApp"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>{
+    production: false,
+    network: &#x27;ropsten&#x27;,
+    net: 3,
+  }</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/app/service/contract/contract.service.ts:35</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="stakingAddress"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            stakingAddress</b>
+                            <a href="#stakingAddress"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/service/contract/contract.service.ts:32</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="StakingContract"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Private</span>
+                            StakingContract</b>
+                            <a href="#StakingContract"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>Contract</code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/service/contract/contract.service.ts:31</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="tokenAddress"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Private</span>
+                            tokenAddress</b>
+                            <a href="#tokenAddress"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/service/contract/contract.service.ts:29</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="TokenContract"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Private</span>
+                            TokenContract</b>
+                            <a href="#TokenContract"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>Contract</code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/service/contract/contract.service.ts:28</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@angular/core&#x27;;
+import { Observable } from &#x27;rxjs&#x27;;
+import { HttpClient } from &#x27;@angular/common/http&#x27;;
+
+import BigNumber from &#x27;bignumber.js&#x27;;
+import { Contract } from &#x27;web3-eth-contract&#x27;;
+
+import { MetamaskService } from &#x27;../metamask/metamask.service&#x27;;
+import { AppConfig } from &#x27;../appconfig&#x27;;
+
+interface Config {
+  production: boolean;
+  network: string;
+  net: number;
+}
+
+@Injectable({
+  providedIn: &#x27;root&#x27;,
+})
+export class ContractService {
+  private metaMaskWeb3: any;
+  public account: any;
+  private allAccountSubscribers &#x3D; [];
+  private allTransactionSubscribers &#x3D; [];
+
+  public avsAddress: string;
+
+  private TokenContract: Contract;
+  private tokenAddress: string;
+
+  private StakingContract: Contract;
+  public stakingAddress: string;
+  private CONTRACTS_PARAMS: any;
+
+  public settingsApp &#x3D; {
+    production: false,
+    network: &#x27;ropsten&#x27;,
+    net: 3,
+  };
+
+  constructor(private httpService: HttpClient, private config: AppConfig) {}
+
+  /**
+   * Main Site Information
+   * @description Get main information for site from contract.
+   * @example
+   * contractService.getMainInfo().then((info) &#x3D;&gt; {console.log(&#x27;info&#x27;,info);});
+   * @returns info:{totalAvs,totalStakedAVS,totalStakers,balance}
+   */
+  public async getMainInfo(): Promise&lt;any&gt; {
+    const promises &#x3D; [
+      this.getTotalAvs().then((value) &#x3D;&gt; {
+        return {
+          key: &#x27;totalAvs&#x27;,
+          value,
+        };
+      }),
+      this.getTotalStakedAVS().then((value) &#x3D;&gt; {
+        return {
+          key: &#x27;totalStakedAVS&#x27;,
+          value,
+        };
+      }),
+      this.getTotalStakers().then((value) &#x3D;&gt; {
+        return {
+          key: &#x27;totalStakers&#x27;,
+          value,
+        };
+      }),
+      this.getTokenBalance().then((value) &#x3D;&gt; {
+        return {
+          key: &#x27;balance&#x27;,
+          value,
+        };
+      }),
+      // this.getSevenDays().then((value) &#x3D;&gt; {
+      //   return {
+      //     key: &#x27;sevenDays&#x27;,
+      //     value,
+      //   };
+      // }),
+    ];
+
+    return Promise.all(promises).then((results) &#x3D;&gt; {
+      const values &#x3D; {};
+      results.forEach((v) &#x3D;&gt; {
+        values[v.key] &#x3D; v.value;
+      });
+      return values;
+    });
+  }
+
+  /**
+   * Get Total AVS (Coin)
+   * @description Get information about total AVS coins on contract.
+   * @example
+   * contractService.getTotalAvs().then((totalAvs) &#x3D;&gt; {console.log(&#x27;totalAvs&#x27;,totalAvs);});
+   * @returns totalAvs: number
+   */
+  public getTotalAvs(): Promise&lt;any&gt; {
+    return this.TokenContract.methods
+      .totalSupply()
+      .call()
+      .then(
+        (value: any) &#x3D;&gt; {
+          return value;
+        },
+        (err: any) &#x3D;&gt; {
+          console.log(&#x27;getTotalAvs&#x27;, err);
+        }
+      );
+  }
+
+  /**
+   * Get Total Staked AVS (Coin)
+   * @description Get information about total staked coins on contract.
+   * @example
+   * contractService.totalStakedAVS().then((totalStakedAVS) &#x3D;&gt; {console.log(&#x27;totalStakedAVS&#x27;,totalStakedAVS);});
+   * @returns totalStakedAVS: number
+   */
+  public getTotalStakedAVS(): Promise&lt;any&gt; {
+    return this.StakingContract.methods
+      .totalStakedAVS()
+      .call()
+      .then(
+        (value: any) &#x3D;&gt; {
+          return value;
+        },
+        (err: any) &#x3D;&gt; {
+          console.log(&#x27;getTotalStakedAVS&#x27;, err);
+        }
+      );
+  }
+
+  /**
+   * Get Total Stakers
+   * @description Get information about total contract stakers.
+   * @example
+   * contractService.totalStakers().then((totalStakers) &#x3D;&gt; {console.log(&#x27;totalStakers&#x27;,totalStakers);});
+   * @returns totalStakers: number
+   */
+  public getTotalStakers(): Promise&lt;any&gt; {
+    return this.StakingContract.methods
+      .totalStakers()
+      .call()
+      .then(
+        (value: any) &#x3D;&gt; {
+          return value;
+        },
+        (err: any) &#x3D;&gt; {
+          console.log(&#x27;getTotalStakers&#x27;, err);
+        }
+      );
+  }
+
+  /**
+   * Get Seven Days Info
+   * @description Get information about percent avarage staking.
+   * @example
+   * contractService.getSevenDays().then((percent) &#x3D;&gt; {console.log(&#x27;percent&#x27;,percent);});
+   * @returns percent: number
+   */
+  public async getSevenDays(): Promise&lt;any&gt; {
+    return this.StakingContract.methods
+      .seven_days()
+      .call()
+      .then(
+        (res: any) &#x3D;&gt; {
+          return res;
+        },
+        (err: any) &#x3D;&gt; {
+          console.log(&#x27;getSevenDays&#x27;, err);
+        }
+      );
+  }
+
+  /**
+   * Get Contract Timestamp
+   * @description Get timestamp from contract.
+   * @example
+   * contractService.getTimeStampFromContract().then((time) &#x3D;&gt; {console.log(&#x27;time&#x27;,time);});
+   * @returns time: number
+   */
+  public async getTimeStampFromContract(date: number): Promise&lt;number&gt; {
+    return this.StakingContract.methods
+      .getDayUnixTime(date)
+      .call()
+      .then((endDay: number) &#x3D;&gt; {
+        return endDay * 1000;
+      });
+  }
+
+  /**
+   * Get Account Stakes
+   * @description Get collection of account stakes from contract.
+   * @example
+   * contractService.getAccountStakes().then((stakes) &#x3D;&gt; {console.log(&#x27;stakes&#x27;,stakes);});
+   * @returns stakes[]:{index: number,id: number,start: number,end: number,stakedAVS: number,totalReward: number,withdrawProgress: boolean,};
+   */
+  public async getAccountStakes(): Promise&lt;any&gt; {
+    return this.StakingContract.methods
+      .stakeListCount(this.account.address)
+      .call()
+      .then((sessions: any) &#x3D;&gt; {
+        if (sessions !&#x3D;&#x3D; &#x27;0&#x27; &amp;&amp; sessions !&#x3D;&#x3D; 0) {
+          const sessionsIds &#x3D; [];
+          for (let i &#x3D; 0; i &lt; sessions; i++) {
+            sessionsIds.push(i);
+          }
+          const sessionsPromises &#x3D; sessionsIds.map((sessionId) &#x3D;&gt; {
+            return this.StakingContract.methods
+              .stakeList(this.account.address, sessionId)
+              .call()
+              .then((oneSession) &#x3D;&gt; {
+                const promises &#x3D; [this.getTimeStampFromContract(oneSession.startDay), this.getTimeStampFromContract(oneSession.startDay + oneSession.numDaysStake)];
+
+                return Promise.all(promises).then((stake) &#x3D;&gt; {
+                  return {
+                    index: sessionId,
+                    id: oneSession.stakeId,
+                    start: stake[0],
+                    end: stake[1],
+                    stakedAVS: oneSession.stakedAVS,
+                    totalReward: oneSession.freezedRewardAVSTokens,
+                    withdrawProgress: false,
+                  };
+                });
+              });
+          });
+          return Promise.all(sessionsPromises).then((allDeposits) &#x3D;&gt; {
+            console.log(allDeposits);
+            return allDeposits.reverse();
+          });
+        } else {
+          const promises &#x3D; [true];
+          return Promise.all(promises).then(() &#x3D;&gt; {
+            return 0;
+          });
+        }
+      });
+  }
+
+  /**
+   * Check Allowance
+   * @description Check if address accept spend amount of coins to contract.
+   * @example
+   * contractService.getAllowance(amount).then(() &#x3D;&gt; {},() &#x3D;&gt; {});
+   * @returns true | false
+   */
+  private getAllowance(amount: string | number): Promise&lt;any&gt; {
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      this.TokenContract.methods
+        .allowance(this.account.address, this.stakingAddress)
+        .call()
+        .then((allowance: string) &#x3D;&gt; {
+          const allow &#x3D; new BigNumber(allowance);
+          const allowed &#x3D; allow.minus(amount);
+          allowed.isNegative() ? reject() : resolve(1);
+        });
+    });
+  }
+
+  /**
+   * Start Stake
+   * @description Send coins to staking on contract.
+   * @example
+   * contractService.startStake(amount, day).then(() &#x3D;&gt; {}).catch((err)&#x3D;&gt;{});
+   * @returns true | false
+   */
+  public startStake(amount: string | number, day: number): Promise&lt;any&gt; {
+    const fromAccount &#x3D; this.account.address;
+
+    const stake &#x3D; (resolve, reject) &#x3D;&gt; {
+      return this.StakingContract.methods
+        .stakeStart(amount, day)
+        .send({
+          from: fromAccount,
+        })
+        .then((res) &#x3D;&gt; {
+          return this.checkTransaction(res);
+        })
+        .then(resolve, reject);
+    };
+
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      this.getAllowance(amount).then(
+        () &#x3D;&gt; {
+          stake(resolve, reject);
+        },
+        () &#x3D;&gt; {
+          this.TokenContract.methods
+            .approve(this.stakingAddress, amount)
+            .send({
+              from: fromAccount,
+            })
+            .then(() &#x3D;&gt; {
+              stake(resolve, reject);
+            }, reject);
+        }
+      );
+    });
+  }
+
+  /**
+   * Unstake
+   * @description Retrive coins from staking.
+   * @example
+   * contractService.unstake(sessionId,id).then(()&#x3D;&gt;{console.log(&#x27;complete&#x27;);}).catch(() &#x3D;&gt; {console.log(&#x27;error&#x27;);});
+   * @returns true | false
+   */
+  public async unstake(sessionId: number, id: number): Promise&lt;any&gt; {
+    return this.StakingContract.methods
+      .stakeEnd(sessionId, id)
+      .send({
+        from: this.account.address,
+      })
+      .then((res: any) &#x3D;&gt; {
+        return this.checkTransaction(res);
+      });
+  }
+
+  /**
+   * Token Balance
+   * @description Get token contract balance on eth metamask address.
+   * @example
+   * contractService.getTokenBalance(address).then((balance)&#x3D;&gt;{console.log(&#x27;balance&#x27;,balance)});
+   * @returns balance: string | number
+   */
+  public async getTokenBalance(address?: string): Promise&lt;string | number&gt; {
+    return this.TokenContract.methods
+      .balanceOf(address ? address : this.account.address)
+      .call()
+      .then((balance: string | number) &#x3D;&gt; {
+        return balance;
+      });
+  }
+
+  /**
+   * Check Transaction
+   * @description Checking transaction in blockchain.
+   * @example
+   * new Promise((resolve, reject) &#x3D;&gt; {contractService.checkTx(tx, resolve, reject);});
+   */
+  private checkTx(tx: any, resolve: any, reject: any): void {
+    this.metaMaskWeb3.Web3.eth.getTransaction(tx.transactionHash).then((txInfo) &#x3D;&gt; {
+      if (txInfo.blockNumber) {
+        this.callAllTransactionsSubscribers(txInfo);
+        resolve(tx);
+      } else {
+        setTimeout(() &#x3D;&gt; {
+          this.checkTx(tx, resolve, reject);
+        }, 2000);
+      }
+    }, reject);
+  }
+
+  /**
+   * Check All Transaction Subscribers
+   * @description Trigger observer subscribers if transaction complete.
+   * @example
+   * contractService.callAllTransactionsSubscribers(txInfo);
+   */
+  private callAllTransactionsSubscribers(transaction: string): void {
+    this.allTransactionSubscribers.forEach((observer) &#x3D;&gt; {
+      observer.next(transaction);
+    });
+  }
+
+  /**
+   * Check Transaction
+   * @description Start checking transaction.
+   * @example
+   * contractService.checkTransaction(tx);
+   * @returns value from checkTx() function
+   */
+  private checkTransaction(tx: string): Promise&lt;any&gt; {
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      this.checkTx(tx, resolve, reject);
+    });
+  }
+
+  /**
+   * Transaction Subscribe
+   * @description Create new Observer of transactions which will add it to allTransactionSubscribers variable and return information transaction failed or successed.
+   * @example
+   * contractService.transactionsSubscribe().subscribe((transaction) &#x3D;&gt; {console.log(&#x27;success&#x27;, transaction)});
+   * @returns transaction: {tx: string}
+   */
+  public transactionsSubscribe(): Observable&lt;any&gt; {
+    const newObserver &#x3D; new Observable((observer) &#x3D;&gt; {
+      this.allTransactionSubscribers.push(observer);
+    });
+    return newObserver;
+  }
+
+  /**
+   * Static information
+   * @description Main initialized function which will initialized MetaMaskService, retrive account information and triggered getContractsInfo() function.
+   * @example
+   * contractService.getStaticInfo().then(() &#x3D;&gt; {}).catch((err)&#x3D;&gt;{});
+   * @returns true
+   */
+  public async getStaticInfo(): Promise&lt;any&gt; {
+    return this.initAll().then(() &#x3D;&gt; {
+      this.metaMaskWeb3 &#x3D; new MetamaskService(this.config);
+      this.metaMaskWeb3.getAccounts().subscribe((account: any) &#x3D;&gt; {
+        if (account) {
+          const promises &#x3D; [this.getContractsInfo(false)];
+          return Promise.all(promises);
+        }
+      });
+    });
+  }
+
+  /**
+   * Get contract information.
+   * @description Triggered initializeContracts() function than will add contracts abi and address to metamask configuration.
+   * @example
+   * contractService.getContractsInfo(false).then(() &#x3D;&gt; {});
+   * @returns true
+   */
+  private getContractsInfo(noEnable?: boolean): Promise&lt;any&gt; {
+    if (!noEnable) {
+      this.initializeContracts();
+    }
+    const promises &#x3D; [true];
+    return Promise.all(promises);
+  }
+
+  /**
+   * Application initialized
+   * @description Load setting and contracrs information via https from assets/js/. Set application setting and contracts.
+   * @example
+   * contractService.initAll().then(() &#x3D;&gt; {});
+   */
+  private async initAll(): Promise&lt;any&gt; {
+    const promises &#x3D; [
+      this.httpService
+        .get(&#x60;/assets/js/settings.json?v&#x3D;${new Date().getTime()}&#x60;)
+        .toPromise()
+        .then((config: Config) &#x3D;&gt; {
+          this.settingsApp &#x3D; config ? config : this.settingsApp;
+          this.config.setConfig(this.settingsApp);
+        })
+        .catch(() &#x3D;&gt; {
+          this.config.setConfig(this.settingsApp);
+        }),
+      this.httpService
+        .get(&#x60;/assets/js/constants.json?v&#x3D;${new Date().getTime()}&#x60;)
+        .toPromise()
+        .then((result) &#x3D;&gt; {
+          return result;
+        })
+        .catch((err) &#x3D;&gt; {
+          console.log(&#x27;err constants&#x27;, err);
+        }),
+    ];
+
+    return Promise.all(promises).then((result) &#x3D;&gt; {
+      this.CONTRACTS_PARAMS &#x3D; result[1][this.settingsApp.production ? &#x27;mainnet&#x27; : this.settingsApp.network];
+    });
+  }
+
+  public accountSubscribe(): Observable&lt;any&gt; {
+    const newObserver &#x3D; new Observable((observer) &#x3D;&gt; {
+      observer.next(this.account);
+      this.allAccountSubscribers.push(observer);
+      return {
+        unsubscribe: () &#x3D;&gt; {
+          this.allAccountSubscribers &#x3D; this.allAccountSubscribers.filter((a) &#x3D;&gt; a !&#x3D;&#x3D; newObserver);
+        },
+      };
+    });
+    return newObserver;
+  }
+
+  /**
+   * Load account information
+   * @description Triggered function callAllAccountsSubscribers.
+   * @example
+   * contractService.loadAccountInfo();
+   */
+  public loadAccountInfo(): any {
+    this.callAllAccountsSubscribers();
+  }
+
+  /**
+   * Update account balance
+   * @description Update information about account token balance.
+   * @example
+   * contractService.updateBalance();
+   */
+  public updateBalance(): void {
+    this.getTokenBalance().then((balance) &#x3D;&gt; {
+      this.account.balance &#x3D; balance;
+      this.callAllAccountsSubscribers();
+    });
+  }
+
+  /**
+   * All Account Subscribers
+   * @description Send new account value to all account subscribers.
+   * @example
+   * contractService.callAllAccountsSubscribers();
+   */
+  private callAllAccountsSubscribers(): void {
+    this.allAccountSubscribers.forEach((observer) &#x3D;&gt; {
+      observer.next(this.account);
+    });
+  }
+
+  /**
+   * Get account information.
+   * @description Retrive infromation about account address via MetaMaskService from blockchain by address and get token address balance.
+   * @example
+   * contractService.getAccount().then((account) &#x3D;&gt; { console.log(account); }).catch((err) &#x3D;&gt; { console.log(err); });
+   * @returns account: {address: string, balance: string | number}
+   */
+  public getAccount(noEnable?: boolean): Promise&lt;any&gt; {
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      this.metaMaskWeb3.getAccounts(noEnable).subscribe(
+        (account: any) &#x3D;&gt; {
+          if (!this.account || account.address !&#x3D;&#x3D; this.account.address) {
+            this.account &#x3D; account;
+            this.getTokenBalance(account.address)
+              .then((balance) &#x3D;&gt; {
+                this.account.balance &#x3D; balance;
+                resolve(this.account);
+              })
+              .catch((err) &#x3D;&gt; {
+                console.log(&#x27;getTokenBalance&#x27;, err);
+              });
+          }
+        },
+        (err) &#x3D;&gt; {
+          this.account &#x3D; false;
+          reject(err);
+        }
+      );
+    });
+  }
+
+  /**
+   * Getting Token Address
+   * @description Return adress of token contract.
+   * @example
+   * contractService.getContractTokenAddress();
+   * @returns address
+   */
+  public getContractTokenAddress(): string {
+    return this.tokenAddress;
+  }
+
+  /**
+   * Getting Token Address
+   * @description Return adress of token contract.
+   * @example
+   * contractService.getContractTokenAddress();
+   * @returns address
+   */
+  public getStakingAddress(): string {
+    return this.stakingAddress;
+  }
+
+  /**
+   * Initialize contracts.
+   * @description Add your variable of contract to load it
+   */
+  private initializeContracts(): void {
+    this.StakingContract &#x3D; this.metaMaskWeb3.getContract(this.CONTRACTS_PARAMS.Staking.ABI, this.CONTRACTS_PARAMS.Staking.ADDRESS);
+    this.TokenContract &#x3D; this.metaMaskWeb3.getContract(this.CONTRACTS_PARAMS.Token.ABI, this.CONTRACTS_PARAMS.Token.ADDRESS);
+    this.tokenAddress &#x3D; this.CONTRACTS_PARAMS.Token.ADDRESS;
+    this.stakingAddress &#x3D; this.CONTRACTS_PARAMS.Staking.ADDRESS;
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+                   
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'ContractService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
