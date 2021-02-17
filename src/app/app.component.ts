@@ -154,6 +154,7 @@ export class AppComponent {
 
   private detectColorScheme(): any {
     this.theme = this.themeProvider.getTheme();
+    this.theme = 'white';
     document.documentElement.setAttribute('id', this.theme === 'dark' ? 'dark' : 'white');
     this.themeDark = this.theme === 'dark';
 
