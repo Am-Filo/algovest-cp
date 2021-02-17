@@ -30,10 +30,6 @@ export class ContractService {
 
   private StakingContract: Contract;
   public stakingAddress: string;
-
-  private tokensDecimals: any = {
-    ETH: 18,
-  };
   private CONTRACTS_PARAMS: any;
 
   public settingsApp = {
@@ -443,10 +439,6 @@ export class ContractService {
         }
       );
     });
-  }
-
-  public getCoinsDecimals(): void {
-    return this.tokensDecimals;
   }
 
   public getContractTokenAddress(): string {
