@@ -1,27 +1,105 @@
-# Algovest
+# Algovest project
+
+> project version 1.0.0
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.2.0.
 
-## Development server
+### Install project
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+1. Use nodejs 12 `nvm use 12`, if you don't have node 12 you can installed it or use 10.x.x.
+2. Install dependency `npm install`.
+3. To run application in development enviroment use command `npm run start:dev`.
 
-## Code scaffolding
+To build application in use command `npm run build` this command create a new folder **dist** in project root.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+To create project documentation run `npm run compodoc` this command create new folder **documantation** in project root.
 
-## Build
+### Settings
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+#### Network
 
-## Running unit tests
+Change application chain.
+Go to file `settings.json` in `assets/js/`, you will see a json object:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```
+{
+  "production": false,
+  "network": "rinkeby",
+  "net": 4
+}
+```
 
-## Running end-to-end tests
+To set mainnet change `production` to true, if you want to change development chain to ropsten or another change `network` and `chain` params.
+For example run in **ropsten** chain:
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+```
+{
+  "production": false,
+  "network": "ropsten",
+  "net": 3
+}
+```
 
-## Further help
+Then you need to update abi and address for ropsten contracts in file `contracts.json` in `assets/js/`.
+For example:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```
+  "ropsten": {
+    "Staking": {
+      "ADDRESS": "",
+      "ABI": []
+    },
+    "Token": {
+      "ADDRESS": "",
+      "ABI": []
+    }
+  },
+```
+
+###### **Attention! If you create a mainnet build you need to provide a mainnet settings in contracts.json**
+
+```
+  "mainnet": {
+    "Staking": {
+      "ADDRESS": "YOUR_MAINET_ADDRESS",
+      "ABI": [YOUR_MAINET_ABI]
+    },
+    "Token": {
+      "ADDRESS": "YOUR_MAINET_ADDRESS",
+      "ABI": [YOUR_MAINET_ABI]
+    }
+  },
+```
+
+All settings you can also change after create production build. In `dist` folder go to `assets/js/settings.json` and change everything you want.
+
+##### Contract
+
+Change application contracts.
+Go to file `contracts.json` in `assets/js/`, you will see a json object:
+
+```
+  "mainnet": {
+    "Staking": {
+      "ADDRESS": "",
+      "ABI": []
+    },
+    "Token": {
+      "ADDRESS": "",
+      "ABI": []
+    }
+  },
+  "rinkeby": {
+    "Staking": {
+      "ADDRESS": "",
+      "ABI": []
+    },
+    "Token": {
+      "ADDRESS": "",
+      "ABI": []
+    }
+  },
+```
+
+Change or add contracts for all chains what you want to use.
+All contracts you can also change after create production build. In `dist` folder go to `assets/js/contracts.json` and change everything you want.

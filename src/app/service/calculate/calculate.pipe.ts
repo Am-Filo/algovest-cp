@@ -5,8 +5,14 @@ import { CalculateService } from './calculate.service';
   name: 'calculate',
 })
 export class CalculatePipe implements PipeTransform {
+  /**
+   * Transform
+   * @description Return changed getting from template.
+   * @example
+   * <span>{{100000 | calculate}}</span>
+   * @returns value: string
+   */
   transform(value: number, args?: any): string {
-    // return CalculateService.getFloatWithSuffix(value, 1);
     return CalculateService.getSmallFloatWithSuffix(value, 1);
   }
 }

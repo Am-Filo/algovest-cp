@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
-import BigNumber from 'bignumber.js';
 import { Contract } from 'web3-eth-contract';
+import BigNumber from 'bignumber.js';
 
 import { MetamaskService } from '../metamask/metamask.service';
 import { AppConfig } from '../appconfig';
+import { daysValue } from 'src/app/params';
 
-interface Config {
+interface IConfig {
   production: boolean;
   network: string;
   net: number;
@@ -18,24 +19,21 @@ interface Config {
   providedIn: 'root',
 })
 export class ContractService {
-  private metaMaskWeb3: any;
   public account: any;
   private allAccountSubscribers = [];
   private allTransactionSubscribers = [];
 
-  public avsAddress: string;
-
-  private TokenContract: Contract;
-  private tokenAddress: string;
-
-  private StakingContract: Contract;
-  public stakingAddress: string;
   private CONTRACTS_PARAMS: any;
+  private TokenContract: Contract;
+  private StakingContract: Contract;
+  private tokenAddress: string;
+  private stakingAddress: string;
 
-  public settingsApp = {
+  private metaMaskWeb3: any;
+  private settingsApp = {
     production: false,
-    network: 'ropsten',
-    net: 3,
+    network: 'rinkeby',
+    net: 4,
   };
 
   constructor(private httpService: HttpClient, private config: AppConfig) {}
@@ -73,14 +71,13 @@ export class ContractService {
           value,
         };
       }),
-      // this.getSevenDays().then((value) => {
-      //   return {
-      //     key: 'sevenDays',
-      //     value,
-      //   };
-      // }),
+      this.getSevenDays().then((value) => {
+        return {
+          key: 'sevenDays',
+          value: value !== 0 ? value / 100 : 0,
+        };
+      }),
     ];
-
     return Promise.all(promises).then((results) => {
       const values = {};
       results.forEach((v) => {
@@ -170,6 +167,7 @@ export class ContractService {
         },
         (err: any) => {
           console.log('getSevenDays', err);
+          return 0;
         }
       );
   }
@@ -211,15 +209,17 @@ export class ContractService {
             return this.StakingContract.methods
               .stakeList(this.account.address, sessionId)
               .call()
-              .then((oneSession) => {
+              .then((oneSession: any) => {
                 const promises = [this.getTimeStampFromContract(oneSession.startDay), this.getTimeStampFromContract(oneSession.startDay + oneSession.numDaysStake)];
-
+                const apy = daysValue.filter((t) => t.value === +oneSession.numDaysStake);
+                const reward = (oneSession.stakedAVS * (apy[0].apy / 100)) / 365 + oneSession.numDaysStake;
                 return Promise.all(promises).then((stake) => {
                   return {
                     index: sessionId,
                     id: oneSession.stakeId,
                     start: stake[0],
                     end: stake[1],
+                    reward,
                     stakedAVS: oneSession.stakedAVS,
                     totalReward: oneSession.freezedRewardAVSTokens,
                     withdrawProgress: false,
@@ -228,7 +228,6 @@ export class ContractService {
               });
           });
           return Promise.all(sessionsPromises).then((allDeposits) => {
-            console.log(allDeposits);
             return allDeposits.reverse();
           });
         } else {
@@ -268,20 +267,17 @@ export class ContractService {
    * @returns true | false
    */
   public startStake(amount: string | number, day: number): Promise<any> {
-    const fromAccount = this.account.address;
-
-    const stake = (resolve, reject) => {
+    const stake = (resolve: any, reject: any) => {
       return this.StakingContract.methods
         .stakeStart(amount, day)
         .send({
-          from: fromAccount,
+          from: this.account.address,
         })
         .then((res) => {
           return this.checkTransaction(res);
         })
         .then(resolve, reject);
     };
-
     return new Promise((resolve, reject) => {
       this.getAllowance(amount).then(
         () => {
@@ -291,7 +287,7 @@ export class ContractService {
           this.TokenContract.methods
             .approve(this.stakingAddress, amount)
             .send({
-              from: fromAccount,
+              from: this.account.address,
             })
             .then(() => {
               stake(resolve, reject);
@@ -342,7 +338,7 @@ export class ContractService {
    * new Promise((resolve, reject) => {contractService.checkTx(tx, resolve, reject);});
    */
   private checkTx(tx: any, resolve: any, reject: any): void {
-    this.metaMaskWeb3.Web3.eth.getTransaction(tx.transactionHash).then((txInfo) => {
+    this.metaMaskWeb3.Web3.eth.getTransaction(tx.transactionHash).then((txInfo: any) => {
       if (txInfo.blockNumber) {
         this.callAllTransactionsSubscribers(txInfo);
         resolve(tx);
@@ -438,7 +434,7 @@ export class ContractService {
       this.httpService
         .get(`/assets/js/settings.json?v=${new Date().getTime()}`)
         .toPromise()
-        .then((config: Config) => {
+        .then((config: IConfig) => {
           this.settingsApp = config ? config : this.settingsApp;
           this.config.setConfig(this.settingsApp);
         })
@@ -446,21 +442,26 @@ export class ContractService {
           this.config.setConfig(this.settingsApp);
         }),
       this.httpService
-        .get(`/assets/js/constants.json?v=${new Date().getTime()}`)
+        .get(`/assets/js/contracts.json?v=${new Date().getTime()}`)
         .toPromise()
         .then((result) => {
           return result;
         })
         .catch((err) => {
-          console.log('err constants', err);
+          console.log('err contracts', err);
         }),
     ];
-
     return Promise.all(promises).then((result) => {
       this.CONTRACTS_PARAMS = result[1][this.settingsApp.production ? 'mainnet' : this.settingsApp.network];
     });
   }
 
+  /**
+   * Subscribe On Account
+   * @description Push into array new account subscriber.
+   * @example
+   * contractService.accountSubscribe();
+   */
   public accountSubscribe(): Observable<any> {
     const newObserver = new Observable((observer) => {
       observer.next(this.account);
@@ -563,8 +564,8 @@ export class ContractService {
   }
 
   /**
-   * Initialize contracts.
-   * @description Add your variable of contract to load it
+   * Initialize Contracts
+   * @description Send contract abi and address to web3. And set contracts addresses to variable.
    */
   private initializeContracts(): void {
     this.StakingContract = this.metaMaskWeb3.getContract(this.CONTRACTS_PARAMS.Staking.ABI, this.CONTRACTS_PARAMS.Staking.ADDRESS);

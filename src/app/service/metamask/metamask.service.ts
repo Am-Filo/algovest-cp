@@ -13,8 +13,8 @@ declare global {
   providedIn: 'root',
 })
 export class MetamaskService {
-  private metaMaskWeb3: any;
   public Web3: any;
+  private metaMaskWeb3: any;
   private providers: any;
 
   private netVersion: number;
@@ -34,14 +34,39 @@ export class MetamaskService {
     }
   }
 
-  public getBalance(address): Promise<any> {
+  /**
+   * Get Balance
+   * @description Get account balance from ethereum blockchain.
+   * @example
+   * metamaskService.getBalance(address).then((balance: string | number)=> {console.log('balance',balance)})
+   * @returns Promise<string | number>
+   */
+  public getBalance(address: string): Promise<string | number> {
     return this.Web3.eth.getBalance(address);
   }
 
+  /**
+   * Get Contract
+   * @description Add contract abi and address to web3 and get access to contract methods.
+   * @example
+   * metamaskService.getContract(abi,address);
+   */
   public getContract(abi: Array<any>, address: string): void {
     return new this.Web3.eth.Contract(abi, address);
   }
 
+  /**
+   * Get Account
+   * @description Get an user account. Check if user have metamask and logged into then return account address if chain equal settings chain.
+   *
+   * If user don't have metamask then throw new error to setup metamask first.<br />
+   * If user not logged into metamask then throw new error not authorized.<br />
+   * If user matamask chain not equal settings chain then throw new error to settings current chain.<br />
+   * if everything is ok return user address.
+   * @example
+   * metamaskService.getAccounts().subscribe((account: any)=> {console.log('account',account)});
+   * @returns Observable<any>
+   */
   public getAccounts(noEnable?: boolean): Observable<any> {
     const onAuth = (observer: any, address: string) => {
       if (this.Web3) {
@@ -58,20 +83,20 @@ export class MetamaskService {
       }
     };
 
-    const onError = (observer, errorParams) => {
+    const onError = (observer: any, errorParams: any) => {
       observer.error(errorParams);
       if (noEnable) {
         observer.complete();
       }
     };
 
-    const isValidMetaMaskNetwork = (observer, chain?) => {
+    const isValidMetaMaskNetwork = (observer: any, chain?: string | boolean | number) => {
       return new Promise((resolve, reject) => {
         this.metaMaskWeb3
           .request({
             method: 'net_version',
           })
-          .then((result) => {
+          .then((result: string | number) => {
             if (this.netVersion !== Number(result)) {
               if (chain) {
                 onError(observer, {
@@ -80,7 +105,6 @@ export class MetamaskService {
                   title: 'Metamask Error',
                 });
               }
-
               observer.error({
                 code: 2,
                 msg: 'Please choose ' + this.net + ' network in Metamask.',

@@ -1,7 +1,17 @@
 {
+  "mainnet": {
+    "Staking": {
+      "ADDRESS": "",
+      "ABI": []
+    },
+    "Token": {
+      "ADDRESS": "",
+      "ABI": []
+    }
+  },
   "rinkeby": {
     "Staking": {
-      "ADDRESS": "0x24E1FB7a781d255EdC40e80C89d9289dC61925F2",
+      "ADDRESS": "0xb17c53F89413F2870df4A8187c17e172A9A1Ad34",
       "ABI": [
         {
           "inputs": [
@@ -86,6 +96,16 @@
           "name": "TokenUnfreezed",
           "type": "event"
         },
+        {
+          "anonymous": false,
+          "inputs": [
+            { "indexed": false, "internalType": "uint256", "name": "counter", "type": "uint256" },
+            { "indexed": false, "internalType": "uint256", "name": "day_week_ago", "type": "uint256" },
+            { "indexed": false, "internalType": "uint256", "name": "final_perc", "type": "uint256" }
+          ],
+          "name": "sev_days",
+          "type": "event"
+        },
         { "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "AVSOwnerWithdraw", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
         { "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "AVSTokenDonation", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
         { "inputs": [], "name": "allAVSTokens", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
@@ -129,6 +149,7 @@
           "stateMutability": "view",
           "type": "function"
         },
+        { "inputs": [], "name": "length_stakes", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
         { "inputs": [], "name": "maxNumDays", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
         { "inputs": [], "name": "owner", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" },
         { "inputs": [], "name": "renounceOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" },

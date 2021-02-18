@@ -13,6 +13,10 @@ export class MetamaskErrorComponent {
     this.err = data.msg;
     this.title = data.title;
   }
+
+  /**
+   * Close Modal
+   */
   public closeModal(): void {
     this.dialogRef.close();
   }

@@ -15,6 +15,10 @@ export class TransactionSuccessModalComponent {
     this.appConfig = config.getConfig();
     this.ethLink = this.appConfig.network === 'mainnet' ? `https://etherscan.io/tx/${data.tx}` : `https://${this.appConfig.network}.etherscan.io/tx/${data.tx}`;
   }
+
+  /**
+   * Close Modal
+   */
   public closeModal(): void {
     this.dialogRef.close();
   }
