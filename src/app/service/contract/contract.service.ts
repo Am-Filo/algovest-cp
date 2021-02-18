@@ -73,12 +73,12 @@ export class ContractService {
           value,
         };
       }),
-      // this.getSevenDays().then((value) => {
-      //   return {
-      //     key: 'sevenDays',
-      //     value,
-      //   };
-      // }),
+      this.getSevenDays().then((value) => {
+        return {
+          key: 'sevenDays',
+          value: value * 100,
+        };
+      }),
     ];
 
     return Promise.all(promises).then((results) => {
