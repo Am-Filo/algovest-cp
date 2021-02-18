@@ -73,7 +73,7 @@ export class ContractService {
       this.getSevenDays().then((value) => {
         return {
           key: 'sevenDays',
-          value: value * 100,
+          value: value !== 0 ? value / 100 : 0,
         };
       }),
     ];
@@ -224,7 +224,6 @@ export class ContractService {
               });
           });
           return Promise.all(sessionsPromises).then((allDeposits) => {
-            console.log(allDeposits);
             return allDeposits.reverse();
           });
         } else {

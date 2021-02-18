@@ -66,7 +66,6 @@ export class AppComponent {
    */
   public initData(): void {
     this.contractService.getMainInfo().then((data) => {
-      console.log('init', data);
       this.totalData = data;
       this.stakeList();
       this.loading = false;
