@@ -10,6 +10,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 To build application in use command `npm run build` this command create a new folder **dist** in project root.
 
+To create project documentation run `npm run compodoc` this command create new folder **documantation** in project root.
+
 ### Settings
 
 #### Network
@@ -25,7 +27,7 @@ Go to file `settings.json` in `assets/js/`, you will see a json object:
 }
 ```
 
-To set mainnet change `production` to true, if you want to change development chain to ropste or another change `network` and `chain` params.
+To set mainnet change `production` to true, if you want to change development chain to ropsten or another change `network` and `chain` params.
 For example run in **ropsten** chain:
 
 ```
