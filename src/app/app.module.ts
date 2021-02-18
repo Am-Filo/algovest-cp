@@ -16,6 +16,12 @@ import { MetamaskErrorComponent } from './components/metamask/metamask-error.com
 import { TransactionSuccessModalComponent } from './components/transaction/transaction-success-modal.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+/**
+ * Main Initialization App
+ * @description When service open in browser, this function will triggered first to initialized contract and metamask service. Also add contracts abi and address to web3.
+ * @example
+ * providers:[{provide: APP_INITIALIZER,useFactory: initializeApp,deps: [Injector],multi: true,}]
+ */
 export function initializeApp(injector: Injector): any {
   return () =>
     new Promise<any>((resolve: any) => {

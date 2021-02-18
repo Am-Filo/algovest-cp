@@ -28,7 +28,6 @@
       <div class="card">
         <span class="card-title icon icon-flex icon-graphic">7 Days Average Staking APY</span>
         <b>{{ loading ? '--' : totalData.sevenDays + '%' }}</b>
-        <!-- <b>{{ loading ? '--' : '37%' }}</b> -->
         <br />
         <span class="card-text-accent">Staking Analytics</span>
       </div>
@@ -53,7 +52,7 @@
         <span class="card-head-title icon icon-flex icon-reverce icon-info-orange">Stake AVS</span>
         <div class="card-balance-block">
           <span class="card-title">Your AVS Balance</span>
-          <span class="card-balance icon icon-flex icon-coins-green">{{ loading ? '--' : (totalData.balance | bigNumberFormat: 18:true:false:18) }}</span>
+          <span class="card-balance icon icon-flex icon-coins-green">{{ loading ? '--' : (totalData.balance | bigNumberFormat: 18:true:false:6) }}</span>
         </div>
       </div>
       <form #stakingForm="ngForm">
@@ -118,12 +117,12 @@
   <div class="container">
     <div class="section-title-block">
       <h2 class="section-title">Stakings</h2>
-      <span *ngIf="stakeslist !== 0" class="fee icon icon-flex icon-info-gray">2% Unstake Fee</span>
+      <span *ngIf="stakesList !== 0" class="fee icon icon-flex icon-info-gray">2% Unstake Fee</span>
     </div>
-    <div *ngIf="stakeslist === 0" class="grid">
+    <div *ngIf="stakesList === 0" class="grid">
       <div class="card">You don't have stakes</div>
     </div>
-    <div *ngIf="stakeslist !== 0" class="table-scroll">
+    <div *ngIf="stakesList !== 0" class="table-scroll">
       <table class="table" cellpadding="0" cellspacing="0" border="0">
         <thead>
           <tr>
@@ -140,7 +139,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let stake of stakeslist">
+          <tr *ngFor="let stake of stakesList">
             <td colspan="2">
               <span class="table-date icon icon-flex icon-arrow-right" [attr.data-date-start]="stake.start | date">{{ stake.end | date }}</span>
             </td>
@@ -167,17 +166,6 @@
               </button>
             </td>
           </tr>
-          <!-- <tr>
-            <td colspan="2">
-              <span class="table-date icon icon-flex icon-arrow-right" data-date-start="20.10.2021">04.06.2022</span>
-            </td>
-            <td><b>100,000</b></td>
-            <td><b>25</b></td>
-            <td><b>100,000</b></td>
-            <td class="table-btn">
-              <span class="btn btn-unstake">Unstake</span>
-            </td>
-          </tr> -->
         </tbody>
       </table>
     </div>

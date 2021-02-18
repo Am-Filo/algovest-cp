@@ -7,6 +7,7 @@ import { MetamaskErrorComponent } from './components/metamask/metamask-error.com
 import { ThemeService } from './service/theme/theme.service';
 import { ContractService } from './service/contract/contract.service';
 import { MetamaskService } from './service/metamask/metamask.service';
+import { daysValue } from './params';
 
 @Component({
   selector: 'app-root',
@@ -16,37 +17,22 @@ import { MetamaskService } from './service/metamask/metamask.service';
 export class AppComponent {
   public theme = 'white';
   public themeDark = false;
-
   public loading = true;
 
   public account: any;
   public userAddress = '';
   public onChangeAccount: EventEmitter<any> = new EventEmitter();
 
-  public amountValue: any;
-
   public contractAddress: string;
   public totalData: any;
-  public stakeslist: any;
+  public stakesList: any;
   public stakingProgress = false;
 
+  public amountValue: number | string;
   public daySelect = false;
   public daySelected = 15;
   public apySelected = 10;
-  public days = [
-    { value: 15, apy: 10 },
-    { value: 30, apy: 11 },
-    { value: 45, apy: 12.1 },
-    { value: 60, apy: 13.31 },
-    { value: 75, apy: 14.641 },
-    { value: 90, apy: 16.1051 },
-    { value: 105, apy: 17.71561 },
-    { value: 120, apy: 19.487171 },
-    { value: 135, apy: 21.4358881 },
-    { value: 150, apy: 23.57947691 },
-    { value: 165, apy: 25.9354246 },
-    { value: 180, apy: 28.53116706 },
-  ];
+  public days = daysValue;
 
   constructor(private themeProvider: ThemeService, private contractService: ContractService, private ngZone: NgZone, private metamaskService: MetamaskService, public dialog: MatDialog) {
     this.detectColorScheme();
@@ -95,7 +81,7 @@ export class AppComponent {
    */
   public stakeList(): void {
     this.contractService.getAccountStakes().then((res) => {
-      this.stakeslist = res;
+      this.stakesList = res;
     });
   }
 
@@ -144,10 +130,6 @@ export class AppComponent {
         stake.withdrawProgress = false;
       });
   }
-
-  // public onChangeAmount(): any {
-  //   console.log(this.amountValue);
-  // }
 
   /**
    * Select Day
@@ -216,7 +198,7 @@ export class AppComponent {
     this.theme = 'white';
     document.documentElement.setAttribute('id', this.theme === 'dark' ? 'dark' : 'white');
     this.themeDark = this.theme === 'dark';
-    this.themeProvider.subscribeAddress().subscribe((theme) => (this.theme = theme));
+    this.themeProvider.subscribeTheme().subscribe((theme) => (this.theme = theme));
   }
 
   /**

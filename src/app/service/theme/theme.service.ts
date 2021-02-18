@@ -8,6 +8,13 @@ export class ThemeService {
   private themeSubscribers = [];
   constructor() {}
 
+  /**
+   * Get Theme
+   * @description Get theme value from local storage but if it not exists get value from user os/browser prefers-color-scheme.
+   * @example
+   * themeService.getTheme();
+   * @returns string
+   */
   public getTheme(): string {
     const item = localStorage.getItem('theme');
     if (item) {
@@ -19,19 +26,26 @@ export class ThemeService {
     }
   }
 
+  /**
+   * Set Theme
+   * @description Set theme value in local storage and set new theme value in id attribute in html tag. Also trigger function callSubscribers to set new theme value.
+   * @example
+   * themeService.setTheme('white');
+   */
   public setTheme(theme: string): void {
     localStorage.setItem('theme', theme);
     document.documentElement.setAttribute('id', theme);
     this.callSubscribers(theme);
   }
 
-  private callSubscribers(theme: string): void {
-    this.themeSubscribers.forEach((obser) => {
-      obser.next(theme);
-    });
-  }
-
-  public subscribeAddress(): Observable<string> {
+  /**
+   * Subscribe On Theme
+   * @description Create new subscriber on theme service.
+   * @example
+   * themeService.subscribeTheme().subscribe((theme: string) => {console.log('theme subscriber', theme);});
+   * @returns Observabel<string>
+   */
+  public subscribeTheme(): Observable<string> {
     return new Observable((observer) => {
       this.themeSubscribers.push(observer);
       const allSubscribers = this.themeSubscribers;
@@ -43,6 +57,18 @@ export class ThemeService {
           });
         },
       };
+    });
+  }
+
+  /**
+   * Call Theme Subscribers
+   * @description Trigger all subscribers to update theme value.
+   * @example
+   * themeService.callSubscribers('white');
+   */
+  private callSubscribers(theme: string): void {
+    this.themeSubscribers.forEach((obser) => {
+      obser.next(theme);
     });
   }
 }
