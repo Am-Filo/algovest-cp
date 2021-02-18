@@ -442,13 +442,13 @@ export class ContractService {
           this.config.setConfig(this.settingsApp);
         }),
       this.httpService
-        .get(`/assets/js/constants.json?v=${new Date().getTime()}`)
+        .get(`/assets/js/contracts.json?v=${new Date().getTime()}`)
         .toPromise()
         .then((result) => {
           return result;
         })
         .catch((err) => {
-          console.log('err constants', err);
+          console.log('err contracts', err);
         }),
     ];
     return Promise.all(promises).then((result) => {

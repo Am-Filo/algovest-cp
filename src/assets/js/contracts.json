@@ -1,7 +1,17 @@
 {
+  "mainnet": {
+    "Staking": {
+      "ADDRESS": "",
+      "ABI": []
+    },
+    "Token": {
+      "ADDRESS": "",
+      "ABI": []
+    }
+  },
   "rinkeby": {
     "Staking": {
-      "ADDRESS": "0xA5c3c6858b0808141933387cA9A6903cB4E4feb3",
+      "ADDRESS": "0xb17c53F89413F2870df4A8187c17e172A9A1Ad34",
       "ABI": [
         {
           "inputs": [
