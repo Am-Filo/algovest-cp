@@ -1,11 +1,11 @@
 @import './mixins.scss';
 
-// @include font-face('Poppins', '../assets/fonts/Poppins/Poppins-Thin', 100);
-// @include font-face('Poppins', '../assets/fonts/Poppins/Poppins-ExtraLight', 200);
-// @include font-face('Poppins', '../assets/fonts/Poppins/Poppins-Light', 300);
-// @include font-face('Poppins', '../assets/fonts/Poppins/Poppins-Regular', normal);
-// @include font-face('Poppins', '../assets/fonts/Poppins/Poppins-Medium', 500);
-// @include font-face('Poppins', '../assets/fonts/Poppins/Poppins-Bold', 600);
-// @include font-face('Poppins', '../assets/fonts/Poppins/Poppins-SemiBold', 700);
-// @include font-face('Poppins', '../assets/fonts/Poppins/Poppins-Black', 800);
-// @include font-face('Poppins', '../assets/fonts/Poppins/Poppins-ExtraBold', 900);
+@include font-face('Poppins', '/assets/fonts/Poppins/Poppins-Thin', 100);
+@include font-face('Poppins', '/assets/fonts/Poppins/Poppins-ExtraLight', 200);
+@include font-face('Poppins', '/assets/fonts/Poppins/Poppins-Light', 300);
+@include font-face('Poppins', '/assets/fonts/Poppins/Poppins-Regular', normal);
+@include font-face('Poppins', '/assets/fonts/Poppins/Poppins-Medium', 500);
+@include font-face('Poppins', '/assets/fonts/Poppins/Poppins-Bold', 600);
+@include font-face('Poppins', '/assets/fonts/Poppins/Poppins-SemiBold', 700);
+@include font-face('Poppins', '/assets/fonts/Poppins/Poppins-Black', 800);
+@include font-face('Poppins', '/assets/fonts/Poppins/Poppins-ExtraBold', 900);

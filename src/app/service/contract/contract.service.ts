@@ -7,6 +7,7 @@ import BigNumber from 'bignumber.js';
 
 import { MetamaskService } from '../metamask/metamask.service';
 import { AppConfig } from '../appconfig';
+import { daysValue } from 'src/app/params';
 
 interface IConfig {
   production: boolean;
@@ -166,6 +167,7 @@ export class ContractService {
         },
         (err: any) => {
           console.log('getSevenDays', err);
+          return 0;
         }
       );
   }
@@ -207,15 +209,17 @@ export class ContractService {
             return this.StakingContract.methods
               .stakeList(this.account.address, sessionId)
               .call()
-              .then((oneSession) => {
+              .then((oneSession: any) => {
                 const promises = [this.getTimeStampFromContract(oneSession.startDay), this.getTimeStampFromContract(oneSession.startDay + oneSession.numDaysStake)];
-
+                const apy = daysValue.filter((t) => t.value === +oneSession.numDaysStake);
+                const reward = (oneSession.stakedAVS * (apy[0].apy / 100)) / 365 + oneSession.numDaysStake;
                 return Promise.all(promises).then((stake) => {
                   return {
                     index: sessionId,
                     id: oneSession.stakeId,
                     start: stake[0],
                     end: stake[1],
+                    reward,
                     stakedAVS: oneSession.stakedAVS,
                     totalReward: oneSession.freezedRewardAVSTokens,
                     withdrawProgress: false,
