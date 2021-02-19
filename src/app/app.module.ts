@@ -26,7 +26,7 @@ export function initializeApp(injector: Injector): any {
   return () =>
     new Promise<any>((resolve: any) => {
       const contractService = injector.get(ContractService, Promise.resolve(null));
-      contractService.getStaticInfo().then(() => {
+      contractService.initAll().then(() => {
         resolve(null);
       });
     });

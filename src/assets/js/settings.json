@@ -1,5 +1,6 @@
 {
-  "production": false,
+  "production": true,
+  "bridge": "https://bridge.walletconnect.org",
   "network": "rinkeby",
   "net": 4
 }

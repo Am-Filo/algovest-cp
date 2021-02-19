@@ -4,7 +4,7 @@
     <div *ngIf="account" class="metamask-block">
       <span class="metamask-address icon icon-flex icon-metamask">{{ userAddress }}</span>
     </div>
-    <span *ngIf="!account" (click)="subscribeAccount()" class="btn btn-green btn-metamask">Connect MetaMask</span>
+    <span *ngIf="!account" (click)="subscribeAccount()" class="btn btn-green btn-metamask">{{ production ? 'Wallet Connect' : 'Connect MetaMask' }}</span>
   </div>
 </header>
 
@@ -109,7 +109,7 @@
       </form>
     </div>
 
-    <span *ngIf="!account" (click)="subscribeAccount()" class="btn btn-green btn-connect">Connect MetaMask</span>
+    <span *ngIf="!account" (click)="subscribeAccount()" class="btn btn-green btn-connect">{{ production ? 'Wallet Connect' : 'Connect MetaMask' }}</span>
   </div>
 </section>
 

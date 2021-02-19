@@ -6,8 +6,8 @@ import { MetamaskErrorComponent } from './components/metamask/metamask-error.com
 
 import { ThemeService } from './service/theme/theme.service';
 import { ContractService } from './service/contract/contract.service';
-import { MetamaskService } from './service/metamask/metamask.service';
 import { daysValue } from './params';
+import { AppConfig } from './service/appconfig';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +18,7 @@ export class AppComponent {
   public theme = 'white';
   public themeDark = false;
   public loading = true;
+  public production = false;
 
   public account: any;
   public userAddress = '';
@@ -34,28 +35,42 @@ export class AppComponent {
   public apySelected = 10;
   public days = daysValue;
 
-  constructor(private themeProvider: ThemeService, private contractService: ContractService, private ngZone: NgZone, private metamaskService: MetamaskService, public dialog: MatDialog) {
+  constructor(private themeProvider: ThemeService, private contractService: ContractService, private ngZone: NgZone, public dialog: MatDialog, public config: AppConfig) {
+    this.production = config.getConfig().production;
     this.detectColorScheme();
-    this.contractService
-      .getAccount()
-      .then(() => {
-        this.subscribeAccount();
-        this.contractAddress = this.contractService.getStakingAddress();
-        this.contractService.transactionsSubscribe().subscribe((transaction: any) => {
-          if (transaction) {
-            this.dialog.open(TransactionSuccessModalComponent, {
-              data: { title: 'Transaction', text: 'Completed successfully ', tx: transaction.hash },
-              width: '440px',
-            });
-          }
+    this.contractService.accountSubscribe().subscribe((account) => console.log('accountSubscribe()', account));
+
+    if (!this.production) {
+      this.contractService
+        .getAccount()
+        .then(() => {
+          this.subscribeAccount();
+          this.contractAddress = this.contractService.getStakingAddress();
+          // this.contractService.transactionsSubscribe().subscribe((transaction: any) => {
+          //   if (transaction) {
+          //     this.dialog.open(TransactionSuccessModalComponent, {
+          //       data: { title: 'Transaction', text: 'Completed successfully ', tx: transaction.hash },
+          //       width: '440px',
+          //     });
+          //   }
+          // });
+        })
+        .catch((err) => {
+          this.dialog.open(MetamaskErrorComponent, {
+            data: err,
+            width: '400px',
+          });
         });
-      })
-      .catch((err) => {
-        this.dialog.open(MetamaskErrorComponent, {
-          data: err,
-          width: '400px',
+    }
+
+    this.contractService.transactionsSubscribe().subscribe((transaction: any) => {
+      if (transaction) {
+        this.dialog.open(TransactionSuccessModalComponent, {
+          data: { title: 'Transaction', text: 'Completed successfully ', tx: transaction.hash },
+          width: '440px',
         });
-      });
+      }
+    });
   }
 
   /**
@@ -150,7 +165,7 @@ export class AppComponent {
    */
   public subscribeAccount(): void {
     // subscribe on matamask account observer
-    this.metamaskService.getAccounts().subscribe((account) => {
+    this.contractService.getAccount().then((account) => {
       this.ngZone.run(() => {
         this.onChangeAccount.emit();
         if (account && (!this.account || this.account.address !== account.address)) {
@@ -165,13 +180,15 @@ export class AppComponent {
       this.updateUserAccount(account);
     });
 
-    // catch on start metamask errors
-    this.contractService.getAccount().catch((err) => {
-      this.dialog.open(MetamaskErrorComponent, {
-        data: err,
-        width: '400px',
+    if (!this.production) {
+      // catch on start metamask errors
+      this.contractService.getAccount().catch((err) => {
+        this.dialog.open(MetamaskErrorComponent, {
+          data: err,
+          width: '400px',
+        });
       });
-    });
+    }
   }
 
   /**
@@ -181,7 +198,7 @@ export class AppComponent {
    * this.updateUserAccount(account);
    */
   private updateUserAccount(account: any): void {
-    this.initData();
+    // this.initData();
     this.account = account;
     this.userAddress = this.account.address.substr(0, 5) + '...' + this.account.address.substr(this.account.address.length - 3, this.account.address.length);
   }

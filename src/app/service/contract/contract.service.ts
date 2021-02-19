@@ -8,6 +8,9 @@ import BigNumber from 'bignumber.js';
 import { MetamaskService } from '../metamask/metamask.service';
 import { AppConfig } from '../appconfig';
 import { daysValue } from 'src/app/params';
+import { WalletConnectService } from '../wallet-connect/wallet-connect.service';
+import { resolve } from 'path';
+import { rejects } from 'assert';
 
 interface IConfig {
   production: boolean;
@@ -29,7 +32,7 @@ export class ContractService {
   private tokenAddress: string;
   private stakingAddress: string;
 
-  private metaMaskWeb3: any;
+  private walletService: any;
   private settingsApp = {
     production: false,
     network: 'rinkeby',
@@ -106,6 +109,10 @@ export class ContractService {
           console.log('getTotalAvs', err);
         }
       );
+  }
+
+  public reserWalletService(): void {
+    this.walletService = undefined;
   }
 
   /**
@@ -338,7 +345,7 @@ export class ContractService {
    * new Promise((resolve, reject) => {contractService.checkTx(tx, resolve, reject);});
    */
   private checkTx(tx: any, resolve: any, reject: any): void {
-    this.metaMaskWeb3.Web3.eth.getTransaction(tx.transactionHash).then((txInfo: any) => {
+    this.walletService.Web3.eth.getTransaction(tx.transactionHash).then((txInfo: any) => {
       if (txInfo.blockNumber) {
         this.callAllTransactionsSubscribers(txInfo);
         resolve(tx);
@@ -397,15 +404,15 @@ export class ContractService {
    * @returns true
    */
   public async getStaticInfo(): Promise<any> {
-    return this.initAll().then(() => {
-      this.metaMaskWeb3 = new MetamaskService(this.config);
-      this.metaMaskWeb3.getAccounts().subscribe((account: any) => {
-        if (account) {
-          const promises = [this.getContractsInfo(false)];
-          return Promise.all(promises);
-        }
-      });
+    // return this.initAll().then(() => {
+    this.walletService = this.config.getConfig().production ? new WalletConnectService(this.config) : new MetamaskService(this.config);
+    this.walletService.getAccounts().subscribe((account: any) => {
+      if (account) {
+        const promises = [this.getContractsInfo(false)];
+        return Promise.all(promises);
+      }
     });
+    // });
   }
 
   /**
@@ -510,6 +517,13 @@ export class ContractService {
     });
   }
 
+  // public isActiveConnect(): Promise<boolean> {
+  //   return new Promise((resolve: any) => {
+  //     console.log(this.walletService);
+  //     resolve(this.walletService === undefined ? false : true);
+  //   });
+  // }
+
   /**
    * Get account information.
    * @description Retrive infromation about account address via MetaMaskService from blockchain by address and get token address balance.
@@ -518,26 +532,55 @@ export class ContractService {
    * @returns account: {address: string, balance: string | number}
    */
   public getAccount(noEnable?: boolean): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.metaMaskWeb3.getAccounts(noEnable).subscribe(
-        (account: any) => {
-          if (!this.account || account.address !== this.account.address) {
-            this.account = account;
-            this.getTokenBalance(account.address)
-              .then((balance) => {
-                this.account.balance = balance;
-                resolve(this.account);
-              })
-              .catch((err) => {
-                console.log('getTokenBalance', err);
-              });
+    return new Promise((resolve: any, reject) => {
+      // this.isActiveConnect().then((connected: any) => {
+      console.log('this.walletService ', this.walletService);
+      if (this.walletService === undefined || !this.walletService.conneced) {
+        this.getStaticInfo().then((data) => console.log('data', data));
+      } else {
+        this.walletService.getAccounts(noEnable).subscribe(
+          (account: any) => {
+            console.log('dasdas', account);
+            if (!this.account || account.address !== this.account.address) {
+              this.account = account;
+              this.getTokenBalance(account.address)
+                .then((balance) => {
+                  this.account.balance = balance;
+                  resolve(this.account);
+                })
+                .catch((err) => {
+                  console.log('getTokenBalance', err);
+                });
+            }
+          },
+          (err) => {
+            this.account = false;
+            reject(err);
           }
-        },
-        (err) => {
-          this.account = false;
-          reject(err);
-        }
-      );
+        );
+      }
+      // });
+
+      //   this.walletService.getAccounts(noEnable).subscribe(
+      //     (account: any) => {
+      //       console.log('dasdas', account);
+      //       if (!this.account || account.address !== this.account.address) {
+      //         this.account = account;
+      //         this.getTokenBalance(account.address)
+      //           .then((balance) => {
+      //             this.account.balance = balance;
+      //             resolve(this.account);
+      //           })
+      //           .catch((err) => {
+      //             console.log('getTokenBalance', err);
+      //           });
+      //       }
+      //     },
+      //     (err) => {
+      //       this.account = false;
+      //       reject(err);
+      //     }
+      //   );
     });
   }
 
@@ -568,8 +611,8 @@ export class ContractService {
    * @description Send contract abi and address to web3. And set contracts addresses to variable.
    */
   private initializeContracts(): void {
-    this.StakingContract = this.metaMaskWeb3.getContract(this.CONTRACTS_PARAMS.Staking.ABI, this.CONTRACTS_PARAMS.Staking.ADDRESS);
-    this.TokenContract = this.metaMaskWeb3.getContract(this.CONTRACTS_PARAMS.Token.ABI, this.CONTRACTS_PARAMS.Token.ADDRESS);
+    // this.StakingContract = this.walletService.getContract(this.CONTRACTS_PARAMS.Staking.ABI, this.CONTRACTS_PARAMS.Staking.ADDRESS);
+    // this.TokenContract = this.walletService.getContract(this.CONTRACTS_PARAMS.Token.ABI, this.CONTRACTS_PARAMS.Token.ADDRESS);
     this.tokenAddress = this.CONTRACTS_PARAMS.Token.ADDRESS;
     this.stakingAddress = this.CONTRACTS_PARAMS.Staking.ADDRESS;
   }
