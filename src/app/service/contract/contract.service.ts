@@ -210,9 +210,9 @@ export class ContractService {
               .stakeList(this.account.address, sessionId)
               .call()
               .then((oneSession: any) => {
-                const promises = [this.getTimeStampFromContract(oneSession.startDay), this.getTimeStampFromContract(oneSession.startDay + oneSession.numDaysStake)];
+                const promises = [this.getTimeStampFromContract(+oneSession.startDay), this.getTimeStampFromContract(+oneSession.startDay + +oneSession.numDaysStake)];
                 const apy = daysValue.filter((t) => t.value === +oneSession.numDaysStake);
-                const reward = (oneSession.stakedAVS * (apy[0].apy / 100)) / 365 + oneSession.numDaysStake;
+                const reward = (oneSession.stakedAVS * (apy[0].apy / 100)) / (365 * +oneSession.numDaysStake);
                 return Promise.all(promises).then((stake) => {
                   return {
                     index: sessionId,
