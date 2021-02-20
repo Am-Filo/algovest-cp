@@ -621,20 +621,27 @@ export class ContractService {
     this.stakingAddress = this.CONTRACTS_PARAMS.Staking.ADDRESS;
   }
 
-  public initWalletConnect(name: string): void {
+  public initWalletConnect(name: string): Promise<boolean> {
     const providerWallet = this.settingsApp.walletConnect.providers[name];
     const networkWallet = this.settingsApp.network;
 
-    this.connectWallet
+    const connecting = this.connectWallet
       .connectProvider(providerWallet, networkWallet)
       .then((connected) => {
         console.log('providerWallet connected', connected);
         if (connected) {
           this.initializeContracts();
         }
+
+        return connected;
       })
       .catch((err) => {
         console.log('providerWallet err', err);
       });
+
+    return Promise.all([connecting]).then((connect: any) => {
+      console.log('connecting', connect[0]);
+      return connect[0];
+    });
   }
 }

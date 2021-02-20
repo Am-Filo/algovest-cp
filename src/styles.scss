@@ -597,6 +597,33 @@ header {
     }
   }
 
+  &-select-provider {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 15px;
+    justify-content: center;
+    align-items: center;
+
+    .icon {
+      display: flex;
+      flex-direction: column;
+      font-size: 12px;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+
+      &:before {
+        margin-left: 0px;
+        margin-bottom: 10px;
+        width: 70px;
+        height: 70px;
+        background-size: 30px 30px;
+        border: 2px solid var(--modal-select-provider-icon-background-color);
+        background-color: transparent;
+      }
+    }
+  }
+
   &-body {
     padding: 20px 0;
     font-size: 16px;

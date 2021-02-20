@@ -4,7 +4,7 @@
     <div *ngIf="account" class="metamask-block">
       <span class="metamask-address icon icon-flex icon-metamask">{{ userAddress }}</span>
     </div>
-    <span *ngIf="!account" (click)="subscribeAccount()" class="btn btn-green btn-metamask">{{ production ? 'Wallet Connect' : 'Connect MetaMask' }}</span>
+    <span *ngIf="!account" (click)="createConnect()" class="btn btn-green btn-metamask">Connect</span>
   </div>
 </header>
 
@@ -109,8 +109,7 @@
       </form>
     </div>
 
-    <span *ngIf="!account" (click)="subscribeAccount()" class="btn btn-green btn-connect">{{ production ? 'Wallet Connect' : 'Connect MetaMask' }}</span>
-    <span (click)="test()" class="btn btn-green btn-connect">test</span>
+    <span *ngIf="!account" (click)="createConnect()" class="btn btn-green btn-connect">Connect</span>
   </div>
 </section>
 
@@ -172,3 +171,21 @@
     </div>
   </div>
 </section>
+
+<div class="modal" *ngIf="modal">
+  <div class="modal-content">
+    <div class="modal-head">
+      <span class="modal-head-title icon icon-flex icon-attention">Choose connection</span>
+    </div>
+    <div class="modal-body">
+      <div class="modal-select-provider">
+        <span *ngFor="let provider of providers" (click)="connect(provider)" class="icon" [attr.class]="'btn icon icon-provider icon-' + provider.toLowerCase()"></span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <span></span>
+      <span class="btn btn-green btn-footer" (click)="modal = !modal">Close</span>
+      <span></span>
+    </div>
+  </div>
+</div>

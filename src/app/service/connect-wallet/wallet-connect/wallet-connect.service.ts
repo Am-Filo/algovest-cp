@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import WalletConnect from '@walletconnect/client';
 import QRCodeModal from '@walletconnect/qrcode-modal';
-import Web3 from 'web3';
 
 import { IMessageProvider } from '../connect-wallet.service';
 

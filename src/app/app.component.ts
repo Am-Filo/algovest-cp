@@ -20,6 +20,9 @@ export class AppComponent {
   public loading = true;
   public production = false;
 
+  public modal = false;
+  public providers = [];
+
   public account: any;
   public userAddress = '';
   public onChangeAccount: EventEmitter<any> = new EventEmitter();
@@ -37,6 +40,8 @@ export class AppComponent {
 
   constructor(private themeProvider: ThemeService, private contractService: ContractService, private ngZone: NgZone, public dialog: MatDialog, public config: AppConfig) {
     this.production = config.getConfig().network.name === 'mainnet';
+    this.providers = Object.keys(config.getConfig().walletConnect.providers);
+
     this.detectColorScheme();
     this.contractService.accountSubscribe().subscribe((account) => console.log('accountSubscribe()', account));
 
@@ -71,6 +76,17 @@ export class AppComponent {
         });
       }
     });
+  }
+
+  public connect(provider: string): void {
+    this.contractService.initWalletConnect(provider).then((connect: boolean) => {
+      this.modal = !connect;
+      console.log('connect status', connect);
+    });
+  }
+
+  public createConnect(): void {
+    this.modal = true;
   }
 
   /**
@@ -155,10 +171,6 @@ export class AppComponent {
     this.daySelect = false;
     this.daySelected = day;
     this.apySelected = apy;
-  }
-
-  public test(): void {
-    this.contractService.initWalletConnect('WalletConnect');
   }
 
   /**

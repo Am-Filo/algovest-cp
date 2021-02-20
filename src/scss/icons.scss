@@ -1,4 +1,4 @@
-$scheme-icons: (('link', 'link', 'svg'), ('arrow-down', 'arrow-down', 'svg'), ('arrow-right', 'arrow-right', 'svg'), ('graphic', 'graphic', 'svg'), ('grow', 'grow', 'svg'), ('logo', 'logo', 'svg'), ('metamask', 'metamask', 'svg'), ('user', 'user', 'svg'), ('dollar', 'dollar', 'svg'), ('attention', 'attention', 'svg'));
+$scheme-icons: (('link', 'link', 'svg'), ('arrow-down', 'arrow-down', 'svg'), ('arrow-right', 'arrow-right', 'svg'), ('graphic', 'graphic', 'svg'), ('grow', 'grow', 'svg'), ('logo', 'logo', 'svg'), ('metamask', 'metamask', 'svg'), ('user', 'user', 'svg'), ('dollar', 'dollar', 'svg'), ('attention', 'attention', 'svg'), ('walletconnect', 'wallet-connect', 'svg'));
 $scheme-icons-mask: (('coins-green', 'coins', 'svg'), ('coins-gray', 'coins', 'svg'), ('info-orange', 'info', 'svg'), ('info-gray', 'info', 'svg'));
 
 // @include theme('dark', $scheme-icons);
@@ -29,6 +29,15 @@ $scheme-icons-mask: (('coins-green', 'coins', 'svg'), ('coins-gray', 'coins', 's
       background-size: 34px 34px;
       margin-left: 15px;
       background-color: var(--icon-metamask-background-color);
+    }
+  }
+
+  &-walletconnect {
+    @include before-img(block, 50px, 50px, r) {
+      padding: 8px;
+      border-radius: 16px;
+      background-size: 34px 34px;
+      margin-left: 15px;
     }
   }
 
