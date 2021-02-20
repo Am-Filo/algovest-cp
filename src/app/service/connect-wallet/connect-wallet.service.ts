@@ -54,47 +54,49 @@ export class ConnectWallet {
 
   constructor() {}
 
-  public connectProvider(provider: IProvider, network: INetwork): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-      if (!this.availableProviders.includes[provider.name]) {
-        this.providerError = {
-          code: 2,
-          message: {
-            title: 'Provider Error',
-            text: `Your provider doesn't exists`,
-          },
-        };
-        reject(this.providerError);
-      }
+  public async connectProvider(provider: IProvider, network: INetwork): Promise<any> {
+    if (!this.availableProviders.includes(provider.name)) {
+      console.log('provider.name', provider.name);
+      this.providerError = {
+        code: 2,
+        message: {
+          title: 'Provider Error',
+          text: `Your provider doesn't exists`,
+        },
+      };
+      return this.providerError;
+    }
 
-      this.network = network;
+    this.network = network;
 
-      const connectPromises = [
-        this.chooseProvider(provider.name)
-          .then((connector: any) => {
-            console.log('connector', connector);
+    const connectPromises = [
+      this.chooseProvider(provider.name)
+        .then((connector: any) => {
+          console.log('connector', connector);
 
-            this.connector = connector;
-            this.connector
-              .connect(provider)
-              .then((connect: any) => {
-                console.log('connect providerWeb3', connect);
-                return connect;
-              })
-              .catch((err: any) => {
-                console.log('connect error', err);
-              });
-          })
-          .catch((err) => {
-            console.log('chooseProvider', err);
-          }),
-      ];
+          this.connector = connector;
+          return this.connector
+            .connect(provider)
+            .then((connect: any) => {
+              console.log('connect providerWeb3', connect);
+              return connect;
+            })
+            .catch((err: any) => {
+              console.log('connect error', err);
+              return err;
+            });
+        })
+        .catch((err) => {
+          console.log('chooseProvider', err);
+        }),
+    ];
 
-      Promise.all(connectPromises).then((connect: any) => {
-        console.log('res', connect);
+    return Promise.all(connectPromises).then((connect: any) => {
+      console.log('res', connect[0]);
+      if (connect[0].connected) {
         this.initializeWeb3(connect.provider === 'Web3' ? Web3.givenProvider : connect.provider);
-        resolve(this.connector);
-      });
+      }
+      return connect[0].connected;
     });
   }
 

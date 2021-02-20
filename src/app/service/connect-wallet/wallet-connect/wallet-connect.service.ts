@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import WalletConnect from '@walletconnect/client';
 import QRCodeModal from '@walletconnect/qrcode-modal';
+import Web3 from 'web3';
 
 import { IMessageProvider } from '../connect-wallet.service';
 
@@ -15,14 +16,14 @@ export class WalletsConnect {
 
   constructor() {}
 
-  public connect(provider: any): Promise<IMessageProvider> {
+  public async connect(provider: any): Promise<IMessageProvider> {
     return new Promise<any>(async (resolve, reject) => {
       if (provider.use === 'provider') {
         this.connector = new WalletConnectProvider({
           infuraId: provider.provider.infuraID,
         });
 
-        return await this.connector
+        await this.connector
           .enable()
           .then((info: any) => {
             console.log(info);
@@ -37,14 +38,13 @@ export class WalletsConnect {
             };
             resolve(connect);
           })
-          .catch((err) => {
-            console.log(err);
+          .catch(() => {
             const error = {
               code: 4,
               connected: false,
               message: {
                 title: 'Wallet Connect',
-                text: `Check your provider.`,
+                text: `User closed modal window.`,
               },
             };
             reject(error);

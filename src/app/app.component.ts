@@ -36,7 +36,7 @@ export class AppComponent {
   public days = daysValue;
 
   constructor(private themeProvider: ThemeService, private contractService: ContractService, private ngZone: NgZone, public dialog: MatDialog, public config: AppConfig) {
-    this.production = config.getConfig().production;
+    this.production = config.getConfig().network.name === 'mainnet';
     this.detectColorScheme();
     this.contractService.accountSubscribe().subscribe((account) => console.log('accountSubscribe()', account));
 
@@ -155,6 +155,10 @@ export class AppComponent {
     this.daySelect = false;
     this.daySelected = day;
     this.apySelected = apy;
+  }
+
+  public test(): void {
+    this.contractService.initWalletConnect('WalletConnect');
   }
 
   /**

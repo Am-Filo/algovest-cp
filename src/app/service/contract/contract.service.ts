@@ -627,9 +627,11 @@ export class ContractService {
 
     this.connectWallet
       .connectProvider(providerWallet, networkWallet)
-      .then((res) => {
-        console.log('providerWallet', res);
-        this.initializeContracts();
+      .then((connected) => {
+        console.log('providerWallet connected', connected);
+        if (connected) {
+          this.initializeContracts();
+        }
       })
       .catch((err) => {
         console.log('providerWallet err', err);
