@@ -92,9 +92,9 @@ export class ConnectWallet {
     ];
 
     return Promise.all(connectPromises).then((connect: any) => {
-      console.log('res', connect[0]);
+      console.log('connectPromises', connect[0]);
       if (connect[0].connected) {
-        this.initializeWeb3(connect.provider === 'Web3' ? Web3.givenProvider : connect.provider);
+        this.initializeWeb3(connect[0].provider === 'Web3' ? Web3.givenProvider : connect[0].provider);
       }
       return connect[0].connected;
     });
