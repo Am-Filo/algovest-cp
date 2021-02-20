@@ -1,6 +1,22 @@
 {
-  "production": true,
-  "bridge": "https://bridge.walletconnect.org",
-  "network": "rinkeby",
-  "net": 4
+  "walletConnect": {
+    "providers": {
+      "MetaMask": { "name": "MetaMask" },
+      "WalletConnect": {
+        "name": "WalletConnect",
+        "use": "provider",
+        "bridge": {
+          "url": "https://bridge.walletconnect.org",
+          "infura": "https://bridge.walletconnect.org"
+        },
+        "provider": {
+          "infuraID": "https://bridge.walletconnect.org"
+        }
+      }
+    }
+  },
+  "network": {
+    "name": "rinkeby",
+    "chainID": 4
+  }
 }

@@ -1,11 +1,10 @@
-import { async } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppConfig } from '../appconfig';
 import WalletConnect from '@walletconnect/client';
 import QRCodeModal from '@walletconnect/qrcode-modal';
 // import WalletConnectProvider from '@walletconnect/web3-provider';
-import { ContractService } from '../contract/contract.service';
+// import { ContractService } from '../contract/contract.service';
 import Web3 from 'web3';
 
 @Injectable({
@@ -21,7 +20,7 @@ export class WalletConnectService {
   private netVersion: number;
   private net: string;
 
-  private contractService: ContractService;
+  // private contractService: ContractService;
 
   constructor(private config: AppConfig) {
     this.appConfig = this.config.getConfig();

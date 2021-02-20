@@ -9,13 +9,16 @@ import { MetamaskService } from '../metamask/metamask.service';
 import { AppConfig } from '../appconfig';
 import { daysValue } from 'src/app/params';
 import { WalletConnectService } from '../wallet-connect/wallet-connect.service';
-import { resolve } from 'path';
-import { rejects } from 'assert';
+import { ConnectWallet } from '../connect-wallet/connect-wallet.service';
 
 interface IConfig {
-  production: boolean;
-  network: string;
-  net: number;
+  walletConnect?: {
+    providers?: any;
+  };
+  network?: {
+    name: string;
+    chainID: number;
+  };
 }
 
 @Injectable({
@@ -33,13 +36,14 @@ export class ContractService {
   private stakingAddress: string;
 
   private walletService: any;
-  private settingsApp = {
-    production: false,
-    network: 'rinkeby',
-    net: 4,
+  private settingsApp: IConfig = {
+    network: {
+      name: 'rinkeby',
+      chainID: 4,
+    },
   };
 
-  constructor(private httpService: HttpClient, private config: AppConfig) {}
+  constructor(private httpService: HttpClient, private config: AppConfig, private connectWallet: ConnectWallet) {}
 
   /**
    * Main Site Information
@@ -459,7 +463,7 @@ export class ContractService {
         }),
     ];
     return Promise.all(promises).then((result) => {
-      this.CONTRACTS_PARAMS = result[1][this.settingsApp.production ? 'mainnet' : this.settingsApp.network];
+      this.CONTRACTS_PARAMS = result[1][this.settingsApp.network.name];
     });
   }
 
@@ -611,9 +615,24 @@ export class ContractService {
    * @description Send contract abi and address to web3. And set contracts addresses to variable.
    */
   private initializeContracts(): void {
-    // this.StakingContract = this.walletService.getContract(this.CONTRACTS_PARAMS.Staking.ABI, this.CONTRACTS_PARAMS.Staking.ADDRESS);
-    // this.TokenContract = this.walletService.getContract(this.CONTRACTS_PARAMS.Token.ABI, this.CONTRACTS_PARAMS.Token.ADDRESS);
+    this.connectWallet.addContract({ name: 'Staking', abi: this.CONTRACTS_PARAMS.Staking.ABI, address: this.CONTRACTS_PARAMS.Staking.ADDRESS }).then((status) => console.log('Staking Contract', status));
+    this.connectWallet.addContract({ name: 'Token', abi: this.CONTRACTS_PARAMS.Token.ABI, address: this.CONTRACTS_PARAMS.Token.ADDRESS }).then((status) => console.log('Token Contract', status));
     this.tokenAddress = this.CONTRACTS_PARAMS.Token.ADDRESS;
     this.stakingAddress = this.CONTRACTS_PARAMS.Staking.ADDRESS;
+  }
+
+  public initWalletConnect(name: string): void {
+    const providerWallet = this.settingsApp.walletConnect.providers[name];
+    const networkWallet = this.settingsApp.network;
+
+    this.connectWallet
+      .connectProvider(providerWallet, networkWallet)
+      .then((res) => {
+        console.log('providerWallet', res);
+        this.initializeContracts();
+      })
+      .catch((err) => {
+        console.log('providerWallet err', err);
+      });
   }
 }
