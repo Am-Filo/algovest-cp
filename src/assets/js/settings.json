@@ -7,10 +7,10 @@
         "use": "provider",
         "bridge": {
           "url": "https://bridge.walletconnect.org",
-          "infura": "https://bridge.walletconnect.org"
+          "infura": "https://rinkeby.infura.io/v3/fcced28c4c894be791f39a8643431cf8"
         },
         "provider": {
-          "infuraID": "https://bridge.walletconnect.org"
+          "infuraID": "fcced28c4c894be791f39a8643431cf8"
         }
       }
     }

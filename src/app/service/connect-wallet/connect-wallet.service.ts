@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 
 import Web3 from 'web3';
 import { MetamaskConnect } from './metamask/metamask.service';
-import { ConnectWallets } from './wallet-connect/wallet-connect.service';
+import { WalletsConnect } from './wallet-connect/wallet-connect.service';
 
 export interface IProvider {
   name: string;
@@ -103,7 +103,7 @@ export class ConnectWallet {
       case 'MetaMask':
         return new MetamaskConnect();
       case 'WalletConnect':
-        return new ConnectWallets();
+        return new WalletsConnect();
     }
   }
 

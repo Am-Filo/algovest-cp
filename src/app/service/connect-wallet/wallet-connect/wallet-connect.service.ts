@@ -10,7 +10,7 @@ import { IMessageProvider } from '../connect-wallet.service';
 @Injectable({
   providedIn: 'root',
 })
-export class ConnectWallets {
+export class WalletsConnect {
   private connector: any;
 
   constructor() {}
