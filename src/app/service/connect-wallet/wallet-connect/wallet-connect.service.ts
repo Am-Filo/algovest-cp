@@ -5,7 +5,8 @@ import WalletConnectProvider from '@walletconnect/web3-provider';
 import WalletConnect from '@walletconnect/client';
 import QRCodeModal from '@walletconnect/qrcode-modal';
 
-import { IMessageProvider } from '../connect-wallet.service';
+import { IConnectorMessage } from '../connect-wallet.interface';
+import { parameters } from '../params';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,7 @@ export class WalletsConnect {
 
   constructor() {}
 
-  public async connect(provider: any): Promise<IMessageProvider> {
+  public async connect(provider: any): Promise<IConnectorMessage> {
     return new Promise<any>(async (resolve, reject) => {
       if (provider.use === 'provider') {
         this.connector = new WalletConnectProvider({
@@ -25,25 +26,29 @@ export class WalletsConnect {
         await this.connector
           .enable()
           .then((info: any) => {
-            console.log(info);
-            const connect = {
-              code: 5,
+            // console.log('info qr code', info);
+
+            const connect: IConnectorMessage = {
+              code: 1,
               connected: true,
+              provider: this.connector,
               message: {
-                title: 'Wallet Connect',
+                title: 'Success',
+                subtitle: 'Wallet Connect',
                 text: `Wallet Connect connected.`,
               },
-              provider: this.connector,
             };
+
             resolve(connect);
           })
           .catch(() => {
             const error = {
-              code: 4,
+              code: 5,
               connected: false,
               message: {
-                title: 'Wallet Connect',
-                text: `User closed modal window.`,
+                title: 'Error',
+                subtitle: 'Error connect',
+                text: `User closed qr modal window.`,
               },
             };
             reject(error);
@@ -62,28 +67,59 @@ export class WalletsConnect {
   }
 
   public getAccounts(): Observable<any> {
+    const onError = (observer: any, errorParams: any) => {
+      observer.error(errorParams);
+    };
+
+    const onNext = (observer: any, nextParams: any) => {
+      observer.next(nextParams);
+    };
+
     return new Observable((observer) => {
       if (!this.connector.connected) {
         this.connector.createSession();
       }
 
-      console.log(this.connector.accounts[0]);
+      // console.log('wallet connect subscribe first return', this.connector, this.connector.accounts[0], this.connector.chainId);
+
+      onNext(observer, { address: this.connector.accounts[0], network: parameters.chainsMap[parameters.chainIDMap[this.connector.chainId]] });
 
       // Subscribe to connection events
-      this.connector.on('connect', (error, payload) => {
+      this.connector.on('connect', (error: any, payload: any) => {
         if (error) {
-          throw error;
+          // console.log('wallet connect on connect error', error, payload);
+          onError(observer, {
+            code: 3,
+            message: {
+              title: 'Error',
+              subtitle: 'Authorized error',
+              message: 'You are not authorized.',
+            },
+          });
         }
 
         // Get provided accounts and chainId
         const { accounts, chainId } = payload.params[0];
 
-        console.log(accounts, chainId);
-        console.log(payload.params[0]);
+        // console.log(accounts, chainId, payload.params[0]);
+
+        onNext(observer, { address: accounts, network: chainId });
       });
 
       this.connector.on('disconnect', (error, payload) => {
-        console.log(payload, 'disconnect');
+        // console.log(payload, 'disconnect');
+
+        if (error) {
+          console.log('wallet connect on connect error', error, payload);
+          onError(observer, {
+            code: 6,
+            message: {
+              title: 'Error',
+              subtitle: 'Disconnect',
+              message: 'Wallet disconnected',
+            },
+          });
+        }
       });
 
       this.connector.on('wc_sessionUpdate', (error, payload) => {

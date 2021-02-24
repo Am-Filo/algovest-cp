@@ -13,10 +13,11 @@
           "infuraID": "fcced28c4c894be791f39a8643431cf8"
         }
       }
-    }
+    },
+    "settings": { "providerType": true }
   },
   "network": {
-    "name": "rinkeby",
-    "chainID": 4
+    "name": "mainnet",
+    "chainID": 1
   }
 }

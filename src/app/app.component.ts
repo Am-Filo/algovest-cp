@@ -9,6 +9,14 @@ import { ContractService } from './service/contract/contract.service';
 import { daysValue } from './params';
 import { AppConfig } from './service/appconfig';
 
+interface IAccount {
+  address: string;
+  network: {
+    name: string;
+    chainID: number;
+  };
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -43,30 +51,6 @@ export class AppComponent {
     this.providers = Object.keys(config.getConfig().walletConnect.providers);
 
     this.detectColorScheme();
-    this.contractService.accountSubscribe().subscribe((account) => console.log('accountSubscribe()', account));
-
-    if (!this.production) {
-      this.contractService
-        .getAccount()
-        .then(() => {
-          this.subscribeAccount();
-          this.contractAddress = this.contractService.getStakingAddress();
-          // this.contractService.transactionsSubscribe().subscribe((transaction: any) => {
-          //   if (transaction) {
-          //     this.dialog.open(TransactionSuccessModalComponent, {
-          //       data: { title: 'Transaction', text: 'Completed successfully ', tx: transaction.hash },
-          //       width: '440px',
-          //     });
-          //   }
-          // });
-        })
-        .catch((err) => {
-          this.dialog.open(MetamaskErrorComponent, {
-            data: err,
-            width: '400px',
-          });
-        });
-    }
 
     this.contractService.transactionsSubscribe().subscribe((transaction: any) => {
       if (transaction) {
@@ -82,6 +66,10 @@ export class AppComponent {
     this.contractService.initWalletConnect(provider).then((connect: boolean) => {
       this.modal = !connect;
       console.log('connect status', connect);
+
+      if (connect) {
+        this.getAccount();
+      }
     });
   }
 
@@ -173,6 +161,20 @@ export class AppComponent {
     this.apySelected = apy;
   }
 
+  private getAccount(): void {
+    // subscribe on matamask account observer
+    this.contractService.getAccount().then((account) => {
+      this.ngZone.run(() => {
+        this.onChangeAccount.emit();
+        console.log('contractService', account);
+        if (account && (!this.account || this.account.account !== account.account)) {
+          this.subscribeAccount();
+          // this.contractService.loadAccountInfo();
+        }
+      });
+    });
+  }
+
   /**
    * Subscribe Account
    * @description Create subscribes on change account in metamask and contract service. Also catch error from metamak on start application.
@@ -180,31 +182,19 @@ export class AppComponent {
    * this.subscribeAccount();
    */
   public subscribeAccount(): void {
-    // subscribe on matamask account observer
-    this.contractService.getAccount().then((account) => {
-      this.ngZone.run(() => {
-        this.onChangeAccount.emit();
-        if (account && (!this.account || this.account.address !== account.address)) {
-          this.contractService.loadAccountInfo();
-          this.updateUserAccount(account);
-        }
-      });
-    });
-
     // subscribe on contract account observer
-    this.contractService.accountSubscribe().subscribe((account) => {
-      this.updateUserAccount(account);
-    });
-
-    if (!this.production) {
-      // catch on start metamask errors
-      this.contractService.getAccount().catch((err) => {
+    this.contractService.accountSubscribe().subscribe(
+      (account) => {
+        this.account = account;
+        this.updateUserAccount();
+      },
+      (err) => {
         this.dialog.open(MetamaskErrorComponent, {
           data: err,
           width: '400px',
         });
-      });
-    }
+      }
+    );
   }
 
   /**
@@ -213,10 +203,10 @@ export class AppComponent {
    * @example
    * this.updateUserAccount(account);
    */
-  private updateUserAccount(account: any): void {
-    // this.initData();
-    this.account = account;
+  public updateUserAccount(): void {
+    console.log('this.account.address sbstr before', this.userAddress);
     this.userAddress = this.account.address.substr(0, 5) + '...' + this.account.address.substr(this.account.address.length - 3, this.account.address.length);
+    console.log('this.account.address sbstr after', this.userAddress);
   }
 
   /**

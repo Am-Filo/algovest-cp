@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { IMessageProvider } from '../connect-wallet.service';
+import { Observable } from 'rxjs';
+
+import { IConnectorMessage } from '../connect-wallet.interface';
+import { parameters } from '../params';
 
 declare global {
   interface Window {
@@ -12,30 +15,33 @@ declare global {
 })
 export class MetamaskConnect {
   private connector: any;
+  private chainID: number;
 
   constructor() {}
 
-  public connect(): Promise<IMessageProvider> {
+  public connect(): Promise<IConnectorMessage> {
     return new Promise<any>((resolve, reject) => {
       if (typeof window.ethereum !== 'undefined') {
         this.connector = window.ethereum;
-        const connect = {
-          code: 5,
+        const connect: IConnectorMessage = {
+          code: 1,
           connected: true,
+          provider: 'Web3',
           message: {
-            title: 'Metamask',
+            title: 'Success',
+            subtitle: 'Connect success',
             text: `Metamask found and connected.`,
           },
-          provider: 'Web3',
         };
         resolve(connect);
       }
 
       const error = {
-        code: 4,
+        code: 2,
         connected: false,
         message: {
-          title: 'Metamask Error',
+          title: 'Error',
+          subtitle: 'Error connect',
           text: `Metamask not found, please install it from <a href='https://metamask.io/' target="_blank">metamask.io</a>.`,
         },
       };
@@ -43,116 +49,73 @@ export class MetamaskConnect {
     });
   }
 
-  // public getAccounts(noEnable?: boolean): Observable<any> {
-  //   const onAuth = (observer: any, address: string) => {
-  //     if (this.Web3) {
-  //       this.Web3.setProvider(this.providers.metamask);
-  //     } else {
-  //       this.Web3 = new Web3(this.providers.metamask);
-  //     }
-  //     observer.next({
-  //       address,
-  //       network: this.net,
-  //     });
-  //     if (noEnable) {
-  //       observer.complete();
-  //     }
-  //   };
+  public getAccounts(): Observable<any> {
+    const onError = (observer: any, errorParams: any) => {
+      observer.error(errorParams);
+    };
 
-  //   const onError = (observer: any, errorParams: any) => {
-  //     observer.error(errorParams);
-  //     if (noEnable) {
-  //       observer.complete();
-  //     }
-  //   };
+    const onNext = (observer: any, nextParams: any) => {
+      observer.next(nextParams);
+    };
 
-  //   const isValidMetaMaskNetwork = (observer: any, chain?: string | boolean | number) => {
-  //     return new Promise((resolve, reject) => {
-  //       this.metaMaskWeb3
-  //         .request({
-  //           method: 'net_version',
-  //         })
-  //         .then((result: string | number) => {
-  //           if (this.netVersion !== Number(result)) {
-  //             if (chain) {
-  //               onError(observer, {
-  //                 code: 3,
-  //                 msg: 'Not authorized',
-  //                 title: 'Metamask Error',
-  //               });
-  //             }
-  //             observer.error({
-  //               code: 2,
-  //               msg: 'Please choose ' + this.net + ' network in Metamask.',
-  //               title: 'Metamask Error',
-  //             });
+    return new Observable((observer) => {
+      if (this.connector && this.connector.isMetaMask) {
+        this.connector.on('chainChanged', (chainId: string) => {
+          onNext(observer, { address: this.connector.selectedAddress, network: parameters.chainsMap[chainId] });
+        });
 
-  //             reject();
-  //           }
-  //           resolve(true);
-  //         });
-  //     });
-  //   };
+        this.connector.on('accountsChanged', (address: Array<any>) => {
+          if (address.length) {
+            onNext(observer, { address: address[0], network: parameters.chainsMap[parameters.chainIDMap[+this.chainID]] });
+          } else {
+            onError(observer, {
+              code: 3,
+              message: {
+                title: 'Error',
+                subtitle: 'Authorized error',
+                message: 'You are not authorized.',
+              },
+            });
+          }
+        });
 
-  //   return new Observable((observer) => {
-  //     if (this.metaMaskWeb3 && this.metaMaskWeb3.isMetaMask) {
-  //       this.metaMaskWeb3.on('chainChanged', () => {
-  //         isValidMetaMaskNetwork(observer)
-  //           .then(() => {
-  //             window.location.reload();
-  //           })
-  //           .catch(() => {
-  //             onError(observer, {
-  //               code: 3,
-  //               msg: 'Not authorized',
-  //               title: 'Metamask Error',
-  //             });
-  //           });
-  //       });
+        if (!this.connector.selectedAddress) {
+          this.connector.enable().catch(() => {
+            onError(observer, {
+              code: 3,
+              message: {
+                title: 'Error',
+                subtitle: 'Authorized error',
+                message: 'You are not authorized.',
+              },
+            });
+          });
+        } else {
+          if (this.connector.selectedAddress) {
+            this.connector
+              .request({
+                method: 'net_version',
+              })
+              .then((chainID: string) => {
+                this.chainID = +chainID;
+                onNext(observer, { address: this.connector.selectedAddress, network: parameters.chainsMap[parameters.chainIDMap[+chainID]] });
+              });
+          } else {
+            onError(observer, {
+              code: 3,
+              message: {
+                title: 'Error',
+                subtitle: 'Authorized error',
+                message: 'You are not authorized.',
+              },
+            });
+          }
+        }
+      }
 
-  //       isValidMetaMaskNetwork(observer).then(() => {
-  //         this.metaMaskWeb3.on('accountsChanged', (accounts: Array<any>) => {
-  //           if (accounts.length) {
-  //             onAuth(observer, accounts[0]);
-  //           } else {
-  //             onError(observer, {
-  //               code: 3,
-  //               msg: 'Not authorized',
-  //               title: 'Metamask Error',
-  //             });
-  //           }
-  //         });
-
-  //         if (!this.metaMaskWeb3.selectedAddress && !noEnable) {
-  //           this.metaMaskWeb3.enable().catch(() => {
-  //             onError(observer, {
-  //               code: 3,
-  //               msg: 'Not authorized',
-  //               title: 'Metamask Error',
-  //             });
-  //           });
-  //         } else {
-  //           if (this.metaMaskWeb3.selectedAddress) {
-  //             onAuth(observer, this.metaMaskWeb3.selectedAddress);
-  //           } else {
-  //             onError(observer, {
-  //               code: 3,
-  //               msg: 'Not authorized',
-  //               title: 'Metamask Error',
-  //             });
-  //           }
-  //         }
-  //       });
-  //     } else {
-  //       onError(observer, {
-  //         code: 1,
-  //         msg: 'Metamask extension is not found. You can install it from <a href="https://metamask.io" target="_blank">metamask.io</a>',
-  //         title: 'Metamask Error',
-  //       });
-  //     }
-  //     return {
-  //       unsubscribe(): any {},
-  //     };
-  //   });
-  // }
+      return {
+        unsubscribe(): any {},
+      };
+    });
+  }
 }

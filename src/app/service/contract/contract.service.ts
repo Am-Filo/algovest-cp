@@ -14,6 +14,9 @@ import { ConnectWallet } from '../connect-wallet/connect-wallet.service';
 interface IConfig {
   walletConnect?: {
     providers?: any;
+    settings?: {
+      providerType?: boolean;
+    };
   };
   network?: {
     name: string;
@@ -334,8 +337,9 @@ export class ContractService {
    * @returns balance: string | number
    */
   public async getTokenBalance(address?: string): Promise<string | number> {
-    return this.TokenContract.methods
-      .balanceOf(address ? address : this.account.address)
+    return this.connectWallet
+      .Contract('Token')
+      .methods.balanceOf(address ? address : this.account.address)
       .call()
       .then((balance: string | number) => {
         return balance;
@@ -407,17 +411,17 @@ export class ContractService {
    * contractService.getStaticInfo().then(() => {}).catch((err)=>{});
    * @returns true
    */
-  public async getStaticInfo(): Promise<any> {
-    // return this.initAll().then(() => {
-    this.walletService = this.config.getConfig().production ? new WalletConnectService(this.config) : new MetamaskService(this.config);
-    this.walletService.getAccounts().subscribe((account: any) => {
-      if (account) {
-        const promises = [this.getContractsInfo(false)];
-        return Promise.all(promises);
-      }
-    });
-    // });
-  }
+  // public async getStaticInfo(): Promise<any> {
+  //   // return this.initAll().then(() => {
+  //   this.walletService = this.config.getConfig().production ? new WalletConnectService(this.config) : new MetamaskService(this.config);
+  //   this.walletService.getAccounts().subscribe((account: any) => {
+  //     if (account) {
+  //       const promises = [this.getContractsInfo(false)];
+  //       return Promise.all(promises);
+  //     }
+  //   });
+  //   // });
+  // }
 
   /**
    * Get contract information.
@@ -535,56 +539,29 @@ export class ContractService {
    * contractService.getAccount().then((account) => { console.log(account); }).catch((err) => { console.log(err); });
    * @returns account: {address: string, balance: string | number}
    */
-  public getAccount(noEnable?: boolean): Promise<any> {
+  public getAccount(): Promise<any> {
     return new Promise((resolve: any, reject) => {
-      // this.isActiveConnect().then((connected: any) => {
-      console.log('this.walletService ', this.walletService);
-      if (this.walletService === undefined || !this.walletService.conneced) {
-        this.getStaticInfo().then((data) => console.log('data', data));
-      } else {
-        this.walletService.getAccounts(noEnable).subscribe(
-          (account: any) => {
-            console.log('dasdas', account);
-            if (!this.account || account.address !== this.account.address) {
-              this.account = account;
-              this.getTokenBalance(account.address)
-                .then((balance) => {
-                  this.account.balance = balance;
-                  resolve(this.account);
-                })
-                .catch((err) => {
-                  console.log('getTokenBalance', err);
-                });
-            }
-          },
-          (err) => {
-            this.account = false;
-            reject(err);
+      this.connectWallet.getAccounts().subscribe(
+        (account: any) => {
+          if (!this.account || account.address !== this.account.address) {
+            this.account = account;
+            this.getTokenBalance(account.address)
+              .then((balance) => {
+                this.account.balance = balance;
+                resolve(this.account);
+              })
+              .catch((err) => {
+                console.log('getTokenBalance', err);
+              })
+              .finally(() => this.callAllAccountsSubscribers());
           }
-        );
-      }
-      // });
-
-      //   this.walletService.getAccounts(noEnable).subscribe(
-      //     (account: any) => {
-      //       console.log('dasdas', account);
-      //       if (!this.account || account.address !== this.account.address) {
-      //         this.account = account;
-      //         this.getTokenBalance(account.address)
-      //           .then((balance) => {
-      //             this.account.balance = balance;
-      //             resolve(this.account);
-      //           })
-      //           .catch((err) => {
-      //             console.log('getTokenBalance', err);
-      //           });
-      //       }
-      //     },
-      //     (err) => {
-      //       this.account = false;
-      //       reject(err);
-      //     }
-      //   );
+        },
+        (err: any) => {
+          this.account = false;
+          console.log('getAccount error', err);
+          reject(err);
+        }
+      );
     });
   }
 
@@ -621,26 +598,33 @@ export class ContractService {
     this.stakingAddress = this.CONTRACTS_PARAMS.Staking.ADDRESS;
   }
 
-  public initWalletConnect(name: string): Promise<boolean> {
+  /**
+   * Initialize Wallet Connect
+   * @description Setup an connection type.
+   * @example
+   * contractService.initWalletConnect('MetaMask');
+   * @returns Promise<true/false>
+   */
+  public async initWalletConnect(name: string): Promise<boolean> {
     const providerWallet = this.settingsApp.walletConnect.providers[name];
+    const connectSetting = this.settingsApp.walletConnect.settings;
     const networkWallet = this.settingsApp.network;
 
     const connecting = this.connectWallet
-      .connectProvider(providerWallet, networkWallet)
+      .connectProvider(providerWallet, networkWallet, connectSetting)
       .then((connected) => {
-        console.log('providerWallet connected', connected);
+        // console.log(' initWalletConnect providerWallet connected', connected);
         if (connected) {
           this.initializeContracts();
         }
-
         return connected;
       })
       .catch((err) => {
-        console.log('providerWallet err', err);
+        console.log('initWalletConnect providerWallet err', err);
       });
 
     return Promise.all([connecting]).then((connect: any) => {
-      console.log('connecting', connect[0]);
+      // console.log('initWalletConnect connecting', connect[0]);
       return connect[0];
     });
   }
