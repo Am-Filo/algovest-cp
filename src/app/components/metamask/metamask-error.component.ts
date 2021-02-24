@@ -6,12 +6,14 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   templateUrl: './metamask-error.component.html',
 })
 export class MetamaskErrorComponent {
-  public err: string;
+  public text: string;
   public title: string;
 
   constructor(public dialogRef: MatDialogRef<MetamaskErrorComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
-    this.err = data.msg;
-    this.title = data.title;
+    this.title = data.message.title;
+    this.text = data.message.text;
+
+    console.log(data);
   }
 
   /**

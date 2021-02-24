@@ -25,10 +25,8 @@ export class WalletsConnect {
 
         await this.connector
           .enable()
-          .then((info: any) => {
-            // console.log('info qr code', info);
-
-            const connect: IConnectorMessage = {
+          .then(() => {
+            resolve({
               code: 1,
               connected: true,
               provider: this.connector,
@@ -37,12 +35,10 @@ export class WalletsConnect {
                 subtitle: 'Wallet Connect',
                 text: `Wallet Connect connected.`,
               },
-            };
-
-            resolve(connect);
+            } as IConnectorMessage);
           })
           .catch(() => {
-            const error = {
+            reject({
               code: 5,
               connected: false,
               message: {
@@ -50,8 +46,7 @@ export class WalletsConnect {
                 subtitle: 'Error connect',
                 text: `User closed qr modal window.`,
               },
-            };
-            reject(error);
+            } as IConnectorMessage);
           });
       } else if (provider.use === 'bridge') {
         this.connector = new WalletConnect({
@@ -87,7 +82,6 @@ export class WalletsConnect {
       // Subscribe to connection events
       this.connector.on('connect', (error: any, payload: any) => {
         if (error) {
-          // console.log('wallet connect on connect error', error, payload);
           onError(observer, {
             code: 3,
             message: {
@@ -101,14 +95,10 @@ export class WalletsConnect {
         // Get provided accounts and chainId
         const { accounts, chainId } = payload.params[0];
 
-        // console.log(accounts, chainId, payload.params[0]);
-
         onNext(observer, { address: accounts, network: chainId });
       });
 
       this.connector.on('disconnect', (error, payload) => {
-        // console.log(payload, 'disconnect');
-
         if (error) {
           console.log('wallet connect on connect error', error, payload);
           onError(observer, {

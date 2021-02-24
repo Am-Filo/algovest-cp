@@ -11,6 +11,7 @@ import { AppConfig } from './service/appconfig';
 
 interface IAccount {
   address: string;
+  balance?: string;
   network: {
     name: string;
     chainID: number;
@@ -26,12 +27,13 @@ export class AppComponent {
   public theme = 'white';
   public themeDark = false;
   public loading = true;
-  public production = false;
 
   public modal = false;
+  public exit = false;
   public providers = [];
 
-  public account: any;
+  public account: IAccount;
+  private accoutSubscribe: any;
   public userAddress = '';
   public onChangeAccount: EventEmitter<any> = new EventEmitter();
 
@@ -47,11 +49,8 @@ export class AppComponent {
   public days = daysValue;
 
   constructor(private themeProvider: ThemeService, private contractService: ContractService, private ngZone: NgZone, public dialog: MatDialog, public config: AppConfig) {
-    this.production = config.getConfig().network.name === 'mainnet';
     this.providers = Object.keys(config.getConfig().walletConnect.providers);
-
     this.detectColorScheme();
-
     this.contractService.transactionsSubscribe().subscribe((transaction: any) => {
       if (transaction) {
         this.dialog.open(TransactionSuccessModalComponent, {
@@ -62,6 +61,12 @@ export class AppComponent {
     });
   }
 
+  /**
+   * Conenct
+   * @description Connecting to wallet connect
+   * @example
+   * this.connect('MetaMask');
+   */
   public connect(provider: string): void {
     this.contractService.initWalletConnect(provider).then((connect: boolean) => {
       this.modal = !connect;
@@ -71,10 +76,6 @@ export class AppComponent {
         this.getAccount();
       }
     });
-  }
-
-  public createConnect(): void {
-    this.modal = true;
   }
 
   /**
@@ -88,6 +89,7 @@ export class AppComponent {
       this.totalData = data;
       this.stakeList();
       this.loading = false;
+      this.contractAddress = this.contractService.getStakingAddress();
     });
   }
 
@@ -161,18 +163,50 @@ export class AppComponent {
     this.apySelected = apy;
   }
 
+  /**
+   * Get Account
+   * @description Get account from contract service.
+   * @example
+   * this.getAccount();
+   */
   private getAccount(): void {
     // subscribe on matamask account observer
-    this.contractService.getAccount().then((account) => {
-      this.ngZone.run(() => {
-        this.onChangeAccount.emit();
-        console.log('contractService', account);
-        if (account && (!this.account || this.account.account !== account.account)) {
-          this.subscribeAccount();
-          // this.contractService.loadAccountInfo();
-        }
-      });
-    });
+    this.contractService.getAccount().then(
+      (account: IAccount) => {
+        this.ngZone.run(() => {
+          this.onChangeAccount.emit();
+          console.log('contractService', account);
+          if (account && (!this.account || this.account.address !== account.address)) {
+            this.subscribeAccount();
+            // this.contractService.loadAccountInfo();
+          }
+        });
+      },
+      (err) => {
+        console.log('getAccount app component', err);
+        this.dialog.open(MetamaskErrorComponent, {
+          data: err,
+          width: '400px',
+        });
+      }
+    );
+  }
+
+  /**
+   * Logout
+   * @description Logout from account.
+   * @example
+   * this.logout();
+   */
+  public logout(): void {
+    this.modal = !this.modal;
+    this.exit = false;
+    this.account = undefined;
+    this.totalData = {};
+    this.loading = true;
+    this.contractAddress = undefined;
+    this.accoutSubscribe.unsubscribe();
+    this.contractService.resetConnection();
   }
 
   /**
@@ -183,8 +217,8 @@ export class AppComponent {
    */
   public subscribeAccount(): void {
     // subscribe on contract account observer
-    this.contractService.accountSubscribe().subscribe(
-      (account) => {
+    this.accoutSubscribe = this.contractService.accountSubscribe().subscribe(
+      (account: IAccount) => {
         this.account = account;
         this.updateUserAccount();
       },
@@ -204,9 +238,8 @@ export class AppComponent {
    * this.updateUserAccount(account);
    */
   public updateUserAccount(): void {
-    console.log('this.account.address sbstr before', this.userAddress);
+    this.initData();
     this.userAddress = this.account.address.substr(0, 5) + '...' + this.account.address.substr(this.account.address.length - 3, this.account.address.length);
-    console.log('this.account.address sbstr after', this.userAddress);
   }
 
   /**

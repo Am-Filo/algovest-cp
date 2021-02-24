@@ -23,7 +23,7 @@ export class MetamaskConnect {
     return new Promise<any>((resolve, reject) => {
       if (typeof window.ethereum !== 'undefined') {
         this.connector = window.ethereum;
-        const connect: IConnectorMessage = {
+        resolve({
           code: 1,
           connected: true,
           provider: 'Web3',
@@ -32,11 +32,10 @@ export class MetamaskConnect {
             subtitle: 'Connect success',
             text: `Metamask found and connected.`,
           },
-        };
-        resolve(connect);
+        } as IConnectorMessage);
       }
 
-      const error = {
+      reject({
         code: 2,
         connected: false,
         message: {
@@ -44,8 +43,7 @@ export class MetamaskConnect {
           subtitle: 'Error connect',
           text: `Metamask not found, please install it from <a href='https://metamask.io/' target="_blank">metamask.io</a>.`,
         },
-      };
-      reject(error);
+      });
     });
   }
 

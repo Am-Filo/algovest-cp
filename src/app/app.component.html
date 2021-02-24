@@ -2,9 +2,9 @@
   <div class="container">
     <span class="icon icon-logo"></span>
     <div *ngIf="account" class="metamask-block">
-      <span class="metamask-address icon icon-flex icon-metamask">{{ userAddress }}</span>
+      <span (click)="modal = exit = true" class="metamask-address icon icon-flex icon-metamask">{{ userAddress }}</span>
     </div>
-    <span *ngIf="!account" (click)="createConnect()" class="btn btn-green btn-metamask">Connect</span>
+    <span *ngIf="!account" (click)="modal = true" class="btn btn-green btn-metamask">Connect</span>
   </div>
 </header>
 
@@ -33,7 +33,7 @@
       </div>
       <div class="card">
         <span class="card-title">Verified AVS Staking Contract</span>
-        <span class="card-text-address">{{ contractAddress || '--' }}</span>
+        <span class="card-text-address">{{ loading ? '--' : contractAddress }}</span>
       </div>
     </div>
     <div *ngIf="!account" class="grid grid-two">
@@ -109,7 +109,7 @@
       </form>
     </div>
 
-    <span *ngIf="!account" (click)="createConnect()" class="btn btn-green btn-connect">Connect</span>
+    <span *ngIf="!account" (click)="modal = true" class="btn btn-green btn-connect">Connect</span>
   </div>
 </section>
 
@@ -175,17 +175,22 @@
 <div class="modal" *ngIf="modal">
   <div class="modal-content">
     <div class="modal-head">
-      <span class="modal-head-title icon icon-flex icon-attention">Choose connection</span>
+      <span *ngIf="!exit" class="modal-head-title icon icon-flex icon-attention">Choose connection</span>
+      <span *ngIf="exit" class="modal-head-title icon icon-flex icon-attention">Do you really want to leave?</span>
     </div>
-    <div class="modal-body">
+    <div *ngIf="!exit" class="modal-body">
       <div class="modal-select-provider">
         <span *ngFor="let provider of providers" (click)="connect(provider)" class="icon" [attr.class]="'btn icon icon-provider icon-' + provider.toLowerCase()"></span>
       </div>
     </div>
-    <div class="modal-footer">
+    <div *ngIf="!exit" class="modal-footer">
       <span></span>
-      <span class="btn btn-green btn-footer" (click)="modal = !modal">Close</span>
+      <span *ngIf="!exit" class="btn btn-green btn-footer" (click)="modal = !modal">Close</span>
       <span></span>
+    </div>
+    <div *ngIf="exit" class="modal-footer" style="margin-top: 15px">
+      <span *ngIf="exit" class="btn btn-green-border btn-footer" (click)="modal = exit = false">No</span>
+      <span *ngIf="exit" class="btn btn-green btn-footer" (click)="logout()">Yes</span>
     </div>
   </div>
 </div>

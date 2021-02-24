@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-
-import { Contract } from 'web3-eth-contract';
+import { Observable } from 'rxjs';
 import BigNumber from 'bignumber.js';
 
-import { MetamaskService } from '../metamask/metamask.service';
+import { ConnectWallet } from '../connect-wallet/connect-wallet.service';
+
 import { AppConfig } from '../appconfig';
 import { daysValue } from 'src/app/params';
-import { WalletConnectService } from '../wallet-connect/wallet-connect.service';
-import { ConnectWallet } from '../connect-wallet/connect-wallet.service';
 
 interface IConfig {
   walletConnect?: {
@@ -31,14 +28,12 @@ export class ContractService {
   public account: any;
   private allAccountSubscribers = [];
   private allTransactionSubscribers = [];
+  private connectWallet: any;
 
   private CONTRACTS_PARAMS: any;
-  private TokenContract: Contract;
-  private StakingContract: Contract;
   private tokenAddress: string;
   private stakingAddress: string;
 
-  private walletService: any;
   private settingsApp: IConfig = {
     network: {
       name: 'rinkeby',
@@ -46,7 +41,7 @@ export class ContractService {
     },
   };
 
-  constructor(private httpService: HttpClient, private config: AppConfig, private connectWallet: ConnectWallet) {}
+  constructor(private httpService: HttpClient, private config: AppConfig) {}
 
   /**
    * Main Site Information
@@ -105,8 +100,9 @@ export class ContractService {
    * @returns totalAvs: number
    */
   public getTotalAvs(): Promise<any> {
-    return this.TokenContract.methods
-      .totalSupply()
+    return this.connectWallet
+      .Contract('Token')
+      .methods.totalSupply()
       .call()
       .then(
         (value: any) => {
@@ -118,10 +114,6 @@ export class ContractService {
       );
   }
 
-  public reserWalletService(): void {
-    this.walletService = undefined;
-  }
-
   /**
    * Get Total Staked AVS (Coin)
    * @description Get information about total staked coins on contract.
@@ -130,8 +122,9 @@ export class ContractService {
    * @returns totalStakedAVS: number
    */
   public getTotalStakedAVS(): Promise<any> {
-    return this.StakingContract.methods
-      .totalStakedAVS()
+    return this.connectWallet
+      .Contract('Staking')
+      .methods.totalStakedAVS()
       .call()
       .then(
         (value: any) => {
@@ -151,8 +144,9 @@ export class ContractService {
    * @returns totalStakers: number
    */
   public getTotalStakers(): Promise<any> {
-    return this.StakingContract.methods
-      .totalStakers()
+    return this.connectWallet
+      .Contract('Staking')
+      .methods.totalStakers()
       .call()
       .then(
         (value: any) => {
@@ -172,8 +166,9 @@ export class ContractService {
    * @returns percent: number
    */
   public async getSevenDays(): Promise<any> {
-    return this.StakingContract.methods
-      .seven_days()
+    return this.connectWallet
+      .Contract('Staking')
+      .methods.seven_days()
       .call()
       .then(
         (res: any) => {
@@ -194,8 +189,9 @@ export class ContractService {
    * @returns time: number
    */
   public async getTimeStampFromContract(date: number): Promise<number> {
-    return this.StakingContract.methods
-      .getDayUnixTime(date)
+    return this.connectWallet
+      .Contract('Staking')
+      .methods.getDayUnixTime(date)
       .call()
       .then((endDay: number) => {
         return endDay * 1000;
@@ -210,8 +206,9 @@ export class ContractService {
    * @returns stakes[]:{index: number,id: number,start: number,end: number,stakedAVS: number,totalReward: number,withdrawProgress: boolean,};
    */
   public async getAccountStakes(): Promise<any> {
-    return this.StakingContract.methods
-      .stakeListCount(this.account.address)
+    return this.connectWallet
+      .Contract('Staking')
+      .methods.stakeListCount(this.account.address)
       .call()
       .then((sessions: any) => {
         if (sessions !== '0' && sessions !== 0) {
@@ -220,8 +217,9 @@ export class ContractService {
             sessionsIds.push(i);
           }
           const sessionsPromises = sessionsIds.map((sessionId) => {
-            return this.StakingContract.methods
-              .stakeList(this.account.address, sessionId)
+            return this.connectWallet
+              .Contract('Staking')
+              .methods.stakeList(this.account.address, sessionId)
               .call()
               .then((oneSession: any) => {
                 const promises = [this.getTimeStampFromContract(+oneSession.startDay), this.getTimeStampFromContract(+oneSession.startDay + +oneSession.numDaysStake)];
@@ -262,12 +260,14 @@ export class ContractService {
    */
   private getAllowance(amount: string | number): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.TokenContract.methods
-        .allowance(this.account.address, this.stakingAddress)
+      this.connectWallet
+        .Contract('Token')
+        .methods.allowance(this.account.address, this.stakingAddress)
         .call()
         .then((allowance: string) => {
           const allow = new BigNumber(allowance);
           const allowed = allow.minus(amount);
+          console.log('allowance', allowance);
           allowed.isNegative() ? reject() : resolve(1);
         });
     });
@@ -282,12 +282,14 @@ export class ContractService {
    */
   public startStake(amount: string | number, day: number): Promise<any> {
     const stake = (resolve: any, reject: any) => {
-      return this.StakingContract.methods
-        .stakeStart(amount, day)
+      return this.connectWallet
+        .Contract('Staking')
+        .methods.stakeStart(amount, day)
         .send({
           from: this.account.address,
         })
-        .then((res) => {
+        .then((res: any) => {
+          console.log('startStake', res);
           return this.checkTransaction(res);
         })
         .then(resolve, reject);
@@ -298,8 +300,9 @@ export class ContractService {
           stake(resolve, reject);
         },
         () => {
-          this.TokenContract.methods
-            .approve(this.stakingAddress, amount)
+          this.connectWallet
+            .Contract('Token')
+            .methods.approve(this.stakingAddress, amount)
             .send({
               from: this.account.address,
             })
@@ -319,8 +322,9 @@ export class ContractService {
    * @returns true | false
    */
   public async unstake(sessionId: number, id: number): Promise<any> {
-    return this.StakingContract.methods
-      .stakeEnd(sessionId, id)
+    return this.connectWallet
+      .Contract('Staking')
+      .methods.stakeEnd(sessionId, id)
       .send({
         from: this.account.address,
       })
@@ -353,16 +357,21 @@ export class ContractService {
    * new Promise((resolve, reject) => {contractService.checkTx(tx, resolve, reject);});
    */
   private checkTx(tx: any, resolve: any, reject: any): void {
-    this.walletService.Web3.eth.getTransaction(tx.transactionHash).then((txInfo: any) => {
-      if (txInfo.blockNumber) {
-        this.callAllTransactionsSubscribers(txInfo);
-        resolve(tx);
-      } else {
-        setTimeout(() => {
-          this.checkTx(tx, resolve, reject);
-        }, 2000);
-      }
-    }, reject);
+    this.connectWallet
+      .Web3Provider()
+      .eth.getTransaction(tx.transactionHash)
+      .then((txInfo: any) => {
+        console.log(txInfo);
+        if (txInfo.blockNumber) {
+          this.callAllTransactionsSubscribers(txInfo);
+          resolve(tx);
+        } else {
+          setTimeout(() => {
+            console.log(tx);
+            this.checkTx(tx, resolve, reject);
+          }, 2000);
+        }
+      }, reject);
   }
 
   /**
@@ -386,6 +395,7 @@ export class ContractService {
    */
   private checkTransaction(tx: string): Promise<any> {
     return new Promise((resolve, reject) => {
+      console.log('checkTransaction', tx);
       this.checkTx(tx, resolve, reject);
     });
   }
@@ -403,25 +413,6 @@ export class ContractService {
     });
     return newObserver;
   }
-
-  /**
-   * Static information
-   * @description Main initialized function which will initialized MetaMaskService, retrive account information and triggered getContractsInfo() function.
-   * @example
-   * contractService.getStaticInfo().then(() => {}).catch((err)=>{});
-   * @returns true
-   */
-  // public async getStaticInfo(): Promise<any> {
-  //   // return this.initAll().then(() => {
-  //   this.walletService = this.config.getConfig().production ? new WalletConnectService(this.config) : new MetamaskService(this.config);
-  //   this.walletService.getAccounts().subscribe((account: any) => {
-  //     if (account) {
-  //       const promises = [this.getContractsInfo(false)];
-  //       return Promise.all(promises);
-  //     }
-  //   });
-  //   // });
-  // }
 
   /**
    * Get contract information.
@@ -468,6 +459,7 @@ export class ContractService {
     ];
     return Promise.all(promises).then((result) => {
       this.CONTRACTS_PARAMS = result[1][this.settingsApp.network.name];
+      this.connectWallet = new ConnectWallet();
     });
   }
 
@@ -525,13 +517,6 @@ export class ContractService {
     });
   }
 
-  // public isActiveConnect(): Promise<boolean> {
-  //   return new Promise((resolve: any) => {
-  //     console.log(this.walletService);
-  //     resolve(this.walletService === undefined ? false : true);
-  //   });
-  // }
-
   /**
    * Get account information.
    * @description Retrive infromation about account address via MetaMaskService from blockchain by address and get token address balance.
@@ -558,11 +543,16 @@ export class ContractService {
         },
         (err: any) => {
           this.account = false;
-          console.log('getAccount error', err);
+          this.callAllAccountsSubscribers();
           reject(err);
         }
       );
     });
+  }
+
+  public resetConnection(): void {
+    this.account = null;
+    this.connectWallet = new ConnectWallet();
   }
 
   /**
@@ -613,7 +603,6 @@ export class ContractService {
     const connecting = this.connectWallet
       .connectProvider(providerWallet, networkWallet, connectSetting)
       .then((connected) => {
-        // console.log(' initWalletConnect providerWallet connected', connected);
         if (connected) {
           this.initializeContracts();
         }
@@ -624,7 +613,6 @@ export class ContractService {
       });
 
     return Promise.all([connecting]).then((connect: any) => {
-      // console.log('initWalletConnect connecting', connect[0]);
       return connect[0];
     });
   }
