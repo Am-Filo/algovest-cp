@@ -56,3 +56,5 @@ export const codeMap = {
     name: 'Wallet disconnected',
   },
 };
+
+export const getCode = (code: number) => codeMap[code];

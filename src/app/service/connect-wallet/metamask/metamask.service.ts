@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { IConnectorMessage } from '../connect-wallet.interface';
-import { parameters } from '../params';
+import { parameters } from '../helpers';
 
 declare global {
   interface Window {

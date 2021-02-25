@@ -6,7 +6,7 @@ import Web3 from 'web3';
 import { MetamaskConnect } from './metamask/metamask.service';
 import { WalletsConnect } from './wallet-connect/wallet-connect.service';
 import { INetwork, IMessageProvider, IContract, IProvider, IAddContract, IConnect, ISettings, IError, IConnectorMessage } from './connect-wallet.interface';
-import { parameters } from './params';
+import { parameters } from './helpers';
 
 @Injectable({
   providedIn: 'root',
@@ -21,9 +21,16 @@ export class ConnectWallet {
 
   private Web3: any;
   private contracts: IContract = {};
+  private allTxSubscribers = [];
 
   constructor() {}
 
+  /**
+   * Connect Wallet Provider
+   * @description Create or initialized new wallet provider with network and settings by passing it in arguments.
+   * @example
+   * connectWallet.connectProvider(providerWallet, networkWallet, connectSetting).then((connect) => {console.log(connect);},(error) => {console.log('connect error', error);});
+   */
   public async connectProvider(provider: IProvider, network: INetwork, settings?: ISettings): Promise<any> {
     if (!this.availableProviders.includes(provider.name)) {
       return {
@@ -59,15 +66,20 @@ export class ConnectWallet {
 
     return Promise.all(connectPromises).then((connect: any) => {
       if (connect[0].connected) {
-        this.initializeWeb3(connect[0].provider === 'Web3' ? Web3.givenProvider : connect[0].provider);
+        this.initWeb3(connect[0].provider === 'Web3' ? Web3.givenProvider : connect[0].provider);
       }
       return connect[0].connected;
     });
   }
 
+  /**
+   * Choose Provider
+   * @description Select available provider.
+   * @example
+   * connectWallet.chooseProvider('MetaMask');
+   */
   private async chooseProvider(name: string): Promise<any> {
     this.providerName = name;
-
     switch (name) {
       case 'MetaMask':
         return new MetamaskConnect();
@@ -76,7 +88,13 @@ export class ConnectWallet {
     }
   }
 
-  private initializeWeb3(provider: any): void {
+  /**
+   * Initialize Web3
+   * @description Set provider to web3 after use connect function.
+   * @example
+   * connectWallet.initWeb3(provider);
+   */
+  private initWeb3(provider: any): void {
     if (this.Web3) {
       this.Web3.setProvider(provider);
     } else {
@@ -84,25 +102,27 @@ export class ConnectWallet {
     }
   }
 
-  private applySettings(data): any {
+  /**
+   * Apply Wallet Settings
+   * @description Add settings parameters to connect wallet answers.
+   * @example
+   * connectWallet.applySettings(data);
+   */
+  private applySettings(data: IConnectorMessage | IError | IConnect): any {
     if (this.settings.providerType) {
       data.type = this.providerName;
     }
     return data;
   }
 
-  public addContract(contract: IAddContract): Promise<boolean> {
-    return new Promise<any>((resolve, reject) => {
-      try {
-        this.contracts[contract.name] = new this.Web3.eth.Contract(contract.abi, contract.address);
-        resolve(true);
-      } catch (error) {
-        reject(false);
-      }
-    });
-  }
-
-  public getAccounts(): Observable<any> {
+  /**
+   * Get Account
+   * @description Get account address and chain information from selected wallet provider.
+   * @example
+   * connectWallet.getAccounts().subscribe((account: any)=> {console.log('account',account)});
+   * @returns Observable<any>
+   */
+  public getAccounts(): Observable<IConnect | IError> {
     return new Observable((observer) => {
       this.connector.getAccounts().subscribe(
         (connectInfo: IConnect) => {
@@ -131,8 +151,111 @@ export class ConnectWallet {
     });
   }
 
+  /**
+   * Transaction Subscribe
+   * @description Create new Observer of transactions which will add it to allTransactionSubscribers variable and return information transaction failed or successed.
+   * @example
+   * connectWallet.txSubscribe().subscribe((tx) => {console.log('transacton', tx)});
+   */
+  public txSubscribe(): Observable<any> {
+    const newObserver = new Observable((observer) => {
+      this.allTxSubscribers.push(observer);
+    });
+    return newObserver;
+  }
+
+  /**
+   * Call All Transaction Subscribers
+   * @description Trigger observer subscribers if transaction complete.
+   * @example
+   * connectWallet.clTxSubscribers(txHash);
+   */
+  public clTxSubscribers(txHash: string): void {
+    this.allTxSubscribers.forEach((observer) => {
+      observer.next(txHash);
+    });
+  }
+
+  /**
+   * Get Transaction Status
+   * @description Checking transaction hash in blockchain.
+   * @example
+   * new Promise((resolve, reject) => {connectWallet.checkTx(txHash, resolve, reject);});
+   */
+  private txStatus(txHash: string, resolve: any, reject: any): void {
+    this.Web3.eth.getTransactionReceipt(txHash, (err: any, res: any) => {
+      if (err || (res && res.blockNumber && !res.status)) {
+        reject(err);
+      } else if (res && res.blockNumber) {
+        this.clTxSubscribers(txHash);
+        resolve(res);
+      } else if (!res) {
+        setTimeout(() => {
+          this.txStatus(txHash, resolve, reject);
+        }, 2000);
+      }
+    });
+  }
+
+  /**
+   * Check Transaction
+   * @description Start checking transaction.
+   * @example
+   * connectWallet.txCheck(txHash);
+   * @returns value from txStatus() function
+   */
+  public txCheck(txHash: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.txStatus(txHash, resolve, reject);
+    });
+  }
+
+  /**
+   * Add Contract
+   * @description Add contract abi and address to web3.
+   * @example
+   * connectWallet.addContract(contract);
+   */
+  public addContract(contract: IAddContract): Promise<boolean> {
+    return new Promise<any>((resolve, reject) => {
+      try {
+        this.contracts[contract.name] = new this.Web3.eth.Contract(contract.abi, contract.address);
+        resolve(true);
+      } catch (error) {
+        reject(false);
+      }
+    });
+  }
+
+  /**
+   * Get Contract
+   * @description Get contract methods.
+   * @example
+   * connectWallet.Contract(ContractName);
+   */
   public Contract = (name: string): Contract => this.contracts[name];
+
+  /**
+   * Get Web3
+   * @description Get web3 methods.
+   * @example
+   * connectWallet.Web3Provider();
+   */
   public Web3Provider = () => this.Web3;
+
+  /**
+   * Get Balance
+   * @description Get account balance from ethereum blockchain.
+   * @example
+   * connectWallet.getBalance(address).then((balance: string)=> {console.log('balance',balance)});
+   */
   public getBalance = (address: string): Promise<string | number> => this.Web3.eth.getBalance(address);
+
+  /**
+   * Reset Connect
+   * @description Disconnect initialized wallet.
+   * @example
+   * connectWallet.resetConect();
+   */
   public resetConect = (): void => (this.connector = undefined);
 }

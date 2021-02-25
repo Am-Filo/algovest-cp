@@ -6,7 +6,7 @@ import WalletConnect from '@walletconnect/client';
 import QRCodeModal from '@walletconnect/qrcode-modal';
 
 import { IConnectorMessage } from '../connect-wallet.interface';
-import { parameters } from '../params';
+import { parameters } from '../helpers';
 
 @Injectable({
   providedIn: 'root',

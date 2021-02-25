@@ -27,7 +27,6 @@ interface IConfig {
 export class ContractService {
   public account: any;
   private allAccountSubscribers = [];
-  private allTransactionSubscribers = [];
   private connectWallet: any;
 
   private CONTRACTS_PARAMS: any;
@@ -79,7 +78,7 @@ export class ContractService {
       this.getSevenDays().then((value) => {
         return {
           key: 'sevenDays',
-          value: value !== 0 ? value / 100 : 0,
+          value: !isNaN(value) && value !== 0 ? value / 100 : 0,
         };
       }),
     ];
@@ -224,13 +223,22 @@ export class ContractService {
               .then((oneSession: any) => {
                 const promises = [this.getTimeStampFromContract(+oneSession.startDay), this.getTimeStampFromContract(+oneSession.startDay + +oneSession.numDaysStake)];
                 const apy = daysValue.filter((t) => t.value === +oneSession.numDaysStake);
-                const reward = (oneSession.stakedAVS * (apy[0].apy / 100)) / (365 * +oneSession.numDaysStake);
                 return Promise.all(promises).then((stake) => {
+                  const start = stake[0];
+                  const end = stake[1];
+                  const diffDays = Math.ceil(Math.abs(end - +new Date()) / (1000 * 60 * 60 * 24));
+                  const dayStake = diffDays > +oneSession.numDaysStake ? +oneSession.numDaysStake : diffDays;
+                  const rewardFull = (oneSession.stakedAVS * (apy[0].apy / 100)) / (365 * +dayStake);
+                  const rewardPercent = rewardFull * (diffDays > +oneSession.numDaysStake ? 0.02 : 0.2);
+                  const reward = rewardFull - rewardPercent;
+
+                  console.log(`start day: ${start}`, `end day: ${end}`, `staking days: ${+oneSession.numDaysStake}`, `diff days: ${diffDays}`, rewardFull, rewardPercent, reward);
+
                   return {
                     index: sessionId,
                     id: oneSession.stakeId,
-                    start: stake[0],
-                    end: stake[1],
+                    start,
+                    end,
                     reward,
                     stakedAVS: oneSession.stakedAVS,
                     totalReward: oneSession.freezedRewardAVSTokens,
@@ -277,10 +285,10 @@ export class ContractService {
    * Start Stake
    * @description Send coins to staking on contract.
    * @example
-   * contractService.startStake(amount, day).then(() => {}).catch((err)=>{});
+   * contractService.stake(amount, day).then(() => {}).catch((err)=>{});
    * @returns true | false
    */
-  public startStake(amount: string | number, day: number): Promise<any> {
+  public stake(amount: string | number, day: number): Promise<any> {
     const stake = (resolve: any, reject: any) => {
       return this.connectWallet
         .Contract('Staking')
@@ -288,9 +296,21 @@ export class ContractService {
         .send({
           from: this.account.address,
         })
-        .then((res: any) => {
-          console.log('startStake', res);
-          return this.checkTransaction(res);
+        .then((tx: any) => {
+          const { transactionHash } = tx;
+          console.log('stake', tx, transactionHash);
+
+          return this.connectWallet.txCheck(transactionHash).then(
+            (result) => {
+              console.log('start stake check transaction result', result);
+            },
+            (err) => {
+              console.log('start stake check transaction error', err);
+              if (err === null || undefined) {
+                this.connectWallet.clTxSubscribers(transactionHash);
+              }
+            }
+          );
         })
         .then(resolve, reject);
     };
@@ -328,9 +348,46 @@ export class ContractService {
       .send({
         from: this.account.address,
       })
-      .then((res: any) => {
-        return this.checkTransaction(res);
+      .then((tx: any) => {
+        const { transactionHash } = tx;
+        console.log('stakeEnd', tx, transactionHash);
+
+        return this.connectWallet.txCheck(transactionHash).then(
+          (result) => {
+            console.log('unstake tx result', result);
+          },
+          (err) => {
+            console.log('unstake tx error', err);
+            if (err === null || undefined) {
+              this.connectWallet.clTxSubscribers(transactionHash);
+            }
+          }
+        );
       });
+  }
+
+  /**
+   * Transaction Subscribe
+   * @description Create new Observer of transactions which will add it to allTransactionSubscribers variable and return information transaction failed or successed.
+   * @example
+   * contractService.txSubscribe().subscribe((txInfo) => {console.log('transaction', txInfo)});
+   * @returns transaction: {tx: string}
+   */
+  public txSubscribe(): Observable<any> {
+    return new Observable((observer) => {
+      this.connectWallet.txSubscribe().subscribe(
+        (txInfo: string) => {
+          console.log(txInfo);
+          observer.next(txInfo);
+        },
+        (error) => {
+          observer.error(error);
+        }
+      );
+      return {
+        unsubscribe(): any {},
+      };
+    });
   }
 
   /**
@@ -351,116 +408,26 @@ export class ContractService {
   }
 
   /**
-   * Check Transaction
-   * @description Checking transaction in blockchain.
+   * Update account balance
+   * @description Update information about account token balance.
    * @example
-   * new Promise((resolve, reject) => {contractService.checkTx(tx, resolve, reject);});
+   * contractService.updateBalance();
    */
-  private checkTx(tx: any, resolve: any, reject: any): void {
-    this.connectWallet
-      .Web3Provider()
-      .eth.getTransaction(tx.transactionHash)
-      .then((txInfo: any) => {
-        console.log(txInfo);
-        if (txInfo.blockNumber) {
-          this.callAllTransactionsSubscribers(txInfo);
-          resolve(tx);
-        } else {
-          setTimeout(() => {
-            console.log(tx);
-            this.checkTx(tx, resolve, reject);
-          }, 2000);
-        }
-      }, reject);
-  }
-
-  /**
-   * Check All Transaction Subscribers
-   * @description Trigger observer subscribers if transaction complete.
-   * @example
-   * contractService.callAllTransactionsSubscribers(txInfo);
-   */
-  private callAllTransactionsSubscribers(transaction: string): void {
-    this.allTransactionSubscribers.forEach((observer) => {
-      observer.next(transaction);
+  public updateBalance(): void {
+    this.getTokenBalance().then((balance) => {
+      this.account.balance = balance;
+      this.callAllAccountsSubscribers();
     });
   }
 
   /**
-   * Check Transaction
-   * @description Start checking transaction.
+   * Load account information
+   * @description Triggered function callAllAccountsSubscribers.
    * @example
-   * contractService.checkTransaction(tx);
-   * @returns value from checkTx() function
+   * contractService.loadAccountInfo();
    */
-  private checkTransaction(tx: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      console.log('checkTransaction', tx);
-      this.checkTx(tx, resolve, reject);
-    });
-  }
-
-  /**
-   * Transaction Subscribe
-   * @description Create new Observer of transactions which will add it to allTransactionSubscribers variable and return information transaction failed or successed.
-   * @example
-   * contractService.transactionsSubscribe().subscribe((transaction) => {console.log('success', transaction)});
-   * @returns transaction: {tx: string}
-   */
-  public transactionsSubscribe(): Observable<any> {
-    const newObserver = new Observable((observer) => {
-      this.allTransactionSubscribers.push(observer);
-    });
-    return newObserver;
-  }
-
-  /**
-   * Get contract information.
-   * @description Triggered initializeContracts() function than will add contracts abi and address to metamask configuration.
-   * @example
-   * contractService.getContractsInfo(false).then(() => {});
-   * @returns true
-   */
-  private getContractsInfo(noEnable?: boolean): Promise<any> {
-    if (!noEnable) {
-      this.initializeContracts();
-    }
-    const promises = [true];
-    return Promise.all(promises);
-  }
-
-  /**
-   * Application initialized
-   * @description Load setting and contracrs information via https from assets/js/. Set application setting and contracts.
-   * @example
-   * contractService.initAll().then(() => {});
-   */
-  private async initAll(): Promise<any> {
-    const promises = [
-      this.httpService
-        .get(`/assets/js/settings.json?v=${new Date().getTime()}`)
-        .toPromise()
-        .then((config: IConfig) => {
-          this.settingsApp = config ? config : this.settingsApp;
-          this.config.setConfig(this.settingsApp);
-        })
-        .catch(() => {
-          this.config.setConfig(this.settingsApp);
-        }),
-      this.httpService
-        .get(`/assets/js/contracts.json?v=${new Date().getTime()}`)
-        .toPromise()
-        .then((result) => {
-          return result;
-        })
-        .catch((err) => {
-          console.log('err contracts', err);
-        }),
-    ];
-    return Promise.all(promises).then((result) => {
-      this.CONTRACTS_PARAMS = result[1][this.settingsApp.network.name];
-      this.connectWallet = new ConnectWallet();
-    });
+  public loadAccountInfo(): any {
+    this.callAllAccountsSubscribers();
   }
 
   /**
@@ -480,29 +447,6 @@ export class ContractService {
       };
     });
     return newObserver;
-  }
-
-  /**
-   * Load account information
-   * @description Triggered function callAllAccountsSubscribers.
-   * @example
-   * contractService.loadAccountInfo();
-   */
-  public loadAccountInfo(): any {
-    this.callAllAccountsSubscribers();
-  }
-
-  /**
-   * Update account balance
-   * @description Update information about account token balance.
-   * @example
-   * contractService.updateBalance();
-   */
-  public updateBalance(): void {
-    this.getTokenBalance().then((balance) => {
-      this.account.balance = balance;
-      this.callAllAccountsSubscribers();
-    });
   }
 
   /**
@@ -550,11 +494,6 @@ export class ContractService {
     });
   }
 
-  public resetConnection(): void {
-    this.account = null;
-    this.connectWallet = new ConnectWallet();
-  }
-
   /**
    * Getting Token Address
    * @description Return adress of token contract.
@@ -575,6 +514,18 @@ export class ContractService {
    */
   public getStakingAddress(): string {
     return this.stakingAddress;
+  }
+
+  /**
+   * Reset Wallet Connect
+   * @description This function do the same as logout by creating new connectWallet and reset account.
+   * @example
+   * contractService.resetConnection();
+   * @returns address
+   */
+  public resetConnection(): void {
+    this.account = null;
+    this.connectWallet = new ConnectWallet();
   }
 
   /**
@@ -614,6 +565,40 @@ export class ContractService {
 
     return Promise.all([connecting]).then((connect: any) => {
       return connect[0];
+    });
+  }
+
+  /**
+   * Application initialized
+   * @description Load setting and contracrs information via https from assets/js/. Set application setting and contracts.
+   * @example
+   * contractService.initAll().then(() => {});
+   */
+  public async initAll(): Promise<any> {
+    const promises = [
+      this.httpService
+        .get(`/assets/js/settings.json?v=${new Date().getTime()}`)
+        .toPromise()
+        .then((config: IConfig) => {
+          this.settingsApp = config ? config : this.settingsApp;
+          this.config.setConfig(this.settingsApp);
+        })
+        .catch(() => {
+          this.config.setConfig(this.settingsApp);
+        }),
+      this.httpService
+        .get(`/assets/js/contracts.json?v=${new Date().getTime()}`)
+        .toPromise()
+        .then((result) => {
+          return result;
+        })
+        .catch((err) => {
+          console.log('err contracts', err);
+        }),
+    ];
+    return Promise.all(promises).then((result) => {
+      this.CONTRACTS_PARAMS = result[1][this.settingsApp.network.name];
+      this.connectWallet = new ConnectWallet();
     });
   }
 }

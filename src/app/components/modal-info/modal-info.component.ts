@@ -2,14 +2,14 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-metamask-error',
-  templateUrl: './metamask-error.component.html',
+  selector: 'app-modal-info',
+  templateUrl: './modal-info.component.html',
 })
-export class MetamaskErrorComponent {
+export class ModalInfoComponent {
   public text: string;
   public title: string;
 
-  constructor(public dialogRef: MatDialogRef<MetamaskErrorComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor(public dialogRef: MatDialogRef<ModalInfoComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
     this.title = data.message.title;
     this.text = data.message.text;
 

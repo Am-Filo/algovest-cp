@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MetamaskErrorComponent } from './metamask-error.component';
+import { ModalInfoComponent } from './modal-info.component';
 
-describe('MetamaskErrorComponent', () => {
-  let component: MetamaskErrorComponent;
-  let fixture: ComponentFixture<MetamaskErrorComponent>;
+describe('ModalInfoComponent', () => {
+  let component: ModalInfoComponent;
+  let fixture: ComponentFixture<ModalInfoComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [MetamaskErrorComponent],
+      declarations: [ModalInfoComponent],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MetamaskErrorComponent);
+    fixture = TestBed.createComponent(ModalInfoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

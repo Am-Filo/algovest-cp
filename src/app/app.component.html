@@ -176,7 +176,7 @@
   <div class="modal-content">
     <div class="modal-head">
       <span *ngIf="!exit" class="modal-head-title icon icon-flex icon-attention">Choose connection</span>
-      <span *ngIf="exit" class="modal-head-title icon icon-flex icon-attention">Do you really want to leave?</span>
+      <span *ngIf="exit" class="modal-head-title icon icon-flex icon-attention" style="font-size: 16px">Do you really want to leave?</span>
     </div>
     <div *ngIf="!exit" class="modal-body">
       <div class="modal-select-provider">
@@ -188,7 +188,7 @@
       <span *ngIf="!exit" class="btn btn-green btn-footer" (click)="modal = !modal">Close</span>
       <span></span>
     </div>
-    <div *ngIf="exit" class="modal-footer" style="margin-top: 15px">
+    <div *ngIf="exit" class="modal-footer" style="margin-top: 25px">
       <span *ngIf="exit" class="btn btn-green-border btn-footer" (click)="modal = exit = false">No</span>
       <span *ngIf="exit" class="btn btn-green btn-footer" (click)="logout()">Yes</span>
     </div>

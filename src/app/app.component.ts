@@ -1,8 +1,8 @@
 import { Component, EventEmitter, NgZone } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
-import { TransactionSuccessModalComponent } from './components/transaction/transaction-success-modal.component';
-import { MetamaskErrorComponent } from './components/metamask/metamask-error.component';
+import { TxModalComponent } from './components/transaction/tx-modal.component';
+import { ModalInfoComponent } from './components/modal-info/modal-info.component';
 
 import { ThemeService } from './service/theme/theme.service';
 import { ContractService } from './service/contract/contract.service';
@@ -36,6 +36,7 @@ export class AppComponent {
   private accoutSubscribe: any;
   public userAddress = '';
   public onChangeAccount: EventEmitter<any> = new EventEmitter();
+  private scheduleWarningChek: any;
 
   public contractAddress: string;
   public totalData: any;
@@ -51,14 +52,21 @@ export class AppComponent {
   constructor(private themeProvider: ThemeService, private contractService: ContractService, private ngZone: NgZone, public dialog: MatDialog, public config: AppConfig) {
     this.providers = Object.keys(config.getConfig().walletConnect.providers);
     this.detectColorScheme();
-    this.contractService.transactionsSubscribe().subscribe((transaction: any) => {
-      if (transaction) {
-        this.dialog.open(TransactionSuccessModalComponent, {
-          data: { title: 'Transaction', text: 'Completed successfully ', tx: transaction.hash },
-          width: '440px',
-        });
+    this.contractService.txSubscribe().subscribe(
+      (tx: any) => {
+        console.log(tx);
+
+        if (tx) {
+          this.dialog.open(TxModalComponent, {
+            data: { title: 'Transaction', text: 'Completed successfully ', tx },
+            width: '440px',
+          });
+        }
+      },
+      (err) => {
+        console.log('catch error txHash subscrber in modal on app component', err);
       }
-    });
+    );
   }
 
   /**
@@ -88,6 +96,7 @@ export class AppComponent {
     this.contractService.getMainInfo().then((data) => {
       this.totalData = data;
       this.stakeList();
+      this.scheduleWarningChek = this.scheduleWarning('24:00');
       this.loading = false;
       this.contractAddress = this.contractService.getStakingAddress();
     });
@@ -114,7 +123,7 @@ export class AppComponent {
   public stake(): void {
     this.stakingProgress = true;
     this.contractService
-      .startStake(this.amountValue, this.daySelected)
+      .stake(this.amountValue, this.daySelected)
       .then(() => {
         this.stakingProgress = false;
         this.amountValue = 0;
@@ -184,7 +193,7 @@ export class AppComponent {
       },
       (err) => {
         console.log('getAccount app component', err);
-        this.dialog.open(MetamaskErrorComponent, {
+        this.dialog.open(ModalInfoComponent, {
           data: err,
           width: '400px',
         });
@@ -223,7 +232,7 @@ export class AppComponent {
         this.updateUserAccount();
       },
       (err) => {
-        this.dialog.open(MetamaskErrorComponent, {
+        this.dialog.open(ModalInfoComponent, {
           data: err,
           width: '400px',
         });
@@ -265,5 +274,32 @@ export class AppComponent {
   public toggleColorScheme(): void {
     this.themeProvider.setTheme(this.theme === 'dark' ? 'white' : 'dark');
     this.detectColorScheme();
+  }
+
+  /**
+   * Trigger Schedule Functions
+   * @description Trigger functions that added into this function.
+   * @example
+   * this.scheduleWarning('17:00');
+   */
+  private scheduleWarning(time: string): any {
+    const hour = Number(time.split(':')[0]);
+    const minute = Number(time.split(':')[1]);
+
+    const startTime = new Date();
+    startTime.setHours(hour, minute);
+    const now = new Date();
+
+    if (startTime.getTime() < now.getTime()) {
+      startTime.setHours(startTime.getHours() + 24);
+    }
+    const firstTriggerAfterMs = startTime.getTime() - now.getTime();
+
+    console.log('firstTriggerAfterMs', firstTriggerAfterMs);
+
+    setTimeout(() => {
+      this.stakeList();
+      setInterval(this.stakeList, 24 * 60 * 60 * 1000);
+    }, firstTriggerAfterMs);
   }
 }

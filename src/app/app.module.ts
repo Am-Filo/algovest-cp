@@ -12,8 +12,8 @@ import { CalculatePipe } from './service/calculate/calculate.pipe';
 import { BigNumberDirective, BigNumberFormat, BigNumberMax, BigNumberMin } from './directives/bignumber/bignumber';
 
 import { AppComponent } from './app.component';
-import { MetamaskErrorComponent } from './components/metamask/metamask-error.component';
-import { TransactionSuccessModalComponent } from './components/transaction/transaction-success-modal.component';
+import { ModalInfoComponent } from './components/modal-info/modal-info.component';
+import { TxModalComponent } from './components/transaction/tx-modal.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 /**
@@ -32,8 +32,8 @@ export function initializeApp(injector: Injector): any {
     });
 }
 @NgModule({
-  entryComponents: [TransactionSuccessModalComponent, MetamaskErrorComponent],
-  declarations: [AppComponent, TransactionSuccessModalComponent, MetamaskErrorComponent, CalculatePipe, BigNumberFormat, BigNumberMax, BigNumberMin, BigNumberDirective],
+  entryComponents: [TxModalComponent, ModalInfoComponent],
+  declarations: [AppComponent, TxModalComponent, ModalInfoComponent, CalculatePipe, BigNumberFormat, BigNumberMax, BigNumberMin, BigNumberDirective],
   imports: [AppRoutingModule, BrowserModule, HttpClientModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule, MatDialogModule],
   providers: [
     AppConfig,

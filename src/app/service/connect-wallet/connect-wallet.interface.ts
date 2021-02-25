@@ -15,6 +15,7 @@ export interface IProvider {
 
 export interface IConnect {
   address: string;
+  type?: string;
   network: {
     name: string;
     chainID: number;
