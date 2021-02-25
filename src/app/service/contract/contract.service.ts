@@ -212,13 +212,22 @@ export class ContractService {
               .then((oneSession: any) => {
                 const promises = [this.getTimeStampFromContract(+oneSession.startDay), this.getTimeStampFromContract(+oneSession.startDay + +oneSession.numDaysStake)];
                 const apy = daysValue.filter((t) => t.value === +oneSession.numDaysStake);
-                const reward = (oneSession.stakedAVS * (apy[0].apy / 100)) / (365 * +oneSession.numDaysStake);
                 return Promise.all(promises).then((stake) => {
+                  const start = stake[0];
+                  const end = stake[1];
+                  const diffDays = Math.ceil(Math.abs(end - +new Date()) / (1000 * 60 * 60 * 24));
+                  const dayStake = diffDays > +oneSession.numDaysStake ? +oneSession.numDaysStake : diffDays;
+                  const rewardFull = (oneSession.stakedAVS * (apy[0].apy / 100)) / (365 * +dayStake);
+                  const rewardPercent = rewardFull * (diffDays > +oneSession.numDaysStake ? 0.02 : 0.2);
+                  const reward = rewardFull - rewardPercent;
+
+                  // console.log(`start day: ${start}`, `end day: ${end}`, `staking days: ${+oneSession.numDaysStake}`, `diff days: ${diffDays}`, rewardFull, rewardPercent, reward);
+
                   return {
                     index: sessionId,
                     id: oneSession.stakeId,
-                    start: stake[0],
-                    end: stake[1],
+                    start,
+                    end,
                     reward,
                     stakedAVS: oneSession.stakedAVS,
                     totalReward: oneSession.freezedRewardAVSTokens,
