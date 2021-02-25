@@ -22,6 +22,7 @@ export class AppComponent {
   public account: any;
   public userAddress = '';
   public onChangeAccount: EventEmitter<any> = new EventEmitter();
+  private scheduleWarningChek: any;
 
   public contractAddress: string;
   public totalData: any;
@@ -68,6 +69,7 @@ export class AppComponent {
     this.contractService.getMainInfo().then((data) => {
       this.totalData = data;
       this.stakeList();
+      this.scheduleWarningChek = this.scheduleWarning('24:00');
       this.loading = false;
     });
   }
@@ -209,5 +211,30 @@ export class AppComponent {
   public toggleColorScheme(): void {
     this.themeProvider.setTheme(this.theme === 'dark' ? 'white' : 'dark');
     this.detectColorScheme();
+  }
+
+  /**
+   * Trigger Schedule Functions
+   * @description Trigger functions that added into this function.
+   * @example
+   * this.scheduleWarning('17:00');
+   */
+  private scheduleWarning(time: string): any {
+    const hour = Number(time.split(':')[0]);
+    const minute = Number(time.split(':')[1]);
+
+    const startTime = new Date();
+    startTime.setHours(hour, minute);
+    const now = new Date();
+
+    if (startTime.getTime() < now.getTime()) {
+      startTime.setHours(startTime.getHours() + 24);
+    }
+    const firstTriggerAfterMs = startTime.getTime() - now.getTime();
+
+    setTimeout(() => {
+      this.stakeList();
+      setInterval(this.stakeList, 24 * 60 * 60 * 1000);
+    }, firstTriggerAfterMs);
   }
 }
