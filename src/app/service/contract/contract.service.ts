@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import BigNumber from 'bignumber.js';
 
-import { ConnectWallet } from '../connect-wallet/connect-wallet.service';
+import { ConnectWallet } from '@amfi/connect-wallet';
 
 import { AppConfig } from '../appconfig';
 import { daysValue } from 'src/app/params';
@@ -552,8 +552,8 @@ export class ContractService {
     const networkWallet = this.settingsApp.network;
 
     const connecting = this.connectWallet
-      .connectProvider(providerWallet, networkWallet, connectSetting)
-      .then((connected) => {
+      .connect(providerWallet, networkWallet, connectSetting)
+      .then((connected: boolean) => {
         if (connected) {
           this.initializeContracts();
         }
