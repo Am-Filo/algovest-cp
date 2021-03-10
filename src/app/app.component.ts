@@ -23,6 +23,7 @@ export class AppComponent {
   public userAddress = '';
   public onChangeAccount: EventEmitter<any> = new EventEmitter();
   private scheduleWarningChek: any;
+  private checkStakes = false;
 
   public contractAddress: string;
   public totalData: any;
@@ -81,9 +82,33 @@ export class AppComponent {
    * this.stakeList();
    */
   public stakeList(): void {
-    this.contractService.getAccountStakes().then((res) => {
-      this.stakesList = res;
-    });
+    this.contractService
+      .getAccountStakes()
+      .then((res) => {
+        this.stakesList = res;
+      })
+      .finally(() => {
+        if (!this.checkStakes) {
+          this.stakeListCheck();
+          this.checkStakes = true;
+        }
+      });
+  }
+
+  /**
+   * Start Checking Stake Coins
+   * @description Check stakes
+   * @example
+   * this.stakeListCheck();
+   */
+  public stakeListCheck(): void {
+    setTimeout(() => {
+      this.contractService.getAccountStakes().then((res) => {
+        this.stakesList = res;
+        this.stakeListCheck();
+        console.log('checking', this.stakesList);
+      });
+    }, 30000);
   }
 
   /**

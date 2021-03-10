@@ -295,7 +295,7 @@
   },
   "rinkeby": {
     "Staking": {
-      "ADDRESS": "0xb17c53F89413F2870df4A8187c17e172A9A1Ad34",
+      "ADDRESS": "0x160c06A6831e5Ea2C58C66d06E6e86C8E7d950f9",
       "ABI": [
         {
           "inputs": [
@@ -326,6 +326,7 @@
           "name": "AVSTokenOutcome",
           "type": "event"
         },
+        { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "account", "type": "address" }], "name": "AddedToWhitelist", "type": "event" },
         {
           "anonymous": false,
           "inputs": [
@@ -335,6 +336,7 @@
           "name": "OwnershipTransferred",
           "type": "event"
         },
+        { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "account", "type": "address" }], "name": "RemovedFromWhitelist", "type": "event" },
         {
           "anonymous": false,
           "inputs": [
@@ -380,18 +382,10 @@
           "name": "TokenUnfreezed",
           "type": "event"
         },
-        {
-          "anonymous": false,
-          "inputs": [
-            { "indexed": false, "internalType": "uint256", "name": "counter", "type": "uint256" },
-            { "indexed": false, "internalType": "uint256", "name": "day_week_ago", "type": "uint256" },
-            { "indexed": false, "internalType": "uint256", "name": "final_perc", "type": "uint256" }
-          ],
-          "name": "sev_days",
-          "type": "event"
-        },
-        { "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "AVSOwnerWithdraw", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
-        { "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "AVSTokenDonation", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
+        { "inputs": [], "name": "MAX_NUM_DAYS", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
+        { "inputs": [{ "internalType": "address", "name": "_address", "type": "address" }], "name": "addInWhitelist", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
+        { "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "algoVestOwnerWithdraw", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
+        { "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "algoVestTokenDonation", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
         { "inputs": [], "name": "allAVSTokens", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
         {
           "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
@@ -433,11 +427,12 @@
           "stateMutability": "view",
           "type": "function"
         },
-        { "inputs": [], "name": "length_stakes", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
-        { "inputs": [], "name": "maxNumDays", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
+        { "inputs": [{ "internalType": "address", "name": "_address", "type": "address" }], "name": "isWhitelisted", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" },
+        { "inputs": [], "name": "lengthStakes", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
         { "inputs": [], "name": "owner", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" },
+        { "inputs": [{ "internalType": "address", "name": "_address", "type": "address" }], "name": "removeFromWhiteList", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
         { "inputs": [], "name": "renounceOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
-        { "inputs": [], "name": "seven_days", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
+        { "inputs": [], "name": "sevenDays", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
         {
           "inputs": [
             { "internalType": "uint256", "name": "stakeIndex", "type": "uint256" },
@@ -480,6 +475,7 @@
         { "inputs": [], "name": "totalStakers", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
         { "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }], "name": "transferOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
         { "inputs": [], "name": "unfreezedAVSTokens", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
+        { "inputs": [{ "internalType": "address", "name": "", "type": "address" }], "name": "whitelist", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" },
         { "inputs": [], "name": "zeroDayStartTime", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }
       ]
     },

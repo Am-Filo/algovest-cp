@@ -159,7 +159,7 @@ export class ContractService {
    */
   public async getSevenDays(): Promise<any> {
     return this.StakingContract.methods
-      .seven_days()
+      .sevenDays()
       .call()
       .then(
         (res: any) => {
