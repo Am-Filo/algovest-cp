@@ -215,13 +215,18 @@ export class ContractService {
                 return Promise.all(promises).then((stake) => {
                   const start = stake[0];
                   const end = stake[1];
-                  const diffDays = Math.ceil(Math.abs(end - +new Date()) / (1000 * 60 * 60 * 24));
-                  const dayStake = diffDays > +oneSession.numDaysStake ? +oneSession.numDaysStake : diffDays;
-                  const rewardFull = (oneSession.stakedAVS * (apy[0].apy / 100)) / (365 * +dayStake);
-                  const rewardPercent = rewardFull * (diffDays > +oneSession.numDaysStake ? 0.02 : 0.2);
-                  const reward = rewardFull - rewardPercent;
+                  const diffDays = Math.ceil(Math.abs(+end - +new Date()) / (1000 * 60 * 60 * 24));
+                  console.log(diffDays, +oneSession.numDaysStake, +end <= +new Date() ? 1 : diffDays === 0 ? +oneSession.numDaysStake : diffDays < 0 ? 1 : diffDays);
+                  const diffDaysGone = +end <= +new Date() ? 1 : diffDays === 0 ? +oneSession.numDaysStake : diffDays < 0 ? 1 : diffDays;
+                  const rewardFull = (oneSession.stakedAVS * (apy[0].apy / 100)) / (365 * +diffDaysGone);
+                  const rewardPercent = rewardFull * (+end <= +new Date() ? 0.02 : 0.2);
+                  // const reward = rewardFull - rewardPercent;
+                  // const reward = rewardFull;
+                  const daysGone = +oneSession.numDaysStake - +diffDays;
+                  const reward = (+oneSession.freezedRewardAVSTokens / +oneSession.numDaysStake) * (daysGone < 0 ? +oneSession.numDaysStake : daysGone);
+                  console.log(daysGone, daysGone <= 0 ? +oneSession.numDaysStake : daysGone);
 
-                  // console.log(`start day: ${start}`, `end day: ${end}`, `staking days: ${+oneSession.numDaysStake}`, `diff days: ${diffDays}`, rewardFull, rewardPercent, reward);
+                  console.log(`start day: ${start}`, `end day: ${end}`, `staking days: ${+oneSession.numDaysStake}`, `diff days: ${diffDays}`, `diff days gone: ${diffDaysGone}`, `reward full: ${rewardFull}`, `reward percent: ${rewardPercent}`, `reward (rewardFull - rewardPercent): ${reward}`);
 
                   return {
                     index: sessionId,

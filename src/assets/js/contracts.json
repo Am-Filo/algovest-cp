@@ -295,7 +295,7 @@
   },
   "rinkeby": {
     "Staking": {
-      "ADDRESS": "0x160c06A6831e5Ea2C58C66d06E6e86C8E7d950f9",
+      "ADDRESS": "0xE7cCfB903FdD97DFe52bE2E9b629B35A7017b858",
       "ABI": [
         {
           "inputs": [
