@@ -225,8 +225,8 @@ export class ContractService {
                   const rewardWithpercent = rewardFull - rewardPercent;
                   const reward = (+oneSession.freezedRewardAVSTokens / +oneSession.numDaysStake) * (daysGone < 0 ? +oneSession.numDaysStake : daysGone);
 
-                  // console.log(daysGone, daysGone <= 0 ? +oneSession.numDaysStake : daysGone);
-                  // console.log(`start day: ${start}`, `end day: ${end}`, `staking days: ${+oneSession.numDaysStake}`, `diff days: ${diffDays}`, `diff days gone: ${diffDaysGone}`, `reward full: ${rewardFull}`, `reward percent: ${rewardPercent}`, `reward (rewardFull - rewardPercent): ${reward}`);
+                  console.log(daysGone, daysGone <= 0 ? +oneSession.numDaysStake : daysGone);
+                  console.log(`start day: ${start}`, `end day: ${end}`, `staking days: ${+oneSession.numDaysStake}`, `diff days: ${diffDays}`, `diff days gone: ${diffDaysGone}`, `reward full: ${rewardFull}`, `reward percent: ${rewardPercent}`, `reward (rewardFull - rewardPercent): ${reward}`);
 
                   return {
                     index: sessionId,

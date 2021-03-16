@@ -17,7 +17,7 @@
       </div>
       <div class="card">
         <span class="card-title icon icon-flex icon-coins-gray">Total Staked AVS</span>
-        <b>{{ loading ? '--' : (totalData.totalStakedAVS | bigNumberFormat: 18:true:false:4) }}</b>
+        <b>{{ loading ? '--' : (totalData.totalStakedAVS | bigNumberFormat: 18:true:false:2) }}</b>
       </div>
       <div class="card">
         <span class="card-title icon icon-flex icon-grow">Total AVS</span>
@@ -144,13 +144,13 @@
               <span class="table-date icon icon-flex icon-arrow-right" [attr.data-date-start]="stake.start | date">{{ stake.end | date }}</span>
             </td>
             <td>
-              <b>{{ stake.stakedAVS | bigNumberFormat: 18:true:false:4 }}</b>
+              <b>{{ stake.stakedAVS | bigNumberFormat: 18:true:false:2 }}</b>
             </td>
             <td>
-              <b>{{ stake.reward | bigNumberFormat: 18:true:false:4 }}</b>
+              <b>{{ stake.reward | bigNumberFormat: 18:true:false:2 }}</b>
             </td>
             <td>
-              <b>{{ stake.totalReward | bigNumberFormat: 18:true:false:4 }}</b>
+              <b>{{ stake.totalReward | bigNumberFormat: 18:true:false:2 }}</b>
             </td>
             <td class="table-btn">
               <button class="btn btn-form btn-unstake" (click)="unstake(stake)" [ngClass]="{ progress: stake.withdrawProgress }" [disabled]="stake.withdrawProgress">

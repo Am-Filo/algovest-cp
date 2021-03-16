@@ -295,7 +295,7 @@
   },
   "rinkeby": {
     "Staking": {
-      "ADDRESS": "0xb17c53F89413F2870df4A8187c17e172A9A1Ad34",
+      "ADDRESS": "0x64bE31550830463A08bF03d360bffab09B010b76",
       "ABI": [
         {
           "inputs": [
@@ -378,16 +378,6 @@
             { "indexed": false, "internalType": "uint256", "name": "day", "type": "uint256" }
           ],
           "name": "TokenUnfreezed",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            { "indexed": false, "internalType": "uint256", "name": "counter", "type": "uint256" },
-            { "indexed": false, "internalType": "uint256", "name": "day_week_ago", "type": "uint256" },
-            { "indexed": false, "internalType": "uint256", "name": "final_perc", "type": "uint256" }
-          ],
-          "name": "sev_days",
           "type": "event"
         },
         { "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }], "name": "AVSOwnerWithdraw", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
