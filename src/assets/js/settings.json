@@ -1,5 +1,5 @@
 {
-  "production": true,
-  "network": "mainnet",
-  "net": 1
+  "production": false,
+  "network": "rinkeby",
+  "net": 4
 }
