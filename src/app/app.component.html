@@ -171,3 +171,18 @@
     </div>
   </div>
 </section>
+
+<ng-template #warningModal mat-dialog-content>
+  <div class="modal-content" style="padding: 0; min-width: 250px">
+    <div class="modal-head">
+      <span class="modal-head-title icon icon-flex icon-attention">Attention</span>
+    </div>
+    <div class="modal-body">
+      <b>20% early unstake penalty</b>
+    </div>
+    <div class="modal-footer">
+      <span class="btn btn-green btn-footer" mat-dialog-close>Cancel</span>
+      <span class="btn btn-green-border btn-footer" (click)="successWithPenalty()">Unstake</span>
+    </div>
+  </div>
+</ng-template>

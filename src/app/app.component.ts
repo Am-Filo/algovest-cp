@@ -1,4 +1,4 @@
-import { Component, EventEmitter, NgZone } from '@angular/core';
+import { Component, EventEmitter, NgZone, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { TransactionSuccessModalComponent } from './components/transaction/transaction-success-modal.component';
@@ -18,6 +18,12 @@ export class AppComponent {
   public theme = 'white';
   public themeDark = false;
   public loading = true;
+
+  public confirmWithdrawData;
+  @ViewChild('warningModal', {
+    static: true,
+  })
+  warningModal: TemplateRef<any>;
 
   public account: any;
   public userAddress = '';
@@ -140,7 +146,24 @@ export class AppComponent {
    * @example
    * this.unstake(stake);
    */
-  public unstake(stake: any): void {
+  public successWithPenalty() {
+    this.confirmWithdrawData.openedWarning.close();
+    this.unstake(this.confirmWithdrawData.stake, true);
+  }
+
+  public unstake(stake: any, withoutConfirm?: boolean) {
+    console.log(stake.end, +new Date(), stake.end > +new Date());
+    if (stake.end > +new Date()) {
+      if (!withoutConfirm) {
+        const openedWarning = this.dialog.open(this.warningModal, {});
+        this.confirmWithdrawData = {
+          stake,
+          openedWarning,
+        };
+        return;
+      }
+    }
+
     stake.withdrawProgress = true;
     this.contractService
       .unstake(stake.index, stake.id)
@@ -156,7 +179,6 @@ export class AppComponent {
         stake.withdrawProgress = false;
       });
   }
-
   /**
    * Select Day
    * @description Clicked on dropdown list item and set day and apy.
